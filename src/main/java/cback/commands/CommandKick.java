@@ -27,7 +27,7 @@ public class CommandKick implements Command {
 
     @Override
     public String getSyntax() {
-        return "!kick @user [reason]";
+        return "?kick @user [reason]";
     }
 
     @Override

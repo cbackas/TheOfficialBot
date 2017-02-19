@@ -28,7 +28,7 @@ public class CommandMuteRemove implements Command {
 
     @Override
     public String getSyntax() {
-        return "!unmute @user";
+        return "?unmute @user";
     }
 
     @Override

@@ -25,7 +25,7 @@ public class CommandHelp implements Command {
 
     @Override
     public String getSyntax() {
-        return "!help";
+        return "?help";
     }
 
     @Override

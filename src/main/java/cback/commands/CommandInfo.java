@@ -24,7 +24,7 @@ public class CommandInfo implements Command {
 
     @Override
     public String getSyntax() {
-        return "!info";
+        return "?info";
     }
 
     @Override

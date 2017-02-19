@@ -23,7 +23,7 @@ public class CommandAnnounce implements Command {
 
     @Override
     public String getSyntax() {
-        return "!announce [announcement text]";
+        return "?announce [announcement text]";
     }
 
     @Override

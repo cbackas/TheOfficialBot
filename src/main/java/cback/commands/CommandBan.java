@@ -27,7 +27,7 @@ public class CommandBan implements Command {
 
     @Override
     public String getSyntax() {
-        return "!ban @user [reason]";
+        return "?ban @user [reason]";
     }
 
     @Override

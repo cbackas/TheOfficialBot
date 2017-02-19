@@ -24,7 +24,7 @@ public class CommandLog implements Command {
 
     @Override
     public String getSyntax() {
-        return "!addlog [log message]";
+        return "?addlog [log message]";
     }
 
     @Override
