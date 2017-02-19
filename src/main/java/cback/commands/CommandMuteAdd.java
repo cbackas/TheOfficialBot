@@ -77,7 +77,7 @@ public class CommandMuteAdd implements Command {
                 else if (args.length >= 1) {
                     String text = message.getContent();
 
-                    Pattern pattern = Pattern.compile("^!mute <@!?(\\d+)> ?(.+)?");
+                    Pattern pattern = Pattern.compile("^\\?mute <@!?(\\d+)> ?(.+)?");
                     Matcher matcher = pattern.matcher(text);
 
                     if (matcher.find()) {
