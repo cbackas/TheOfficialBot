@@ -46,7 +46,7 @@ public class ChannelChange {
     public void newChannel(ChannelCreateEvent event) {
         //Set muted role
         IGuild guild = event.getClient().getGuildByID("266649217538195457");
-        IRole muted = guild.getRoleByID("269638591112544267");
+        IRole muted = guild.getRoleByID("281022564002824192");
         try {
             event.getChannel().overrideRolePermissions(muted, EnumSet.noneOf(Permissions.class), EnumSet.of(Permissions.SEND_MESSAGES));
         } catch (Exception e) {
