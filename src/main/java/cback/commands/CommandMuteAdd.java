@@ -95,7 +95,7 @@ public class CommandMuteAdd implements Command {
 
                         else {
                             try {
-                                userInput.addRole(guild.getRoleByID("231269949635559424"));
+                                userInput.addRole(guild.getRoleByID("281022564002824192"));
                                 Util.sendMessage(message.getChannel(), userInput.getDisplayName(guild) + " has been muted. Check " + guild.getChannelByID(TheOfficialBot.LOG_CHANNEL_ID).mention() + " for more info.");
 
                                 if (!mutedUsers.contains(u)) {

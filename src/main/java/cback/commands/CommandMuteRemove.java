@@ -60,7 +60,7 @@ public class CommandMuteRemove implements Command {
                             Util.sendMessage(message.getChannel(), "Not sure how you typed this command... but you can't unmute yourself");
                         } else {
                             try {
-                                userInput.removeRole(guild.getRoleByID("231269949635559424"));
+                                userInput.removeRole(guild.getRoleByID("281022564002824192"));
 
                                 Util.sendMessage(message.getChannel(), userInput.getDisplayName(guild) + " has been unmuted");
 
