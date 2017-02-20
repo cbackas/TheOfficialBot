@@ -47,7 +47,7 @@ public class CommandKick implements Command {
             IUser mod = message.getAuthor();
             try {
                 DiscordUtils.checkPermissions(message.getChannel().getModifiedPermissions(mod), EnumSet.of(Permissions.KICK));
-                Pattern pattern = Pattern.compile("^!kick <@!?(\\d+)> ?(.+)?");
+                Pattern pattern = Pattern.compile("^\\?kick <@!?(\\d+)> ?(.+)?");
                 Matcher matcher = pattern.matcher(text);
                 if (matcher.find()) {
                     String userInput = matcher.group(1);

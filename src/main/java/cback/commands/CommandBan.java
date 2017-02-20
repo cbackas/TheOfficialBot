@@ -47,7 +47,7 @@ public class CommandBan implements Command {
             IUser mod = message.getAuthor();
             try {
                 DiscordUtils.checkPermissions(message.getChannel().getModifiedPermissions(mod), EnumSet.of(Permissions.BAN));
-                Pattern pattern = Pattern.compile("^!ban <@!?(\\d+)> ?(.+)?");
+                Pattern pattern = Pattern.compile("^\\?ban <@!?(\\d+)> ?(.+)?");
                 Matcher matcher = pattern.matcher(text);
                 if (matcher.find()) {
                     String userInput = matcher.group(1);
