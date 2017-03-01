@@ -1,6 +1,5 @@
 package cback;
 
-import com.google.gson.JsonSyntaxException;
 import in.ashwanthkumar.slack.webhook.Slack;
 import in.ashwanthkumar.slack.webhook.SlackMessage;
 import org.apache.http.message.BasicNameValuePair;
@@ -15,12 +14,10 @@ import sx.blah.discord.util.*;
 
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.net.URISyntaxException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
@@ -248,12 +245,11 @@ public class Util {
 
         RequestBuffer.RequestFuture<String> userNameResult = RequestBuffer.request(() -> {
             try {
-                String result = ((DiscordClientImpl) client).REQUESTS.GET.makeRequest(DiscordEndpoints.USERS + id,
+                byte[] result = ((DiscordClientImpl) client).REQUESTS.GET.makeRequest(DiscordEndpoints.USERS + id,
                         new BasicNameValuePair("authorization", TheOfficialBot.getInstance().getClient().getToken()));
-                return DiscordUtils.GSON.fromJson(result, UserObject.class).username;
-            } catch (JsonSyntaxException e) {
-                e.printStackTrace();
-            } catch (DiscordException e) {
+                System.out.println(result);
+                return DiscordUtils.MAPPER.readValue(result, UserObject.class).username;
+            } catch (IOException | DiscordException e) {
                 e.printStackTrace();
             }
 
