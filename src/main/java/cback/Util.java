@@ -99,7 +99,7 @@ public class Util {
                     }
                 } else {
                     try {
-                        channel.getMessages().bulkDelete(toDelete);
+                        channel.bulkDelete(toDelete);
                     } catch (DiscordException | MissingPermissionsException e) {
                         e.printStackTrace();
                     }
