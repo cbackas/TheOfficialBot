@@ -59,7 +59,7 @@ public class CommandKick implements Command {
                         } else {
                             try {
                                 guild.kickUser(user);
-                                Util.sendLog(message, "Banned " + user.getDisplayName(guild) + "\n**Reason:** " + reason, Color.red);
+                                Util.sendLog(message, "Kicked " + user.getDisplayName(guild) + "\n**Reason:** " + reason, Color.gray);
                                 Util.sendMessage(message.getChannel(), user.getDisplayName(guild) + " has been kicked. Check " + guild.getChannelByID(TheOfficialBot.LOG_CHANNEL_ID).mention() + " for more info");
                             } catch (Exception e) {
                                 e.printStackTrace();
