@@ -39,7 +39,7 @@ public class CommandInfo implements Command {
 
     @Override
     public void execute(TheOfficialBot bot, IDiscordClient client, String[] args, IGuild guild, IMessage message, boolean isPrivate) {
-        int userCount = guild.getTotalMemberCount();
+        int userCount = guild.getUsers().size();
         int oldUserCount = Integer.valueOf(bot.getConfigManager().getConfigValue("userCount"));
 
         int newCount = userCount - oldUserCount;
@@ -62,13 +62,13 @@ public class CommandInfo implements Command {
         embed.appendField("\u200B", "\u200B", false);
 
         embed.appendField("Listen:", "[`iTunes`](https://itunes.apple.com/au/podcast/the-official-podcast/id1186089636)" +
-                "\n[`SoundCloud`](https://soundcloud.com/theofficialpodcast/episode-ten-with-criken-i-hate-everything)" +
+                "\n[`SoundCloud`](https://soundcloud.com/theofficialpodcast)" +
                 "\n[`The Website`](http://www.theofficialpodcast.com/episodes)", true);
         embed.appendField("Other Links: ", "[`The Official Website`](http://www.theofficialpodcast.com)\n[`Reddit`](https://www.reddit.com/r/TheOfficialPodcast/)", true);
 
         embed.appendField("\u200B", "\u200B", false);
 
-        embed.appendField("Donate to our hosting fees: ", "[`cash.me`](https://cash.me/$zgibson)", true);
+        embed.appendField("Donate to bot hosting fees: ", "[`cash.me`](https://cash.me/$cbackas)", true);
         embed.appendField("Source: ", "[`GitHub`](https://github.com/cbackas/TheOfficialBot)", true);
 
         Util.sendEmbed(message.getChannel(), embed.withColor(161, 61, 61).build());
