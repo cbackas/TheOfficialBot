@@ -63,6 +63,7 @@ public class CommandInfo implements Command {
 
         embed.appendField("Listen:", "[`iTunes`](https://itunes.apple.com/au/podcast/the-official-podcast/id1186089636)" +
                 "\n[`SoundCloud`](https://soundcloud.com/theofficialpodcast)" +
+                "\n[`Spotify`](https://open.spotify.com/show/6TXzjtMTEopiGjIsCfvv6W)" +
                 "\n[`The Website`](http://www.theofficialpodcast.com/episodes)", true);
         embed.appendField("Other Links: ", "[`The Official Website`](http://www.theofficialpodcast.com)\n[`Reddit`](https://www.reddit.com/r/TheOfficialPodcast/)", true);
 
