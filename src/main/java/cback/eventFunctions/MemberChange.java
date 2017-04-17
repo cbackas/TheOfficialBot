@@ -20,7 +20,7 @@ public class MemberChange {
     @EventSubscriber
     public void memberJoin(UserJoinEvent event) {
         //Mute Check
-       if (bot.getConfigManager().getConfigArray("muted").contains(event.getUser().getID())) {
+       if (bot.getConfigManager().getConfigArray("muted").contains(event.getUser().getStringID())) {
             try {
                 event.getUser().addRole(event.getGuild().getRoleByID("269638591112544267"));
             } catch (Exception e) {
@@ -38,7 +38,7 @@ public class MemberChange {
         IUser user = event.getUser();
 
         //Mute Check
-        if (bot.getConfigManager().getConfigArray("muted").contains(event.getUser().getID())) {
+        if (bot.getConfigManager().getConfigArray("muted").contains(event.getUser().getStringID())) {
             Util.sendMessage(event.getGuild().getChannelByID("266651712826114048"), user + " is muted and left the server. Their mute will be applied again when/if they return.");
         }
 
@@ -54,9 +54,9 @@ public class MemberChange {
         IUser user = event.getUser();
 
         //Mute Check
-        if (bot.getConfigManager().getConfigArray("muted").contains(event.getUser().getID())) {
+        if (bot.getConfigManager().getConfigArray("muted").contains(event.getUser().getStringID())) {
             List<String> mutedUsers = bot.getConfigManager().getConfigArray("muted");
-            mutedUsers.remove(user.getID());
+            mutedUsers.remove(user.getStringID());
             bot.getConfigManager().setConfigValue("muted", mutedUsers);
         }
 

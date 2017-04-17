@@ -89,7 +89,7 @@ public class CommandMuteAdd implements Command {
                         }
 
                         IUser userInput = guild.getUserByID(u);
-                        if (message.getAuthor().getID().equals(u)) {
+                        if (message.getAuthor().getStringID().equals(u)) {
                             Util.sendMessage(message.getChannel(), "You probably shouldn't mute yourself");
                         }
 

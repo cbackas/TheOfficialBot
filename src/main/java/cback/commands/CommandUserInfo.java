@@ -61,7 +61,7 @@ public class CommandUserInfo implements Command {
                 embed
                         .withAuthorIcon(user.getAvatarURL())
                         .withAuthorName(user.getName())
-                        .withDesc("\uD83C\uDD94: ``" + user.getID() + "``"
+                        .withDesc("\uD83C\uDD94: ``" + user.getStringID() + "``"
                         + "\n\uD83E\uDD16 **Bot**: ``" + isBot + "``"
                         + "\n\uD83D\uDCE5 **Joined Server**: ``" + guild.getJoinTimeForUser(user).format(formatter) + "``"
                         + "\n\uD83C\uDF10 **Joined Discord**: ``" + user.getCreationDate().format(formatter) + "``"

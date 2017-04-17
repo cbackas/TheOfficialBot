@@ -54,7 +54,7 @@ public class CommandKick implements Command {
                     String reason = matcher.group(2);
                     if (reason != null) {
                         IUser user = guild.getUserByID(userInput);
-                        if (user.getID().equals(mod.getID())) {
+                        if (user.getStringID().equals(mod.getStringID())) {
                             Util.sendMessage(message.getChannel(), "You know you can just leave right?");
                         } else {
                             try {

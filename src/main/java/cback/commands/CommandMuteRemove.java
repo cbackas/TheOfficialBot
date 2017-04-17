@@ -56,7 +56,7 @@ public class CommandMuteRemove implements Command {
                         String u = matcher.group(1);
                         IUser userInput = guild.getUserByID(u);
 
-                        if (message.getAuthor().getID().equals(u)) {
+                        if (message.getAuthor().getStringID().equals(u)) {
                             Util.sendMessage(message.getChannel(), "Not sure how you typed this command... but you can't unmute yourself");
                         } else {
                             try {

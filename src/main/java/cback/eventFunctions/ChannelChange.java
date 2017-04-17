@@ -24,7 +24,7 @@ public class ChannelChange {
             IMessage message = event.getMessage();
             String text = message.getContent();
             IDiscordClient client = event.getClient();
-            if (text.equalsIgnoreCase("?setmuteperm") && message.getAuthor().getID().equals("73416411443113984")) {
+            if (text.equalsIgnoreCase("?setmuteperm") && message.getAuthor().getStringID().equals("73416411443113984")) {
                 IGuild guild = client.getGuildByID("266649217538195457");
                 List<IChannel> channelList = guild.getChannels();
                 IRole muted = guild.getRoleByID("281022564002824192");
