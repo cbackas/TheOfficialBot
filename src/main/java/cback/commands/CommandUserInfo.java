@@ -60,7 +60,7 @@ public class CommandUserInfo implements Command {
 
                 embed
                         .withAuthorIcon(user.getAvatarURL())
-                        .withAuthorName(user.getName())
+                        .withAuthorName(Util.getTag(user))
                         .withDesc("\uD83C\uDD94: ``" + user.getStringID() + "``"
                         + "\n\uD83E\uDD16 **Bot**: ``" + isBot + "``"
                         + "\n\uD83D\uDCE5 **Joined Server**: ``" + guild.getJoinTimeForUser(user).format(formatter) + "``"
