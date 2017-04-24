@@ -13,6 +13,7 @@ import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.modules.Configuration;
 import sx.blah.discord.util.DiscordException;
+import sx.blah.discord.util.EmbedBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,8 +113,26 @@ public class TheOfficialBot {
                 command.get().execute(this, client, argsArr, guild, message, isPrivate);
             }
         } else {
-            String lowerCase = message.getContent().toLowerCase();
+            List<String> bannedWords = getConfigManager().getConfigArray("bannedWords");
+            String content = message.getFormattedContent();
+            for (String word : bannedWords) {
+                if (content.contains(word)) {
+                    message.getChannel().setTypingStatus(true);
 
+                    EmbedBuilder bld = new EmbedBuilder();
+                    bld
+                            .withAuthorIcon(message.getAuthor().getAvatarURL())
+                            .withAuthorName(message.getAuthor().getName())
+                            .withDesc(content)
+                            .withTimestamp(System.currentTimeMillis())
+                            .withFooterText("Auto-deleted from #" + message.getChannel().getName());
+
+                    Util.sendEmbed(guild.getChannelByID(Long.parseLong("266651712826114048")), bld.withColor(161, 61, 61).build());
+
+                    message.delete();
+                    message.getChannel().setTypingStatus(false);
+                }
+            }
         }
     }
 
