@@ -30,7 +30,7 @@ public class CommandUserInfo implements Command {
 
     @Override
     public String getSyntax() {
-        return "?user @user";
+        return "?userinfo @user";
     }
 
     @Override
