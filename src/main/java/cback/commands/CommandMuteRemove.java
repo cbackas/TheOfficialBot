@@ -44,7 +44,7 @@ public class CommandMuteRemove implements Command {
     @Override
     public void execute(TheOfficialBot bot, IDiscordClient client, String[] args, IGuild guild, IMessage message, boolean isPrivate) {
         List<IRole> userRoles = message.getAuthor().getRolesForGuild(guild);
-        if (userRoles.contains(guild.getRoleByID(OfficialRoles.STAFF.id))) {
+        if (userRoles.contains(guild.getRoleByID(Long.parseLong(OfficialRoles.STAFF.id)))) {
                 Util.botLog(message);
 
                 if (args.length == 1) {
@@ -54,13 +54,13 @@ public class CommandMuteRemove implements Command {
                     if (matcher.find()) {
 
                         String u = matcher.group(1);
-                        IUser userInput = guild.getUserByID(u);
+                        IUser userInput = guild.getUserByID(Long.parseLong(u));
 
                         if (message.getAuthor().getStringID().equals(u)) {
                             Util.sendMessage(message.getChannel(), "Not sure how you typed this command... but you can't unmute yourself");
                         } else {
                             try {
-                                userInput.removeRole(guild.getRoleByID("281022564002824192"));
+                                userInput.removeRole(guild.getRoleByID(Long.parseLong("281022564002824192")));
 
                                 Util.sendMessage(message.getChannel(), userInput.getDisplayName(guild) + " has been unmuted");
 

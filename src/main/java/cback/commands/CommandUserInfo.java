@@ -45,13 +45,13 @@ public class CommandUserInfo implements Command {
 
     @Override
     public void execute(TheOfficialBot bot, IDiscordClient client, String[] args, IGuild guild, IMessage message, boolean isPrivate) {
-        if (message.getAuthor().getRolesForGuild(guild).contains(guild.getRoleByID(OfficialRoles.STAFF.id))) {
+        if (message.getAuthor().getRolesForGuild(guild).contains(guild.getRoleByID(Long.parseLong(OfficialRoles.STAFF.id)))) {
 
             String text = message.getContent();
             Pattern pattern = Pattern.compile("^\\?user <@!?(\\d+)>");
             Matcher matcher = pattern.matcher(text);
             if (matcher.find()) {
-                IUser user = guild.getUserByID(matcher.group(1));
+                IUser user = guild.getUserByID(Long.parseLong(matcher.group(1)));
                 String isBot = user.isBot() ? "yes":"no";
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy HH:mm:ss");
                 List<IRole> roles = user.getRolesForGuild(guild);

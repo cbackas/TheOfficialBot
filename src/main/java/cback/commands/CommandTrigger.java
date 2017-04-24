@@ -37,7 +37,7 @@ public class CommandTrigger implements Command {
     @Override
     public void execute(TheOfficialBot bot, IDiscordClient client, String[] args, IGuild guild, IMessage message, boolean isPrivate) {
         if (message.getAuthor().getStringID().equals("73416411443113984")) {
-            String fullRule = TheOfficialBot.getInstance().getClient().getChannelByID("251916332747063296").getMessageByID("251922232069193728").getContent();
+            String fullRule = TheOfficialBot.getInstance().getClient().getChannelByID(Long.parseLong("251916332747063296")).getMessageByID(Long.parseLong("251922232069193728")).getContent();
             System.out.println(fullRule);
 
 

@@ -119,8 +119,8 @@ public class Util {
 
     public static void sendAnnouncement(String message) {
         try {
-            Util.sendMessage(TheOfficialBot.getInstance().getClient().getChannelByID(TheOfficialBot.GENERAL_CHANNEL_ID), message);
-            Util.sendMessage(TheOfficialBot.getInstance().getClient().getChannelByID(TheOfficialBot.ANNOUNCEMENT_CHANNEL_ID), message);
+            Util.sendMessage(TheOfficialBot.getInstance().getClient().getChannelByID(Long.parseLong(TheOfficialBot.GENERAL_CHANNEL_ID)), message);
+            Util.sendMessage(TheOfficialBot.getInstance().getClient().getChannelByID(Long.parseLong(TheOfficialBot.ANNOUNCEMENT_CHANNEL_ID)), message);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -128,7 +128,7 @@ public class Util {
 
     public static void errorLog(IMessage message, String text) {
         try {
-            Util.sendPrivateMessage(TheOfficialBot.getInstance().getClient().getUserByID("73416411443113984"), text + " in  " + message.getChannel().mention());
+            Util.sendPrivateMessage(TheOfficialBot.getInstance().getClient().getUserByID(Long.parseLong("73416411443113984")), text + " in  " + message.getChannel().mention());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -171,7 +171,7 @@ public class Util {
 
                 IDiscordClient client = TheOfficialBot.getInstance().getClient();
                 return new MessageBuilder(client).withEmbed(embed.withColor(023563).build())
-                        .withChannel(client.getChannelByID(TheOfficialBot.LOG_CHANNEL_ID)).send();
+                        .withChannel(client.getChannelByID(Long.parseLong(TheOfficialBot.LOG_CHANNEL_ID))).send();
             } catch (Exception e) {
             }
             return null;
@@ -197,7 +197,7 @@ public class Util {
 
                 IDiscordClient client = TheOfficialBot.getInstance().getClient();
                 return new MessageBuilder(client).withEmbed(embed.withColor(color).build())
-                        .withChannel(client.getChannelByID(TheOfficialBot.LOG_CHANNEL_ID)).send();
+                        .withChannel(client.getChannelByID(Long.parseLong(TheOfficialBot.LOG_CHANNEL_ID))).send();
             } catch (Exception e) {
             }
             return null;
@@ -261,8 +261,8 @@ public class Util {
 
     public static List<IUser> getUsersByRole(String roleID) {
         try {
-            IGuild guild = TheOfficialBot.getInstance().getClient().getGuildByID("192441520178200577");
-            IRole role = guild.getRoleByID(roleID);
+            IGuild guild = TheOfficialBot.getInstance().getClient().getGuildByID(Long.parseLong("192441520178200577"));
+            IRole role = guild.getRoleByID(Long.parseLong(roleID));
 
             if (role != null) {
                 List<IUser> allUsers = guild.getUsers();

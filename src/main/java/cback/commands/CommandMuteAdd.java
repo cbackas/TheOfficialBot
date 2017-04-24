@@ -44,7 +44,7 @@ public class CommandMuteAdd implements Command {
     @Override
     public void execute(TheOfficialBot bot, IDiscordClient client, String[] args, IGuild guild, IMessage message, boolean isPrivate) {
         List<IRole> userRoles = message.getAuthor().getRolesForGuild(guild);
-        if (userRoles.contains(guild.getRoleByID(OfficialRoles.STAFF.id))) {
+        if (userRoles.contains(guild.getRoleByID(Long.parseLong(OfficialRoles.STAFF.id)))) {
                 Util.botLog(message);
 
                 List<String> mutedUsers = bot.getConfigManager().getConfigArray("muted");
@@ -55,7 +55,7 @@ public class CommandMuteAdd implements Command {
                     if (!mutedUsers.isEmpty()) {
                         for (String userID : mutedUsers) {
 
-                            IUser userO = guild.getUserByID(userID);
+                            IUser userO = guild.getUserByID(Long.parseLong(userID));
 
                             String user = "NULL";
                             if (userO != null) {
@@ -88,15 +88,15 @@ public class CommandMuteAdd implements Command {
                             reason = "an unspecified reason";
                         }
 
-                        IUser userInput = guild.getUserByID(u);
+                        IUser userInput = guild.getUserByID(Long.parseLong(u));
                         if (message.getAuthor().getStringID().equals(u)) {
                             Util.sendMessage(message.getChannel(), "You probably shouldn't mute yourself");
                         }
 
                         else {
                             try {
-                                userInput.addRole(guild.getRoleByID("281022564002824192"));
-                                Util.sendMessage(message.getChannel(), userInput.getDisplayName(guild) + " has been muted. Check " + guild.getChannelByID(TheOfficialBot.LOG_CHANNEL_ID).mention() + " for more info.");
+                                userInput.addRole(guild.getRoleByID(Long.parseLong("281022564002824192")));
+                                Util.sendMessage(message.getChannel(), userInput.getDisplayName(guild) + " has been muted. Check " + guild.getChannelByID(Long.parseLong(TheOfficialBot.LOG_CHANNEL_ID)).mention() + " for more info.");
 
                                 if (!mutedUsers.contains(u)) {
                                     mutedUsers.add(u);

@@ -39,15 +39,14 @@ public class CommandLog implements Command {
 
     @Override
     public void execute(TheOfficialBot bot, IDiscordClient client, String[] args, IGuild guild, IMessage message, boolean isPrivate) {
-        if (message.getAuthor().getRolesForGuild(guild).contains(guild.getRoleByID(OfficialRoles.STAFF.id))) {
+        if (message.getAuthor().getRolesForGuild(guild).contains(guild.getRoleByID(Long.parseLong(OfficialRoles.STAFF.id)))) {
 
             Util.botLog(message);
 
             if (args.length >= 1) {
-                List<IRole> userRoles = message.getAuthor().getRolesForGuild(guild);
                     String finalText = message.getFormattedContent().split(" ", 2)[1];
                     Util.sendLog(message, finalText);
-                    Util.sendMessage(message.getChannel(), "Log added. " + guild.getChannelByID(TheOfficialBot.LOG_CHANNEL_ID).mention());
+                    Util.sendMessage(message.getChannel(), "Log added. " + guild.getChannelByID(Long.parseLong(TheOfficialBot.LOG_CHANNEL_ID)).mention());
                     Util.deleteMessage(message);
             } else {
                 Util.sendMessage(message.getChannel(), "Usage: !addlog <text>");

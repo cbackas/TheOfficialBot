@@ -42,7 +42,7 @@ public class CommandKick implements Command {
 
     @Override
     public void execute(TheOfficialBot bot, IDiscordClient client, String[] args, IGuild guild, IMessage message, boolean isPrivate) {
-        if (message.getAuthor().getRolesForGuild(guild).contains(guild.getRoleByID(OfficialRoles.STAFF.id))) {
+        if (message.getAuthor().getRolesForGuild(guild).contains(guild.getRoleByID(Long.parseLong(OfficialRoles.STAFF.id)))) {
             String text = message.getContent();
             IUser mod = message.getAuthor();
             try {
@@ -53,18 +53,18 @@ public class CommandKick implements Command {
                     String userInput = matcher.group(1);
                     String reason = matcher.group(2);
                     if (reason != null) {
-                        IUser user = guild.getUserByID(userInput);
+                        IUser user = guild.getUserByID(Long.parseLong(userInput));
                         if (user.getStringID().equals(mod.getStringID())) {
                             Util.sendMessage(message.getChannel(), "You know you can just leave right?");
                         } else {
                             try {
                                 guild.kickUser(user);
                                 Util.sendLog(message, "Kicked " + user.getDisplayName(guild) + "\n**Reason:** " + reason, Color.gray);
-                                Util.sendMessage(message.getChannel(), user.getDisplayName(guild) + " has been kicked. Check " + guild.getChannelByID(TheOfficialBot.LOG_CHANNEL_ID).mention() + " for more info");
+                                Util.sendMessage(message.getChannel(), user.getDisplayName(guild) + " has been kicked. Check " + guild.getChannelByID(Long.parseLong(TheOfficialBot.LOG_CHANNEL_ID)).mention() + " for more info");
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 Util.sendMessage(message.getChannel(), "Internal error - cback has been notified");
-                                Util.sendPrivateMessage(client.getUserByID("73416411443113984"), "Error running CommandKick - check stacktrace");
+                                Util.sendPrivateMessage(client.getUserByID(Long.parseLong("73416411443113984")), "Error running CommandKick - check stacktrace");
                             }
                         }
                     } else {

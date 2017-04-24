@@ -22,7 +22,7 @@ public class MemberChange {
         //Mute Check
        if (bot.getConfigManager().getConfigArray("muted").contains(event.getUser().getStringID())) {
             try {
-                event.getUser().addRole(event.getGuild().getRoleByID("269638591112544267"));
+                event.getUser().addRole(event.getGuild().getRoleByID(Long.parseLong("269638591112544267")));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -39,7 +39,7 @@ public class MemberChange {
 
         //Mute Check
         if (bot.getConfigManager().getConfigArray("muted").contains(event.getUser().getStringID())) {
-            Util.sendMessage(event.getGuild().getChannelByID("266651712826114048"), user + " is muted and left the server. Their mute will be applied again when/if they return.");
+            Util.sendMessage(event.getGuild().getChannelByID(Long.parseLong("266651712826114048")), user + " is muted and left the server. Their mute will be applied again when/if they return.");
         }
 
         //Leave Counter
