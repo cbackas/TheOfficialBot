@@ -24,6 +24,7 @@ public class ConfigManager {
         defaultConfig.put("joined", "0");
         defaultConfig.put("left", "0");
         defaultConfig.put("muted", new ArrayList<String>());
+        defaultConfig.put("bannedWords", new ArrayList<String>());
     }
 
     public ConfigManager(TheOfficialBot bot) {
