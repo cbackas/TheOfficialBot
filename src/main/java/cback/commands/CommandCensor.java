@@ -25,7 +25,7 @@ public class CommandCensor implements Command {
 
     @Override
     public String getSyntax() {
-        return "?censor add|remove [word]";
+        return "?censor add|remove|list [word]";
     }
 
     @Override
