@@ -1,4 +1,4 @@
-package cback.eventFunctions;
+package cback.events;
 
 import cback.TheOfficialBot;
 import cback.Util;
