@@ -116,11 +116,12 @@ public class TheOfficialBot {
             }
         } else {
             List<String> bannedWords = getConfigManager().getConfigArray("bannedWords");
-            String content = message.getFormattedContent();
+            String content = message.getFormattedContent().toLowerCase();
             Boolean tripped = false;
             for (String word : bannedWords) {
                 if (content.contains(word)) {
                     tripped = true;
+                    break;
                 }
             }
             if (tripped == true) {
@@ -130,7 +131,7 @@ public class TheOfficialBot {
                 bld
                         .withAuthorIcon(message.getAuthor().getAvatarURL())
                         .withAuthorName(message.getAuthor().getName())
-                        .withDesc(content)
+                        .withDesc(message.getFormattedContent())
                         .withTimestamp(System.currentTimeMillis())
                         .withFooterText("Auto-deleted from #" + message.getChannel().getName());
 
