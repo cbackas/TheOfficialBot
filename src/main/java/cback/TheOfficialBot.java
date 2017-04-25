@@ -115,23 +115,27 @@ public class TheOfficialBot {
         } else {
             List<String> bannedWords = getConfigManager().getConfigArray("bannedWords");
             String content = message.getFormattedContent();
+            Boolean tripped = false;
             for (String word : bannedWords) {
                 if (content.contains(word)) {
-                    message.getChannel().setTypingStatus(true);
-
-                    EmbedBuilder bld = new EmbedBuilder();
-                    bld
-                            .withAuthorIcon(message.getAuthor().getAvatarURL())
-                            .withAuthorName(message.getAuthor().getName())
-                            .withDesc(content)
-                            .withTimestamp(System.currentTimeMillis())
-                            .withFooterText("Auto-deleted from #" + message.getChannel().getName());
-
-                    Util.sendEmbed(guild.getChannelByID(Long.parseLong("266651712826114048")), bld.withColor(161, 61, 61).build());
-
-                    message.delete();
-                    message.getChannel().setTypingStatus(false);
+                    tripped = true;
                 }
+            }
+            if (tripped == true) {
+                message.getChannel().setTypingStatus(true);
+
+                EmbedBuilder bld = new EmbedBuilder();
+                bld
+                        .withAuthorIcon(message.getAuthor().getAvatarURL())
+                        .withAuthorName(message.getAuthor().getName())
+                        .withDesc(content)
+                        .withTimestamp(System.currentTimeMillis())
+                        .withFooterText("Auto-deleted from #" + message.getChannel().getName());
+
+                Util.sendEmbed(guild.getChannelByID(Long.parseLong("266651712826114048")), bld.withColor(161, 61, 61).build());
+
+                message.delete();
+                message.getChannel().setTypingStatus(false);
             }
         }
     }
