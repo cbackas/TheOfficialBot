@@ -35,7 +35,7 @@ public class CommandCensor implements Command {
 
     @Override
     public List<Long> getPermissions() {
-        return Arrays.asList(OfficialRoles.ADMIN.id);
+        return Arrays.asList(OfficialRoles.ADMIN.id, OfficialRoles.MOD.id);
     }
 
     @Override
