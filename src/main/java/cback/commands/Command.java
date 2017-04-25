@@ -18,6 +18,6 @@ public interface Command {
 
     List<String> getPermissions();
 
-    void execute(TheOfficialBot bot, IDiscordClient client, String[] args, IGuild guild, IMessage message, boolean isPrivate);
+    void execute(TheOfficialBot bot, IDiscordClient client, String[] args, IGuild guild, List<Long> roleIDs, IMessage message, boolean isPrivate);
 }
 

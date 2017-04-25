@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("FieldCanBeLocal")
 public class TheOfficialBot {
@@ -110,7 +111,8 @@ public class TheOfficialBot {
 
                 String args = matcher.group(2);
                 String[] argsArr = args.isEmpty() ? new String[0] : args.split(" ");
-                command.get().execute(this, client, argsArr, guild, message, isPrivate);
+                List<Long> roleIDs = message.getAuthor().getRolesForGuild(guild).stream().map(role -> role.getLongID()).collect(Collectors.toList());
+                command.get().execute(this, client, argsArr, guild, roleIDs, message, isPrivate);
             }
         } else {
             List<String> bannedWords = getConfigManager().getConfigArray("bannedWords");
