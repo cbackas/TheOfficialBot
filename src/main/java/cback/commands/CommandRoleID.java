@@ -39,7 +39,7 @@ public class CommandRoleID implements Command {
     }
 
     @Override
-    public void execute(TheOfficialBot bot, IDiscordClient client, String[] args, IGuild guild, IMessage message, boolean isPrivate) {
+    public void execute(TheOfficialBot bot, IDiscordClient client, String[] args, IGuild guild, List<Long> roleIDs, IMessage message, boolean isPrivate) {
         if (message.getAuthor().getStringID().equals("73416411443113984")) {
             Util.botLog(message);
 
