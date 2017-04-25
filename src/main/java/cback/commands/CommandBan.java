@@ -9,6 +9,7 @@ import sx.blah.discord.handle.obj.*;
 
 import java.awt.*;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -36,13 +37,13 @@ public class CommandBan implements Command {
     }
 
     @Override
-    public List<String> getPermissions() {
+    public List<Long> getPermissions() {
         return Arrays.asList(OfficialRoles.STAFF.id);
     }
 
     @Override
     public void execute(TheOfficialBot bot, IDiscordClient client, String[] args, IGuild guild, List<Long> roleIDs, IMessage message, boolean isPrivate) {
-        if (message.getAuthor().getRolesForGuild(guild).contains(guild.getRoleByID(Long.parseLong(OfficialRoles.STAFF.id)))) {
+        if (!Collections.disjoint(roleIDs, getPermissions())) {
             String text = message.getContent();
             IUser mod = message.getAuthor();
             try {

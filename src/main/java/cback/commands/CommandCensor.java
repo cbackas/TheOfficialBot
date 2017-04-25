@@ -9,6 +9,7 @@ import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.util.EmbedBuilder;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class CommandCensor implements Command {
@@ -33,13 +34,13 @@ public class CommandCensor implements Command {
     }
 
     @Override
-    public List<String> getPermissions() {
+    public List<Long> getPermissions() {
         return Arrays.asList(OfficialRoles.ADMIN.id);
     }
 
     @Override
     public void execute(TheOfficialBot bot, IDiscordClient client, String[] args, IGuild guild, List<Long> roleIDs, IMessage message, boolean isPrivate) {
-        if (message.getAuthor().getRolesForGuild(guild).contains(guild.getRoleByID(Long.parseLong(OfficialRoles.ADMIN.id)))) {
+        if (!Collections.disjoint(roleIDs, getPermissions())) {
             message.getChannel().setTypingStatus(true);
 
             EmbedBuilder bld = new EmbedBuilder();

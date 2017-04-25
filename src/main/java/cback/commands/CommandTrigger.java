@@ -30,7 +30,7 @@ public class CommandTrigger implements Command {
     }
 
     @Override
-    public List<String> getPermissions() {
+    public List<Long> getPermissions() {
         return null;
     }
 

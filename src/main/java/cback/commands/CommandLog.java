@@ -6,9 +6,9 @@ import cback.Util;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IMessage;
-import sx.blah.discord.handle.obj.IRole;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class CommandLog implements Command {
@@ -33,13 +33,13 @@ public class CommandLog implements Command {
     }
 
     @Override
-    public List<String> getPermissions() {
+    public List<Long> getPermissions() {
         return Arrays.asList(OfficialRoles.STAFF.id);
     }
 
     @Override
     public void execute(TheOfficialBot bot, IDiscordClient client, String[] args, IGuild guild, List<Long> roleIDs, IMessage message, boolean isPrivate) {
-        if (message.getAuthor().getRolesForGuild(guild).contains(guild.getRoleByID(Long.parseLong(OfficialRoles.STAFF.id)))) {
+        if (!Collections.disjoint(roleIDs, getPermissions())) {
 
             Util.botLog(message);
 

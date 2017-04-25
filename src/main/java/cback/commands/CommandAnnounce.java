@@ -8,6 +8,7 @@ import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IMessage;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class CommandAnnounce implements Command {
@@ -32,14 +33,13 @@ public class CommandAnnounce implements Command {
     }
 
     @Override
-    public List<String> getPermissions() {
+    public List<Long> getPermissions() {
         return Arrays.asList(OfficialRoles.ADMIN.id, OfficialRoles.HOST.id);
     }
 
     @Override
     public void execute(TheOfficialBot bot, IDiscordClient client, String[] args, IGuild guild, List<Long> roleIDs, IMessage message, boolean isPrivate) {
-        if (message.getAuthor().getRolesForGuild(guild).contains(guild.getRoleByID(Long.parseLong(OfficialRoles.ADMIN.id))) || message.getAuthor().getRolesForGuild(guild).contains(guild.getRoleByID(Long.parseLong(OfficialRoles.HOST.id)))) {
-
+        if (!Collections.disjoint(roleIDs, getPermissions())) {
             String announcement = message.getContent().split(" ", 2)[1];
             Util.sendAnnouncement(announcement);
 

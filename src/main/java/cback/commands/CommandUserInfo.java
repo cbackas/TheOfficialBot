@@ -13,6 +13,7 @@ import sx.blah.discord.util.EmbedBuilder;
 import java.awt.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -39,13 +40,13 @@ public class CommandUserInfo implements Command {
     }
 
     @Override
-    public List<String> getPermissions() {
+    public List<Long> getPermissions() {
         return Arrays.asList(OfficialRoles.STAFF.id);
     }
 
     @Override
     public void execute(TheOfficialBot bot, IDiscordClient client, String[] args, IGuild guild, List<Long> roleIDs, IMessage message, boolean isPrivate) {
-        if (message.getAuthor().getRolesForGuild(guild).contains(guild.getRoleByID(Long.parseLong(OfficialRoles.STAFF.id)))) {
+        if (!Collections.disjoint(roleIDs, getPermissions())) {
 
             String text = message.getContent();
             Pattern pattern = Pattern.compile("^\\?user <@!?(\\d+)>");
