@@ -16,7 +16,7 @@ public interface Command {
 
     String getDescription();
 
-    List<String> getPermissions();
+    List<Long> getPermissions();
 
     void execute(TheOfficialBot bot, IDiscordClient client, String[] args, IGuild guild, List<Long> roleIDs, IMessage message, boolean isPrivate);
 }
