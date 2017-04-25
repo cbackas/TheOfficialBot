@@ -1,8 +1,8 @@
 package cback;
 
 import cback.commands.Command;
-import cback.eventFunctions.ChannelChange;
-import cback.eventFunctions.MemberChange;
+import cback.events.ChannelChange;
+import cback.events.MemberChange;
 import org.reflections.Reflections;
 import sx.blah.discord.api.ClientBuilder;
 import sx.blah.discord.api.IDiscordClient;
@@ -133,6 +133,7 @@ public class TheOfficialBot {
                         .withFooterText("Auto-deleted from #" + message.getChannel().getName());
 
                 Util.sendEmbed(guild.getChannelByID(Long.parseLong("266651712826114048")), bld.withColor(161, 61, 61).build());
+                Util.sendPrivateMessage(message.getAuthor(), "Your message has been automatically removed for containing hate speech.");
 
                 message.delete();
                 message.getChannel().setTypingStatus(false);
