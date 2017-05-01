@@ -42,6 +42,7 @@ public class CommandCensor implements Command {
     public void execute(TheOfficialBot bot, IDiscordClient client, String[] args, IGuild guild, List<Long> roleIDs, IMessage message, boolean isPrivate) {
         if (!Collections.disjoint(roleIDs, getPermissions())) {
             message.getChannel().setTypingStatus(true);
+            Util.botLog(message);
 
             EmbedBuilder bld = new EmbedBuilder();
             List<String> bannedWords = bot.getConfigManager().getConfigArray("bannedWords");
