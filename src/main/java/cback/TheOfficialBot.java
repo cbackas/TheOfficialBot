@@ -11,6 +11,7 @@ import sx.blah.discord.handle.impl.events.ReadyEvent;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IMessage;
+import sx.blah.discord.handle.obj.IUser;
 import sx.blah.discord.modules.Configuration;
 import sx.blah.discord.util.DiscordException;
 import sx.blah.discord.util.EmbedBuilder;
@@ -126,17 +127,18 @@ public class TheOfficialBot {
             }
             if (tripped == true) {
                 message.getChannel().setTypingStatus(true);
+                IUser author = message.getAuthor();
 
                 EmbedBuilder bld = new EmbedBuilder();
                 bld
-                        .withAuthorIcon(message.getAuthor().getAvatarURL())
-                        .withAuthorName(message.getAuthor().getName())
+                        .withAuthorIcon(author.getAvatarURL())
+                        .withAuthorName(Util.getTag(author))
                         .withDesc(message.getFormattedContent())
                         .withTimestamp(System.currentTimeMillis())
                         .withFooterText("Auto-deleted from #" + message.getChannel().getName());
 
                 Util.sendEmbed(guild.getChannelByID(Long.parseLong("266651712826114048")), bld.withColor(161, 61, 61).build());
-                Util.sendPrivateMessage(message.getAuthor(), "Your message has been automatically removed for containing hate speech.");
+                Util.sendPrivateMessage(author, "Your message has been automatically removed for a banned word or something");
 
                 message.delete();
                 message.getChannel().setTypingStatus(false);
