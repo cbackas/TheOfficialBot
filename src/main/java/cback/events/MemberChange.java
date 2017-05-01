@@ -6,8 +6,12 @@ import sx.blah.discord.api.events.EventSubscriber;
 import sx.blah.discord.handle.impl.events.guild.member.UserBanEvent;
 import sx.blah.discord.handle.impl.events.guild.member.UserJoinEvent;
 import sx.blah.discord.handle.impl.events.guild.member.UserLeaveEvent;
+import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IUser;
+import sx.blah.discord.util.EmbedBuilder;
 
+import java.awt.*;
+import java.time.ZoneOffset;
 import java.util.List;
 
 public class MemberChange {
@@ -19,10 +23,12 @@ public class MemberChange {
 
     @EventSubscriber
     public void memberJoin(UserJoinEvent event) {
+        IUser user = event.getUser();
+        IGuild guild = event.getGuild();
         //Mute Check
-       if (bot.getConfigManager().getConfigArray("muted").contains(event.getUser().getStringID())) {
+       if (bot.getConfigManager().getConfigArray("muted").contains(user.getStringID())) {
             try {
-                event.getUser().addRole(event.getGuild().getRoleByID(Long.parseLong("269638591112544267")));
+                user.addRole(guild.getRoleByID(Long.parseLong("269638591112544267")));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -31,30 +37,55 @@ public class MemberChange {
         //Join Counter
         int joined = Integer.parseInt(bot.getConfigManager().getConfigValue("joined"));
         bot.getConfigManager().setConfigValue("joined", String.valueOf(joined + 1));
+
+        //Member-log
+        EmbedBuilder bld = new EmbedBuilder()
+                .withDesc(Util.getTag(user) + " **joined** the server. " + user.mention());
+
+        long userCreated = user.getCreationDate().toEpochSecond(ZoneOffset.ofHours(0));
+        long currentTime = Util.getCurrentTime();
+        if (currentTime - userCreated < 86400) {
+            bld.withFooterText("**NEW ACCOUNT**");
+        }
+
+        bld
+                .withTimestamp(System.currentTimeMillis())
+                .withColor(Color.GREEN);
+
+        Util.sendEmbed(guild.getChannelByID(266655441449254914l), bld.build());
     }
 
     @EventSubscriber
     public void memberLeave(UserLeaveEvent event) {
         IUser user = event.getUser();
+        IGuild guild = event.getGuild();
 
         //Mute Check
         if (bot.getConfigManager().getConfigArray("muted").contains(event.getUser().getStringID())) {
-            Util.sendMessage(event.getGuild().getChannelByID(Long.parseLong("266651712826114048")), user + " is muted and left the server. Their mute will be applied again when/if they return.");
+            Util.sendMessage(guild.getChannelByID(Long.parseLong("266651712826114048")), user + " is muted and left the server. Their mute will be applied again when/if they return.");
         }
 
         //Leave Counter
         int left = Integer.parseInt(bot.getConfigManager().getConfigValue("left"));
         bot.getConfigManager().setConfigValue("left", String.valueOf(left + 1));
 
+        //Member-log
+        EmbedBuilder bld = new EmbedBuilder()
+                .withDesc(Util.getTag(user) + " **left** the server. " + user.mention())
+                .withTimestamp(System.currentTimeMillis())
+                .withColor(Color.YELLOW);
+
+        Util.sendEmbed(guild.getChannelByID(266655441449254914l), bld.build());
 
     }
 
     @EventSubscriber
     public void memberBanned(UserBanEvent event) {
         IUser user = event.getUser();
+        IGuild guild = event.getGuild();
 
         //Mute Check
-        if (bot.getConfigManager().getConfigArray("muted").contains(event.getUser().getStringID())) {
+        if (bot.getConfigManager().getConfigArray("muted").contains(user.getStringID())) {
             List<String> mutedUsers = bot.getConfigManager().getConfigArray("muted");
             mutedUsers.remove(user.getStringID());
             bot.getConfigManager().setConfigValue("muted", mutedUsers);
@@ -63,5 +94,13 @@ public class MemberChange {
         //Leave Counter
         int left = Integer.parseInt(bot.getConfigManager().getConfigValue("left"));
         bot.getConfigManager().setConfigValue("left", String.valueOf(left + 1));
+
+        //Member-log
+        EmbedBuilder bld = new EmbedBuilder()
+                .withDesc(Util.getTag(user) + " was **banned** the server. " + user.mention())
+                .withTimestamp(System.currentTimeMillis())
+                .withColor(Color.RED);
+
+        Util.sendEmbed(guild.getChannelByID(266655441449254914l), bld.build());
     }
 }
