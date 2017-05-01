@@ -116,33 +116,7 @@ public class TheOfficialBot {
                 command.get().execute(this, client, argsArr, guild, roleIDs, message, isPrivate);
             }
         } else {
-            List<String> bannedWords = getConfigManager().getConfigArray("bannedWords");
-            String content = message.getFormattedContent().toLowerCase();
-            Boolean tripped = false;
-            for (String word : bannedWords) {
-                if (content.contains(word)) {
-                    tripped = true;
-                    break;
-                }
-            }
-            if (tripped == true) {
-                message.getChannel().setTypingStatus(true);
-                IUser author = message.getAuthor();
-
-                EmbedBuilder bld = new EmbedBuilder();
-                bld
-                        .withAuthorIcon(author.getAvatarURL())
-                        .withAuthorName(Util.getTag(author))
-                        .withDesc(message.getFormattedContent())
-                        .withTimestamp(System.currentTimeMillis())
-                        .withFooterText("Auto-deleted from #" + message.getChannel().getName());
-
-                Util.sendEmbed(guild.getChannelByID(Long.parseLong("266651712826114048")), bld.withColor(161, 61, 61).build());
-                Util.sendPrivateMessage(author, "Your message has been automatically removed for a banned word or something");
-
-                message.delete();
-                message.getChannel().setTypingStatus(false);
-            }
+            CensorMessages(message);
         }
     }
 
@@ -196,6 +170,37 @@ public class TheOfficialBot {
 
     public static TheOfficialBot getInstance() {
         return instance;
+    }
+
+    //checks for dirty words
+    public void CensorMessages(IMessage message) {
+        List<String> bannedWords = TheOfficialBot.getInstance().getConfigManager().getConfigArray("bannedWords");
+        String content = message.getFormattedContent().toLowerCase();
+        Boolean tripped = false;
+        for (String word : bannedWords) {
+            if (content.contains(word)) {
+                tripped = true;
+                break;
+            }
+        }
+        if (tripped == true) {
+            message.getChannel().setTypingStatus(true);
+            IUser author = message.getAuthor();
+
+            EmbedBuilder bld = new EmbedBuilder();
+            bld
+                    .withAuthorIcon(author.getAvatarURL())
+                    .withAuthorName(Util.getTag(author))
+                    .withDesc(message.getFormattedContent())
+                    .withTimestamp(System.currentTimeMillis())
+                    .withFooterText("Auto-deleted from #" + message.getChannel().getName());
+
+            Util.sendEmbed(message.getGuild().getChannelByID(Long.parseLong("266651712826114048")), bld.withColor(161, 61, 61).build());
+            Util.sendPrivateMessage(author, "Your message has been automatically removed for a banned word or something");
+
+            message.delete();
+            message.getChannel().setTypingStatus(false);
+        }
     }
 
 }
