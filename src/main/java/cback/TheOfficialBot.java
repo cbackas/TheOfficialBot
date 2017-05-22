@@ -115,8 +115,8 @@ public class TheOfficialBot {
                 List<Long> roleIDs = message.getAuthor().getRolesForGuild(guild).stream().map(role -> role.getLongID()).collect(Collectors.toList());
                 command.get().execute(this, client, argsArr, guild, roleIDs, message, isPrivate);
             }
-        } else {
-            CensorMessages(message);
+        } else if (!message.getChannel().isPrivate()){
+            censorMessages(message);
         }
     }
 
@@ -173,17 +173,17 @@ public class TheOfficialBot {
     }
 
     //checks for dirty words
-    public void CensorMessages(IMessage message) {
+    public void censorMessages(IMessage message) {
         List<String> bannedWords = TheOfficialBot.getInstance().getConfigManager().getConfigArray("bannedWords");
         String content = message.getFormattedContent().toLowerCase();
         Boolean tripped = false;
         for (String word : bannedWords) {
-            if (content.contains(word)) {
+            if (content.matches(".*\\b" + word + "\\b.*")) {
                 tripped = true;
                 break;
             }
         }
-        if (tripped == true) {
+        if (tripped) {
             message.getChannel().setTypingStatus(true);
             IUser author = message.getAuthor();
 
