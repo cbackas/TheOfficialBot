@@ -8,6 +8,8 @@ import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.handle.obj.IUser;
+import sx.blah.discord.util.MessageComparator;
+import sx.blah.discord.util.MessageHistory;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -23,7 +25,7 @@ public class CommandPurge implements Command {
 
     @Override
     public List<String> getAliases() {
-        return Arrays.asList("prune","clear");
+        return Arrays.asList("prune", "clear");
     }
 
     @Override
@@ -76,9 +78,13 @@ public class CommandPurge implements Command {
                     Util.deleteMessage(message);
                 }
 
+                //sort messages by date
+                MessageHistory messageHistory = message.getChannel().getMessageHistory();
+                messageHistory.sort(MessageComparator.REVERSED);
+
                 if (userToDelete != null) { //this is a prune
 
-                    List<IMessage> toDelete = message.getChannel().getMessageHistory().stream()
+                    List<IMessage> toDelete = messageHistory.stream()
                             .filter(msg -> msg.getAuthor().equals(userToDelete) && !msg.equals(message))
                             .limit(maxDeletions)
                             .collect(Collectors.toList());
@@ -88,7 +94,7 @@ public class CommandPurge implements Command {
 
                 } else { //this is a purge
 
-                    List<IMessage> toDelete = message.getChannel().getMessageHistory().stream()
+                    List<IMessage> toDelete = messageHistory.stream()
                             .filter(msg -> !msg.equals(message))
                             .limit(maxDeletions)
                             .collect(Collectors.toList());
