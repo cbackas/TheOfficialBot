@@ -39,7 +39,6 @@ public class TheOfficialBot {
     public static final String ANNOUNCEMENT_CHANNEL_ID = "277852663348068352";
     public static final String GENERAL_CHANNEL_ID = "266649217538195457";
     public static final String LOG_CHANNEL_ID = "281021113440534528";
-    public static final String BOTLOG_WEBHOOK_URL = "https://ptb.discordapp.com/api/webhooks/282197017575555072/B7aK2Ht3Dau_SW4FSh-JYBT-76A0PReYnAVPgn1A2jNBVGrhgxyqzVWqorOOVqv3Z2O7/slack";
 
     private long startTime;
 
