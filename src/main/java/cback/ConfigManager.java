@@ -25,6 +25,7 @@ public class ConfigManager {
         defaultConfig.put("left", "0");
         defaultConfig.put("muted", new ArrayList<String>());
         defaultConfig.put("bannedWords", new ArrayList<String>());
+        defaultConfig.put("botlog_webhook", "URL");
     }
 
     public ConfigManager(TheOfficialBot bot) {
