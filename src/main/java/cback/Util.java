@@ -171,7 +171,7 @@ public class Util {
                 embed.withTimestamp(System.currentTimeMillis());
 
                 IDiscordClient client = TheOfficialBot.getInstance().getClient();
-                return new MessageBuilder(client).withEmbed(embed.withColor(023563).build())
+                return new MessageBuilder(client).withEmbed(embed.withColor(Color.GRAY).build())
                         .withChannel(client.getChannelByID(Long.parseLong(TheOfficialBot.LOG_CHANNEL_ID))).send();
             } catch (Exception e) {
             }
