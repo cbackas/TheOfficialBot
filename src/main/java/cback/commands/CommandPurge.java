@@ -28,7 +28,7 @@ public class CommandPurge implements Command {
 
     @Override
     public String getSyntax() {
-        return "?clear [user?] #";
+        return "?clear # [user?]";
     }
 
     @Override
