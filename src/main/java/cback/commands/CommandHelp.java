@@ -44,7 +44,7 @@ public class CommandHelp implements Command {
         EmbedBuilder embed = Util.getEmbed();
         embed.withTitle("Commands:");
 
-        List<String> roles = message.getAuthor().getRolesForGuild(guild).stream().map(role -> role.getStringID()).collect(Collectors.toList());
+        List<Long> roles = message.getAuthor().getRolesForGuild(guild).stream().map(role -> role.getLongID()).collect(Collectors.toList());
         for (Command c : TheOfficialBot.registeredCommands) {
 
             if (c.getDescription() != null) {
