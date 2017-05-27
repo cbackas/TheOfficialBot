@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
@@ -257,6 +258,14 @@ public class Util {
         });
 
         return userNameResult.get();
+    }
+
+    public static IUser getUserFromMentionArg(String arg) {
+        Matcher matcher = USER_MENTION_PATTERN.matcher(arg);
+        if (matcher.matches()) {
+            return TheOfficialBot.getInstance().getClient().getUserByID(Long.parseLong(matcher.group(1)));
+        }
+        return null;
     }
 
     public static List<IUser> getUsersByRole(String roleID) {
