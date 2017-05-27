@@ -112,7 +112,7 @@ public class Util {
         try {
             String text = "@" + message.getAuthor().getDisplayName(message.getGuild()) + " issued ``" + message.getFormattedContent() + "`` in " + message.getGuild().getName() + "/" + message.getChannel().mention();
 
-            Util.sendWebhook(TheOfficialBot.BOTLOG_WEBHOOK_URL, client.getApplicationIconURL(), client.getApplicationName(), text);
+            Util.sendWebhook(TheOfficialBot.getInstance().getConfigManager().getConfigValue("botlog_webhook"), client.getApplicationIconURL(), client.getApplicationName(), text);
         } catch (Exception e) {
             e.printStackTrace();
         }
