@@ -192,7 +192,6 @@ public class Util {
                 embed.withFooterText("Action by @" + getTag(user));
 
                 embed.withDescription(text);
-                embed.appendField("\u200B", "\u200B", false);
 
                 embed.withTimestamp(System.currentTimeMillis());
 
