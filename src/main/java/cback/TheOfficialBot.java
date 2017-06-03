@@ -36,7 +36,7 @@ public class TheOfficialBot {
     public static List<Command> registeredCommands = new ArrayList<>();
 
     private static final Pattern COMMAND_PATTERN = Pattern.compile("^\\?([^\\s]+) ?(.*)", Pattern.CASE_INSENSITIVE);
-    public static final String ANNOUNCEMENT_CHANNEL_ID = "277852663348068352";
+    public static final String ANNOUNCEMENT_CHANNEL_ID = "318098998047277057";
     public static final String GENERAL_CHANNEL_ID = "266649217538195457";
     public static final String LOG_CHANNEL_ID = "281021113440534528";
 
