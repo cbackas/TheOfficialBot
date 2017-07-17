@@ -1,5 +1,6 @@
 package cback.events;
 
+import cback.OfficialRoles;
 import cback.TheOfficialBot;
 import cback.Util;
 import sx.blah.discord.api.events.EventSubscriber;
@@ -35,8 +36,13 @@ public class MemberChange {
         }
 
         //Join Counter
-        int joined = Integer.parseInt(bot.getConfigManager().getConfigValue("joined"));
-        bot.getConfigManager().setConfigValue("joined", String.valueOf(joined + 1));
+        int totalUsers = Integer.parseInt(bot.getConfigManager().getConfigValue("joined")) + 1;
+        bot.getConfigManager().setConfigValue("joined", String.valueOf(totalUsers));
+
+        //Notifier
+        if (totalUsers % 1000 == 0) {
+            Util.sendMessage(guild.getChannelsByName("admin").get(0), guild.getRoleByID(OfficialRoles.ADMIN.id).mention() + " we have hit " + totalUsers + " users hype");
+        }
 
         //Member-log
         EmbedBuilder bld = new EmbedBuilder()
