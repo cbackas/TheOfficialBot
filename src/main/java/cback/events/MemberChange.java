@@ -36,12 +36,14 @@ public class MemberChange {
         }
 
         //Join Counter
-        int totalUsers = Integer.parseInt(bot.getConfigManager().getConfigValue("joined")) + 1;
-        bot.getConfigManager().setConfigValue("joined", String.valueOf(totalUsers));
+        int totalUsers = Integer.parseInt(bot.getConfigManager().getConfigValue("joined"));
+        bot.getConfigManager().setConfigValue("joined", String.valueOf(totalUsers + 1));
 
         //Notifier
-        if (totalUsers % 1000 == 0) {
-            Util.sendMessage(guild.getChannelsByName("admin").get(0), guild.getRoleByID(OfficialRoles.ADMIN.id).mention() + " we have hit " + totalUsers + " users hype");
+        int rmdr = totalUsers % 1000;
+        if (rmdr == 0) {
+            Util.sendMessage(guild.getChannelByID(285470408709373954l), "testlmao" + " we have hit " + totalUsers + " users hype");
+            //guild.getRoleByID(OfficialRoles.ADMIN.id).mention()
         }
 
         //Member-log
@@ -103,7 +105,7 @@ public class MemberChange {
 
         //Member-log
         EmbedBuilder bld = new EmbedBuilder()
-                .withDesc(Util.getTag(user) + " was **banned** the server. " + user.mention())
+                .withDesc(Util.getTag(user) + " was **banned** from the server. " + user.mention())
                 .withTimestamp(System.currentTimeMillis())
                 .withColor(Color.RED);
 
