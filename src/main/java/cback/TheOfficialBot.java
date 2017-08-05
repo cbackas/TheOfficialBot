@@ -178,7 +178,7 @@ public class TheOfficialBot {
             String content = message.getFormattedContent().toLowerCase();
             Boolean tripped = false;
             for (String word : bannedWords) {
-                if (content.matches(".*\\b" + word + "\\b.*")) {
+                if (content.matches(".*\\b" + word + "\\b.*") || content.matches(".*\\b" + word + "s\\b.*")) {
                     tripped = true;
                     break;
                 }
