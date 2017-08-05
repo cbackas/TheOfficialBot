@@ -4,8 +4,8 @@ import cback.OfficialRoles;
 import cback.TheOfficialBot;
 import cback.Util;
 import sx.blah.discord.api.IDiscordClient;
-import sx.blah.discord.api.internal.DiscordUtils;
 import sx.blah.discord.handle.obj.*;
+import sx.blah.discord.util.PermissionUtils;
 
 import java.awt.*;
 import java.util.Arrays;
@@ -47,7 +47,7 @@ public class CommandKick implements Command {
             String text = message.getContent();
             IUser mod = message.getAuthor();
             try {
-                DiscordUtils.checkPermissions(message.getChannel().getModifiedPermissions(mod), EnumSet.of(Permissions.KICK));
+                PermissionUtils.hasPermissions(message.getChannel(), message.getAuthor(), EnumSet.of(Permissions.KICK));
                 Pattern pattern = Pattern.compile("^\\?kick <@!?(\\d+)> ?(.+)?");
                 Matcher matcher = pattern.matcher(text);
                 if (matcher.find()) {
