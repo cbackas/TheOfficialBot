@@ -69,7 +69,7 @@ public class CommandInfo implements Command {
 
         embed.appendField("\u200B", "\u200B", false);
 
-        embed.appendField("Donate to bot hosting fees: ", "[`cash.me`](https://cash.me/$cbackas)", true);
+        embed.appendField("Donate to bot hosting fees: ", "[`paypal.me`](paypal.me/cbackas)", true);
         embed.appendField("Source: ", "[`GitHub`](https://github.com/cbackas/TheOfficialBot)", true);
 
         Util.sendEmbed(message.getChannel(), embed.withColor(161, 61, 61).build());
