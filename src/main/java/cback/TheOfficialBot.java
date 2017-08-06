@@ -116,6 +116,15 @@ public class TheOfficialBot {
             }
         } else if (!message.getChannel().isPrivate()){
             censorMessages(message);
+
+            if (message.getMentions().contains(guild.getUserByID(137294678721691648l)) || message.getFormattedContent().toLowerCase().contains("kaya")) {
+                if(message.getAuthor().equals(110211413531705344l)) {
+                    message.addReaction(guild.getEmojiByName("flag_white"));
+                }
+                if (message.getAuthor().equals(275425737220292608l)) {
+                    message.addReaction(guild.getEmojiByName("doughnut"));
+                }
+            }
         }
     }
 
