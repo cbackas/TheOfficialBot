@@ -36,14 +36,13 @@ public class MemberChange {
         }
 
         //Join Counter
-        int totalUsers = Integer.parseInt(bot.getConfigManager().getConfigValue("joined"));
-        bot.getConfigManager().setConfigValue("joined", String.valueOf(totalUsers + 1));
+        int joinedUsers = Integer.parseInt(bot.getConfigManager().getConfigValue("joined"));
+        bot.getConfigManager().setConfigValue("joined", String.valueOf(joinedUsers + 1));
 
         //Notifier
-        int rmdr = totalUsers % 1000;
-        if (rmdr == 0) {
-            Util.sendMessage(guild.getChannelByID(285470408709373954l), "testlmao" + " we have hit " + totalUsers + " users hype");
-            //guild.getRoleByID(OfficialRoles.ADMIN.id).mention()
+        int totalUsers = guild.getUsers().size();
+        if (totalUsers % 1000 == 0) {
+            Util.sendMessage(guild.getChannelByID(285470408709373954l), guild.getRoleByID(OfficialRoles.ADMIN.id).mention() + " we have hit " + totalUsers + " users hype");
         }
 
         //Member-log
