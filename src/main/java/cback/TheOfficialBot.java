@@ -3,6 +3,7 @@ package cback;
 import cback.commands.Command;
 import cback.events.ChannelChange;
 import cback.events.MemberChange;
+import com.vdurmont.emoji.EmojiManager;
 import org.reflections.Reflections;
 import sx.blah.discord.api.ClientBuilder;
 import sx.blah.discord.api.IDiscordClient;
@@ -117,12 +118,12 @@ public class TheOfficialBot {
         } else if (!message.getChannel().isPrivate()){
             censorMessages(message);
 
-            if (message.getMentions().contains(guild.getUserByID(137294678721691648l)) || message.getFormattedContent().toLowerCase().contains("kaya")) {
-                if(message.getAuthor().equals(110211413531705344l)) {
-                    message.addReaction(guild.getEmojiByName("flag_white"));
+            if (message.getMentions().contains(guild.getUserByID(137294678721691648l)) || message.getContent().toLowerCase().contains("kaya")) {
+                if(message.getAuthor().getStringID().equals("110211413531705344")) {
+                    message.addReaction(EmojiManager.getByUnicode("\uD83C\uDFF3"));//white flag
                 }
-                if (message.getAuthor().equals(275425737220292608l)) {
-                    message.addReaction(guild.getEmojiByName("doughnut"));
+                if(message.getAuthor().getStringID().equals("275425737220292608")) {
+                    message.addReaction(EmojiManager.getByUnicode("\uD83C\uDF69"));//doughnut
                 }
             }
         }
