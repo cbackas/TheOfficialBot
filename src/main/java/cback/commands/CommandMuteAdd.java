@@ -114,7 +114,7 @@ public class CommandMuteAdd implements Command {
                         }
                     }
                 } else {
-                    Util.sendMessage(message.getChannel(), "Invalid arguments. Usage: ``!mute @user``");
+                    Util.sendMessage(message.getChannel(), "Invalid arguments. Usage: ``?mute @user``");
                 }
         }
     }

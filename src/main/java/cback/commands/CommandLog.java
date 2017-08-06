@@ -49,7 +49,7 @@ public class CommandLog implements Command {
                     Util.sendMessage(message.getChannel(), "Log added. " + guild.getChannelByID(Long.parseLong(TheOfficialBot.LOG_CHANNEL_ID)).mention());
                     Util.deleteMessage(message);
             } else {
-                Util.sendMessage(message.getChannel(), "Usage: !addlog <text>");
+                Util.sendMessage(message.getChannel(), "Usage: ?addlog <text>");
             }
         }
     }

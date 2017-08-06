@@ -77,7 +77,7 @@ public class CommandMuteRemove implements Command {
                         }
                     }
                 } else {
-                    Util.sendMessage(message.getChannel(), "Invalid arguments. Usage: ``!unmute @user``");
+                    Util.sendMessage(message.getChannel(), "Invalid arguments. Usage: ``?unmute @user``");
                 }
         }
     }

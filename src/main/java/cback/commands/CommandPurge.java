@@ -106,7 +106,7 @@ public class CommandPurge implements Command {
 
             } else {
                 Util.deleteMessage(message);
-                Util.sendMessage(message.getChannel(), "Invalid arguments. Usage: ``!prune <#> @user``");
+                Util.sendMessage(message.getChannel(), "Invalid arguments. Usage: ``?prune <#> @user``");
                 return;
             }
 

@@ -72,7 +72,7 @@ public class CommandKick implements Command {
                         Util.sendPrivateMessage(mod, "**Error Kicking**: Reason required");
                     }
                 } else {
-                    Util.sendMessage(message.getChannel(), "Invalid arguments. Usage: ``!kick @user reason``");
+                    Util.sendMessage(message.getChannel(), "Invalid arguments. Usage: ``?kick @user reason``");
                 }
             } catch (Exception e) {
             }

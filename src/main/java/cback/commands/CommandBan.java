@@ -72,7 +72,7 @@ public class CommandBan implements Command {
                         Util.sendPrivateMessage(mod, "**Error Banning**: Reason required");
                     }
                 } else {
-                    Util.sendMessage(message.getChannel(), "Invalid arguments. Usage: ``!ban @user reason``");
+                    Util.sendMessage(message.getChannel(), "Invalid arguments. Usage: ``?ban @user reason``");
                 }
             } catch (Exception e) {
             }
