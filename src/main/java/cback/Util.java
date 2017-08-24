@@ -227,17 +227,8 @@ public class Util {
     }
     //END EMBED BUILDER STUFF
 
-    public static int toInt(long value) {
-        try {
-            return Math.toIntExact(value);
-        } catch (ArithmeticException e) {
-            e.printStackTrace();
-        }
-        return 0;
-    }
-
     public static int getCurrentTime() {
-        return toInt(System.currentTimeMillis() / 1000);
+        return Math.toIntExact(System.currentTimeMillis() / 1000);
     }
 
     public static String requestUsernameByID(String id) {
