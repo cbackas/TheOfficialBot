@@ -118,6 +118,9 @@ public class TheOfficialBot {
         } else if (!message.getChannel().isPrivate()){
             censorMessages(message);
 
+            /**
+             * Kaya's reaction request
+             */
             if (message.getMentions().contains(guild.getUserByID(137294678721691648l)) || message.getContent().toLowerCase().contains("kaya")) {
                 if(message.getAuthor().getStringID().equals("110211413531705344")) {
                     message.addReaction(EmojiManager.getByUnicode("\uD83C\uDFF3"));//white flag
@@ -125,6 +128,13 @@ public class TheOfficialBot {
                 if(message.getAuthor().getStringID().equals("275425737220292608")) {
                     message.addReaction(EmojiManager.getByUnicode("\uD83C\uDF69"));//doughnut
                 }
+            }
+
+            /**
+             * Jackson's reaction request
+             */
+            if (message.getAuthor().equals(guild.getUserByID(213351598854766592l))) {
+                message.addReaction(guild.getEmojiByName("andrew"));
             }
         }
     }
