@@ -129,13 +129,6 @@ public class TheOfficialBot {
                     message.addReaction(EmojiManager.getByUnicode("\uD83C\uDF69"));//doughnut
                 }
             }
-
-            /**
-             * Jackson's reaction request
-             */
-            if (message.getAuthor().equals(guild.getUserByID(213351598854766592l))) {
-                message.addReaction(guild.getEmojiByName("andrew"));
-            }
         }
     }
 
