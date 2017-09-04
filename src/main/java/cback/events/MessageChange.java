@@ -5,7 +5,6 @@ import cback.TheOfficialBot;
 import cback.Util;
 import sx.blah.discord.api.events.EventSubscriber;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageDeleteEvent;
-import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageUpdateEvent;
 import sx.blah.discord.handle.impl.events.guild.member.NicknameChangedEvent;
 import sx.blah.discord.handle.obj.IChannel;
@@ -20,12 +19,11 @@ public class MessageChange {
         this.bot = bot;
     }
 
-    private ConfigManager cm = TheOfficialBot.getConfigManager();
-    private IChannel MESSAGE_LOGS = TheOfficialBot.getClient().getChannelByID(Long.parseLong(cm.getConfigValue("MESSAGELOGS_ID")));
-
     @EventSubscriber
     public void messageDeleted(MessageDeleteEvent event) {
         if (event.getGuild().getStringID().equals(TheOfficialBot.getHomeGuild().getStringID())) {
+            ConfigManager cm = bot.getConfigManager();
+            IChannel MESSAGE_LOGS = event.getClient().getChannelByID(Long.parseLong(cm.getConfigValue("MESSAGELOGS_ID")));
             IMessage message = event.getMessage();
             IUser author = event.getAuthor();
             IChannel channel = event.getChannel();
@@ -38,7 +36,6 @@ public class MessageChange {
             }
 
             if (tripped) {
-                System.out.println("I saw that");
                 EmbedBuilder bld = new EmbedBuilder().withColor(java.awt.Color.decode("#ED4337"));
                 bld
                         .withAuthorName(author.getName() + "#" + author.getDiscriminator())
@@ -55,6 +52,8 @@ public class MessageChange {
     @EventSubscriber
     public void messageEdited(MessageUpdateEvent event) {
         if (event.getGuild().getStringID().equals(TheOfficialBot.getHomeGuild().getStringID())) {
+            ConfigManager cm = bot.getConfigManager();
+            IChannel MESSAGE_LOGS = event.getClient().getChannelByID(Long.parseLong(cm.getConfigValue("MESSAGELOGS_ID")));
             IMessage message = event.getMessage();
             IMessage oldMessage = event.getOldMessage();
             IMessage newMessage = event.getNewMessage();
@@ -78,6 +77,8 @@ public class MessageChange {
     @EventSubscriber
     public void nicknameChange(NicknameChangedEvent event) {
         if (event.getGuild().getStringID().equals(TheOfficialBot.getHomeGuild().getStringID())) {
+            ConfigManager cm = bot.getConfigManager();
+            IChannel MESSAGE_LOGS = event.getClient().getChannelByID(Long.parseLong(cm.getConfigValue("MESSAGELOGS_ID")));
             IUser user = event.getUser();
 
             String oldName = event.getUser().getName();

@@ -42,6 +42,7 @@ public class Util {
                 return new MessageBuilder(TheOfficialBot.getInstance().getClient()).withEmbed(embedObject)
                         .withChannel(channel).send();
             } catch (Exception e) {
+                reportHome(e);
             }
             return null;
         });
