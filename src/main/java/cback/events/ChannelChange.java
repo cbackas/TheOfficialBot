@@ -21,40 +21,40 @@ public class ChannelChange {
 
     @EventSubscriber //Set all
     public void setMuteRoleMASS(MessageReceivedEvent event) {
-            IMessage message = event.getMessage();
-            String text = message.getContent();
-            IDiscordClient client = event.getClient();
-            if (text.equalsIgnoreCase("?setmuteperm") && message.getAuthor().getStringID().equals("73416411443113984")) {
-                IGuild guild = client.getGuildByID(Long.parseLong("266649217538195457"));
-                List<IChannel> channelList = guild.getChannels();
-                IRole muted = guild.getRoleByID(Long.parseLong("281022564002824192"));
-                for (IChannel channels : channelList) {
-                    RequestBuffer.request(() -> {
-                        try {
-                            channels.overrideRolePermissions(muted, EnumSet.noneOf(Permissions.class), EnumSet.of(Permissions.SEND_MESSAGES));
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    });
-                }
-                System.out.println("Set muted role");
-                Util.deleteMessage(message);
+        IMessage message = event.getMessage();
+        String text = message.getContent();
+        IDiscordClient client = event.getClient();
+        if (text.equalsIgnoreCase("?setmuteperm") && message.getAuthor().getStringID().equals("73416411443113984")) {
+            IGuild guild = client.getGuildByID(Long.parseLong("266649217538195457"));
+            List<IChannel> channelList = guild.getChannels();
+            IRole muted = guild.getRoleByID(Long.parseLong("281022564002824192"));
+            for (IChannel channels : channelList) {
+                RequestBuffer.request(() -> {
+                    try {
+                        channels.overrideRolePermissions(muted, EnumSet.noneOf(Permissions.class), EnumSet.of(Permissions.SEND_MESSAGES));
+                    } catch (Exception e) {
+                        Util.reportHome(e);
+                    }
+                });
             }
+            System.out.println("Set muted role");
+            Util.deleteMessage(message);
+        }
     }
 
     @EventSubscriber //New Channel
     public void newChannel(ChannelCreateEvent event) {
-        //Set muted role
-        IGuild guild = event.getClient().getGuildByID(Long.parseLong("266649217538195457"));
-        IRole muted = guild.getRoleByID(Long.parseLong("281022564002824192"));
-        try {
-            event.getChannel().overrideRolePermissions(muted, EnumSet.noneOf(Permissions.class), EnumSet.of(Permissions.SEND_MESSAGES));
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (event.getGuild().getStringID().equals(TheOfficialBot.getHomeGuild().getStringID())) {
+            //Set muted role
+            IGuild guild = TheOfficialBot.getHomeGuild();
+            IRole muted = guild.getRoleByID(Long.parseLong("281022564002824192"));
+            try {
+                event.getChannel().overrideRolePermissions(muted, EnumSet.noneOf(Permissions.class), EnumSet.of(Permissions.SEND_MESSAGES));
+            } catch (Exception e) {
+                Util.reportHome(e);
+            }
         }
-
     }
-
 }
 
 

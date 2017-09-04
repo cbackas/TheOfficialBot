@@ -3,6 +3,7 @@ package cback;
 import cback.commands.Command;
 import cback.events.ChannelChange;
 import cback.events.MemberChange;
+import cback.events.MessageChange;
 import com.vdurmont.emoji.EmojiManager;
 import org.reflections.Reflections;
 import sx.blah.discord.api.ClientBuilder;
@@ -17,26 +18,35 @@ import sx.blah.discord.modules.Configuration;
 import sx.blah.discord.util.DiscordException;
 import sx.blah.discord.util.EmbedBuilder;
 
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static cback.Util.getAvatar;
+
 @SuppressWarnings("FieldCanBeLocal")
 public class TheOfficialBot {
 
     private static TheOfficialBot instance;
-    private IDiscordClient client;
+    private static IDiscordClient client;
 
-    private ConfigManager configManager;
+    private static ConfigManager configManager;
     private Scheduler scheduler;
 
     private List<String> botAdmins = new ArrayList<>();
     public static List<Command> registeredCommands = new ArrayList<>();
 
+    private static IGuild homeGuild;
+
+    static private String prefix = "?";
     private static final Pattern COMMAND_PATTERN = Pattern.compile("^\\?([^\\s]+) ?(.*)", Pattern.CASE_INSENSITIVE);
+    public List<String> prefixes = new ArrayList<>();
+
     public static final String ANNOUNCEMENT_CHANNEL_ID = "318098998047277057";
     public static final String GENERAL_CHANNEL_ID = "266649217538195457";
     public static final String LOG_CHANNEL_ID = "281021113440534528";
@@ -50,18 +60,24 @@ public class TheOfficialBot {
     public TheOfficialBot() {
 
         instance = this;
+        registerAllCommands();
 
         //instantiate config manager first as connect() relies on tokens
         configManager = new ConfigManager(this);
+        prefixes.add(TheOfficialBot.getPrefix());
+        prefixes.add("t!");
+        prefixes.add("!");
+        prefixes.add("!g");
+        prefixes.add("--");
+        prefixes.add(".");
 
         connect();
         client.getDispatcher().registerListener(this);
         client.getDispatcher().registerListener(new ChannelChange(this));
         client.getDispatcher().registerListener(new MemberChange(this));
+        client.getDispatcher().registerListener(new MessageChange(this));
 
         scheduler = new Scheduler(this);
-
-        registerAllCommands();
 
         botAdmins.add("73416411443113984");
         botAdmins.add("224625782188670986");
@@ -92,6 +108,9 @@ public class TheOfficialBot {
         }
     }
 
+    /*
+     * Message Central Choo Choo
+     */
     @EventSubscriber
     public void onMessageEvent(MessageReceivedEvent event) {
         if (event.getMessage().getAuthor().isBot()) return; //ignore bot messages
@@ -112,10 +131,37 @@ public class TheOfficialBot {
 
                 String args = matcher.group(2);
                 String[] argsArr = args.isEmpty() ? new String[0] : args.split(" ");
+
                 List<Long> roleIDs = message.getAuthor().getRolesForGuild(guild).stream().map(role -> role.getLongID()).collect(Collectors.toList());
-                command.get().execute(this, client, argsArr, guild, roleIDs, message, isPrivate);
+
+                IUser author = message.getAuthor();
+                String content = message.getContent();
+
+                Command cCommand = command.get();
+
+                /*
+                 * If user has permission to run the command: Command executes and botlogs
+                 */
+                if (cCommand.getPermissions() == null || !Collections.disjoint(roleIDs, cCommand.getPermissions())) {
+                    cCommand.execute(message, content, argsArr, author, guild, roleIDs, isPrivate, client, this);
+                    Util.botLog(message);
+                } else {
+                    Util.simpleEmbed(message.getChannel(), "You don't have permission to perform this command.");
+                }
             }
-        } else if (!message.getChannel().isPrivate()){
+            /**
+             * Forwards the random stuff people PM to the bot - to me
+             */
+        } else if (message.getChannel().isPrivate()) {
+            EmbedBuilder bld = new EmbedBuilder()
+                    .withColor(getBotColor())
+                    .withTimestamp(System.currentTimeMillis())
+                    .withAuthorName(message.getAuthor().getName() + '#' + message.getAuthor().getDiscriminator())
+                    .withAuthorIcon(getAvatar(message.getAuthor()))
+                    .withDesc(message.getContent());
+
+            Util.sendEmbed(client.getChannelByID(346104720903110656l), bld.build());
+        } else {
             censorMessages(message);
 
             /**
@@ -139,17 +185,26 @@ public class TheOfficialBot {
         startTime = System.currentTimeMillis();
     }
 
-    public ConfigManager getConfigManager() {
+    public static ConfigManager getConfigManager() {
         return configManager;
     }
 
-    public IDiscordClient getClient() {
+    public static IDiscordClient getClient() {
         return client;
     }
 
     public List<String> getBotAdmins() {
         return botAdmins;
     }
+
+    public static IGuild getHomeGuild() {
+        homeGuild = getClient().getGuildByID(Long.parseLong(configManager.getConfigValue("HOMESERVER_ID")));
+        return homeGuild;
+    }
+
+    public static String getPrefix() { return prefix; }
+
+    public static Color getBotColor() { return Color.decode("#" + configManager.getConfigValue("bot_color")); }
 
     private void registerAllCommands() {
         new Reflections("cback.commands").getSubTypesOf(Command.class).forEach(commandImpl -> {

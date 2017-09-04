@@ -45,9 +45,7 @@ public class CommandUserInfo implements Command {
     }
 
     @Override
-    public void execute(TheOfficialBot bot, IDiscordClient client, String[] args, IGuild guild, List<Long> roleIDs, IMessage message, boolean isPrivate) {
-        if (!Collections.disjoint(roleIDs, getPermissions())) {
-
+    public void execute(IMessage message, String content, String[] args, IUser author, IGuild guild, List<Long> roleIDs, boolean isPrivate, IDiscordClient client, TheOfficialBot bot) {
             String text = message.getContent();
             Pattern pattern = Pattern.compile("^\\?user <@!?(\\d+)>");
             Matcher matcher = pattern.matcher(text);
@@ -74,6 +72,5 @@ public class CommandUserInfo implements Command {
 
                 Util.sendEmbed(message.getChannel(), embed.build());
             }
-        }
     }
 }

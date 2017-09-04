@@ -4,6 +4,7 @@ import cback.TheOfficialBot;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IMessage;
+import sx.blah.discord.handle.obj.IUser;
 
 import java.util.List;
 
@@ -18,6 +19,6 @@ public interface Command {
 
     List<Long> getPermissions();
 
-    void execute(TheOfficialBot bot, IDiscordClient client, String[] args, IGuild guild, List<Long> roleIDs, IMessage message, boolean isPrivate);
+    void execute(IMessage message, String content, String[] args,IUser author, IGuild guild, List<Long> roleIDs, boolean isPrivate, IDiscordClient client, TheOfficialBot bot);
 }
 

@@ -5,6 +5,7 @@ import cback.Util;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IMessage;
+import sx.blah.discord.handle.obj.IUser;
 import sx.blah.discord.util.EmbedBuilder;
 
 import java.util.Arrays;
@@ -39,8 +40,7 @@ public class CommandHelp implements Command {
     }
 
     @Override
-    public void execute(TheOfficialBot bot, IDiscordClient client, String[] args, IGuild guild, List<Long> roleIDs, IMessage message, boolean isPrivate) {
-
+    public void execute(IMessage message, String content, String[] args, IUser author, IGuild guild, List<Long> roleIDs, boolean isPrivate, IDiscordClient client, TheOfficialBot bot) {
         EmbedBuilder embed = Util.getEmbed();
         embed.withTitle("Commands:");
 
@@ -67,9 +67,9 @@ public class CommandHelp implements Command {
         embed.withFooterText("Staff commands excluded for regular users");
 
         try {
-            Util.sendEmbed(message.getAuthor().getOrCreatePMChannel(), embed.withColor(161, 61, 61).build());
+            Util.sendEmbed(message.getAuthor().getOrCreatePMChannel(), embed.withColor(TheOfficialBot.getBotColor()).build());
         } catch (Exception e) {
-            e.printStackTrace();
+            Util.reportHome(message, e);
         }
 
         Util.deleteMessage(message);

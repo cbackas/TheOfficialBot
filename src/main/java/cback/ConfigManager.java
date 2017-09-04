@@ -7,6 +7,7 @@ import org.json.simple.parser.JSONParser;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.net.URISyntaxException;
 import java.util.*;
 
 public class ConfigManager {
@@ -25,7 +26,12 @@ public class ConfigManager {
         defaultConfig.put("left", "0");
         defaultConfig.put("muted", new ArrayList<String>());
         defaultConfig.put("bannedWords", new ArrayList<String>());
-        defaultConfig.put("botlog_webhook", "URL");
+        defaultConfig.put("bot_color", "a13d3d");
+        defaultConfig.put("HOMESERVER_ID", "266649217538195457");
+        defaultConfig.put("COMMANDLOG_ID", "ID"); // Hub channel
+        defaultConfig.put("ERORRLOG_ID", "ID"); // Hub channel
+        defaultConfig.put("SERVERLOG_ID", "ID"); // Home channel
+        defaultConfig.put("MESSAGELOGS_ID", "ID"); // Home channel
     }
 
     public ConfigManager(TheOfficialBot bot) {
@@ -35,7 +41,7 @@ public class ConfigManager {
 
     private void initConfig() {
         try {
-            configFile = new File(Util.botPath, "officialconfig.json");
+            configFile = new File(botPath, "officialconfig.json");
             if (configFile.exists()) {
                 JSONParser parser = new JSONParser();
                 FileReader reader = new FileReader(configFile);
@@ -115,6 +121,20 @@ public class ConfigManager {
             return Optional.of(token);
         } else {
             return Optional.empty();
+        }
+    }
+
+    /**
+     * Botpath stuff
+     */
+    public static File botPath;
+
+    static {
+        try {
+            botPath = new File(TheOfficialBot.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getParentFile();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            Util.reportHome(e);
         }
     }
 }

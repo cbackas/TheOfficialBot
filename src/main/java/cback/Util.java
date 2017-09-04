@@ -1,5 +1,6 @@
 package cback;
 
+import cback.commands.Command;
 import in.ashwanthkumar.slack.webhook.Slack;
 import in.ashwanthkumar.slack.webhook.SlackMessage;
 import org.apache.http.message.BasicNameValuePair;
@@ -13,9 +14,7 @@ import sx.blah.discord.handle.obj.*;
 import sx.blah.discord.util.*;
 
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -23,24 +22,17 @@ import java.util.regex.Pattern;
 
 
 public class Util {
-
-    public static File botPath;
-
     private static final Pattern USER_MENTION_PATTERN = Pattern.compile("^<@!?(\\d+)>$");
 
-    static {
-        try {
-            botPath = new File(TheOfficialBot.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getParentFile();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-    }
+    static IDiscordClient client = TheOfficialBot.getClient();
+    static ConfigManager cm = TheOfficialBot.getConfigManager();
+    static Color BOT_COLOR = TheOfficialBot.getBotColor();
 
     public static void sendMessage(IChannel channel, String message) {
         try {
             channel.sendMessage(message);
         } catch (Exception e) {
-            e.printStackTrace();
+            reportHome(e);
         }
     }
 
@@ -61,7 +53,7 @@ public class Util {
             try {
                 return channel.sendMessage(message);
             } catch (MissingPermissionsException | DiscordException e) {
-                e.printStackTrace();
+                reportHome(e);
             }
             return null;
         });
@@ -72,7 +64,7 @@ public class Util {
         try {
             message.delete();
         } catch (Exception e) {
-            e.printStackTrace();
+            reportHome(e);
         }
     }
 
@@ -81,7 +73,7 @@ public class Util {
             try {
                 message.delete();
             } catch (MissingPermissionsException | DiscordException e) {
-                e.printStackTrace();
+                reportHome(e);
             }
         });
     }
@@ -93,13 +85,13 @@ public class Util {
                     try {
                         toDelete.get(0).delete();
                     } catch (MissingPermissionsException | DiscordException e) {
-                        e.printStackTrace();
+                        reportHome(e);
                     }
                 } else {
                     try {
                         channel.bulkDelete(toDelete);
                     } catch (DiscordException | MissingPermissionsException e) {
-                        e.printStackTrace();
+                        reportHome(e);
                     }
 
                 }
@@ -107,31 +99,12 @@ public class Util {
         });
     }
 
-    public static void botLog(IMessage message) {
-        IDiscordClient client = TheOfficialBot.getInstance().getClient();
-        try {
-            String text = "@" + message.getAuthor().getDisplayName(message.getGuild()) + " issued ``" + message.getFormattedContent() + "`` in " + message.getGuild().getName() + "/" + message.getChannel().mention();
-
-            Util.sendWebhook(TheOfficialBot.getInstance().getConfigManager().getConfigValue("botlog_webhook"), client.getApplicationIconURL(), client.getApplicationName(), text);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public static void sendAnnouncement(String message) {
         try {
             Util.sendMessage(TheOfficialBot.getInstance().getClient().getChannelByID(Long.parseLong(TheOfficialBot.GENERAL_CHANNEL_ID)), message);
             Util.sendMessage(TheOfficialBot.getInstance().getClient().getChannelByID(Long.parseLong(TheOfficialBot.ANNOUNCEMENT_CHANNEL_ID)), message);
         } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void errorLog(IMessage message, String text) {
-        try {
-            Util.sendPrivateMessage(TheOfficialBot.getInstance().getClient().getUserByID(Long.parseLong("73416411443113984")), text + " in  " + message.getChannel().mention());
-        } catch (Exception e) {
-            e.printStackTrace();
+            reportHome(e);
         }
     }
 
@@ -139,18 +112,7 @@ public class Util {
         try {
             user.getClient().getOrCreatePMChannel(user).sendMessage(message);
         } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void sendWebhook(String URL, String iconURL, String displayName, String message) {
-        try {
-            new Slack(URL)
-                    .icon(iconURL)
-                    .displayName(displayName)
-                    .push(new SlackMessage(message));
-        } catch (Exception e) {
-            e.printStackTrace();
+            reportHome(e);
         }
     }
 
@@ -174,6 +136,7 @@ public class Util {
                 return new MessageBuilder(client).withEmbed(embed.withColor(Color.GRAY).build())
                         .withChannel(client.getChannelByID(Long.parseLong(TheOfficialBot.LOG_CHANNEL_ID))).send();
             } catch (Exception e) {
+                reportHome(e);
             }
             return null;
         });
@@ -199,6 +162,7 @@ public class Util {
                 return new MessageBuilder(client).withEmbed(embed.withColor(color).build())
                         .withChannel(client.getChannelByID(Long.parseLong(TheOfficialBot.LOG_CHANNEL_ID))).send();
             } catch (Exception e) {
+                reportHome(e);
             }
             return null;
         });
@@ -241,7 +205,7 @@ public class Util {
                 System.out.println(result);
                 return DiscordUtils.MAPPER.readValue(result, UserObject.class).username;
             } catch (IOException | DiscordException e) {
-                e.printStackTrace();
+                reportHome(e);
             }
 
             return "NULL";
@@ -281,8 +245,115 @@ public class Util {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            reportHome(e);
         }
         return null;
+    }
+
+    /**
+     * Send report
+     */
+    public static void reportHome(IMessage message, Exception e) {
+        IChannel errorChannel = client.getChannelByID(Long.parseLong(cm.getConfigValue("ERORRLOG_ID")));
+
+        EmbedBuilder bld = new EmbedBuilder()
+                .withColor(BOT_COLOR)
+                .withTimestamp(System.currentTimeMillis())
+                .withAuthorName(message.getAuthor().getName() + '#' + message.getAuthor().getDiscriminator())
+                .withAuthorIcon(getAvatar(message.getAuthor()))
+                .withDesc(message.getContent())
+                .appendField("\u200B", "\u200B", false)
+
+                .appendField("Exeption:", e.toString(), false);
+
+        StringBuilder stack = new StringBuilder();
+        for (StackTraceElement s : e.getStackTrace()) {
+            stack.append(s.toString());
+            stack.append("\n");
+        }
+
+        String stackString = stack.toString();
+        if (stackString.length() > 1800) {
+            stackString = stackString.substring(0, 1800);
+        }
+
+        bld
+                .appendField("Stack:", stackString, false);
+
+        sendEmbed(errorChannel, bld.build());
+    }
+
+    public static void reportHome(Exception e) {
+        IChannel errorChannel = client.getChannelByID(Long.parseLong(cm.getConfigValue("ERORRLOG_ID")));
+
+        EmbedBuilder bld = new EmbedBuilder()
+                .withColor(BOT_COLOR)
+                .withTimestamp(System.currentTimeMillis())
+                .appendField("Exeption:", e.toString(), false);
+
+        StringBuilder stack = new StringBuilder();
+        for (StackTraceElement s : e.getStackTrace()) {
+            stack.append(s.toString());
+            stack.append("\n");
+        }
+
+        String stackString = stack.toString();
+        if (stackString.length() > 1800) {
+            stackString = stackString.substring(0, 1800);
+        }
+
+        bld
+                .appendField("Stack:", stackString, false);
+
+        sendEmbed(errorChannel, bld.build());
+    }
+
+    /**
+     * Send botLog
+     */
+    public static void botLog(IMessage message) {
+        try {
+            IChannel botLogChannel = client.getChannelByID(Long.parseLong(cm.getConfigValue("COMMANDLOG_ID")));
+
+            EmbedBuilder bld = new EmbedBuilder()
+                    .withColor(BOT_COLOR)
+                    .withAuthorName(message.getAuthor().getName() + '#' + message.getAuthor().getDiscriminator())
+                    .withAuthorIcon(getAvatar(message.getAuthor()))
+                    .withDesc(message.getFormattedContent())
+                    .withFooterText(message.getGuild().getName() + "/#" + message.getChannel().getName());
+
+            sendEmbed(botLogChannel, bld.build());
+        } catch (Exception e) {
+            reportHome(message, e);
+        }
+    }
+
+    /**
+     * Command syntax error
+     */
+    public static void syntaxError(Command command, IMessage message) {
+        try {
+            EmbedBuilder bld = new EmbedBuilder()
+                    .withColor(BOT_COLOR)
+                    .withAuthorName(command.getName())
+                    .withAuthorIcon(client.getApplicationIconURL())
+                    .withDesc(command.getDescription())
+                    .appendField("Syntax:", TheOfficialBot.getPrefix() + command.getSyntax(), false);
+
+            sendEmbed(message.getChannel(), bld.build());
+        } catch (Exception e) {
+            reportHome(message, e);
+        }
+    }
+
+    /**
+     * Send simple fast embeds
+     */
+    public static void simpleEmbed(IChannel channel, String message) {
+        sendEmbed(channel, new EmbedBuilder().withDescription(message).withColor(BOT_COLOR).build());
+    }
+
+    public static void simpleEmbed(IChannel channel, String message, Color color) {
+        sendEmbed(channel, new EmbedBuilder().withDescription(message).withColor(color).build());
     }
 }

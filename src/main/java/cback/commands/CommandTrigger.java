@@ -5,6 +5,7 @@ import cback.Util;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IMessage;
+import sx.blah.discord.handle.obj.IUser;
 
 import java.util.List;
 
@@ -35,13 +36,13 @@ public class CommandTrigger implements Command {
     }
 
     @Override
-    public void execute(TheOfficialBot bot, IDiscordClient client, String[] args, IGuild guild, List<Long> roleIDs, IMessage message, boolean isPrivate) {
+    public void execute(IMessage message, String content, String[] args, IUser author, IGuild guild, List<Long> roleIDs, boolean isPrivate, IDiscordClient client, TheOfficialBot bot) {
         if (message.getAuthor().getStringID().equals("73416411443113984")) {
-            String fullRule = TheOfficialBot.getInstance().getClient().getChannelByID(Long.parseLong("251916332747063296")).getMessageByID(Long.parseLong("251922232069193728")).getContent();
-            System.out.println(fullRule);
-
-
-            Util.deleteMessage(message);
+            try {
+                System.out.println(TheOfficialBot.getHomeGuild().getStringID());
+            } catch (Exception e) {
+                Util.reportHome(message, e);
+            }
         }
     }
 

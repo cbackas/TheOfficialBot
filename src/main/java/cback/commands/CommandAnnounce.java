@@ -6,6 +6,7 @@ import cback.Util;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IMessage;
+import sx.blah.discord.handle.obj.IUser;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -38,13 +39,9 @@ public class CommandAnnounce implements Command {
     }
 
     @Override
-    public void execute(TheOfficialBot bot, IDiscordClient client, String[] args, IGuild guild, List<Long> roleIDs, IMessage message, boolean isPrivate) {
-        if (!Collections.disjoint(roleIDs, getPermissions())) {
+    public void execute(IMessage message, String content, String[] args, IUser author, IGuild guild, List<Long> roleIDs, boolean isPrivate, IDiscordClient client, TheOfficialBot bot) {
             String announcement = message.getContent().split(" ", 2)[1];
             Util.sendAnnouncement(announcement);
-
-            Util.botLog(message);
             Util.deleteMessage(message);
-        }
     }
 }
