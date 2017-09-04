@@ -20,7 +20,7 @@
         <dependency>
             <groupId>com.github.austinv11</groupId>
             <artifactId>Discord4J</artifactId>
-            <version>984f05d</version>
+            <version>9a5d23f</version>
         </dependency>
         <dependency>
             <groupId>com.googlecode.json-simple</groupId>
