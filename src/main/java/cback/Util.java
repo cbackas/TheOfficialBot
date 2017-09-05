@@ -347,7 +347,7 @@ public class Util {
 
             sendEmbed(message.getChannel(), bld.build());
         } catch (Exception e) {
-            reportHome(message, e);
+            reportHome(e);
         }
     }
 
