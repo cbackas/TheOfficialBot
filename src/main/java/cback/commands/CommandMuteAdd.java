@@ -29,7 +29,7 @@ public class CommandMuteAdd implements Command {
 
     @Override
     public String getSyntax() {
-        return "?mute @user [reason?]";
+        return "mute @user [reason?]";
     }
 
     @Override
