@@ -42,6 +42,7 @@ public class TheOfficialBot {
     public static List<Command> registeredCommands = new ArrayList<>();
 
     private static IGuild homeGuild;
+    private ArrayList<Long> messageCache = new ArrayList<>();
 
     static private String prefix = "?";
     private static final Pattern COMMAND_PATTERN = Pattern.compile("^\\?([^\\s]+) ?(.*)", Pattern.CASE_INSENSITIVE);
@@ -168,10 +169,10 @@ public class TheOfficialBot {
              * Kaya's reaction request
              */
             if (message.getMentions().contains(guild.getUserByID(137294678721691648l)) || message.getContent().toLowerCase().contains("kaya")) {
-                if(message.getAuthor().getStringID().equals("110211413531705344")) {
+                if (message.getAuthor().getStringID().equals("110211413531705344")) {
                     message.addReaction(EmojiManager.getByUnicode("\uD83C\uDFF3"));//white flag
                 }
-                if(message.getAuthor().getStringID().equals("275425737220292608")) {
+                if (message.getAuthor().getStringID().equals("275425737220292608")) {
                     message.addReaction(EmojiManager.getByUnicode("\uD83C\uDF69"));//doughnut
                 }
             }
@@ -181,6 +182,7 @@ public class TheOfficialBot {
     @EventSubscriber
     public void onReadyEvent(ReadyEvent event) {
         System.out.println("Logged in.");
+        client = event.getClient();
 
         startTime = System.currentTimeMillis();
     }
@@ -202,9 +204,17 @@ public class TheOfficialBot {
         return homeGuild;
     }
 
-    public static String getPrefix() { return prefix; }
+    public static String getPrefix() {
+        return prefix;
+    }
 
-    public static Color getBotColor() { return Color.decode("#" + configManager.getConfigValue("bot_color")); }
+    public static Color getBotColor() {
+        return Color.decode("#" + configManager.getConfigValue("bot_color"));
+    }
+
+    public ArrayList<Long> getMessageCache() {
+        return messageCache;
+    }
 
     private void registerAllCommands() {
         new Reflections("cback.commands").getSubTypesOf(Command.class).forEach(commandImpl -> {
@@ -241,34 +251,33 @@ public class TheOfficialBot {
 
     //checks for dirty words
     public void censorMessages(IMessage message) {
-        if (!message.getChannel().isPrivate()) {
-            List<String> bannedWords = TheOfficialBot.getInstance().getConfigManager().getConfigArray("bannedWords");
-            String content = message.getFormattedContent().toLowerCase();
-            Boolean tripped = false;
-            for (String word : bannedWords) {
-                if (content.matches(".*\\b" + word + "\\b.*") || content.matches(".*\\b" + word + "s\\b.*")) {
-                    tripped = true;
-                    break;
-                }
+        List<String> bannedWords = TheOfficialBot.getInstance().getConfigManager().getConfigArray("bannedWords");
+        String content = message.getFormattedContent().toLowerCase();
+        Boolean tripped = false;
+        for (String word : bannedWords) {
+            if (content.matches(".*\\b" + word + "\\b.*") || content.matches(".*\\b" + word + "s\\b.*")) {
+                tripped = true;
+                break;
             }
-            if (tripped) {
-                message.getChannel().setTypingStatus(true);
-                IUser author = message.getAuthor();
+        }
+        if (tripped) {
+            message.getChannel().setTypingStatus(true);
+            IUser author = message.getAuthor();
 
-                EmbedBuilder bld = new EmbedBuilder();
-                bld
-                        .withAuthorIcon(author.getAvatarURL())
-                        .withAuthorName(Util.getTag(author))
-                        .withDesc(message.getFormattedContent())
-                        .withTimestamp(System.currentTimeMillis())
-                        .withFooterText("Auto-deleted from #" + message.getChannel().getName());
+            EmbedBuilder bld = new EmbedBuilder();
+            bld
+                    .withAuthorIcon(author.getAvatarURL())
+                    .withAuthorName(Util.getTag(author))
+                    .withDesc(message.getFormattedContent())
+                    .withTimestamp(System.currentTimeMillis())
+                    .withFooterText("Auto-deleted from #" + message.getChannel().getName());
 
-                Util.sendEmbed(message.getGuild().getChannelByID(Long.parseLong("266651712826114048")), bld.withColor(161, 61, 61).build());
-                Util.sendPrivateMessage(author, "Your message has been automatically removed for a banned word or something");
+            Util.sendEmbed(message.getGuild().getChannelByID(Long.parseLong("266651712826114048")), bld.withColor(161, 61, 61).build());
+            Util.sendPrivateMessage(author, "Your message has been automatically removed for a banned word or something");
 
-                message.delete();
-                message.getChannel().setTypingStatus(false);
-            }
+            messageCache.add(message.getLongID());
+            message.delete();
+            message.getChannel().setTypingStatus(false);
         }
     }
 
