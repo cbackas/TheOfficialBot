@@ -255,6 +255,8 @@ public class Util {
      * Send report
      */
     public static void reportHome(IMessage message, Exception e) {
+        e.printStackTrace();
+
         IChannel errorChannel = client.getChannelByID(Long.parseLong(cm.getConfigValue("ERORRLOG_ID")));
 
         EmbedBuilder bld = new EmbedBuilder()
@@ -285,6 +287,8 @@ public class Util {
     }
 
     public static void reportHome(Exception e) {
+        e.printStackTrace();
+
         IChannel errorChannel = client.getChannelByID(Long.parseLong(cm.getConfigValue("ERORRLOG_ID")));
 
         EmbedBuilder bld = new EmbedBuilder()
