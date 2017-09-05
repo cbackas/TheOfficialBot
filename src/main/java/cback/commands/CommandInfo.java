@@ -20,12 +20,12 @@ public class CommandInfo implements Command {
 
     @Override
     public List<String> getAliases() {
-        return Arrays.asList("serverinfo", "server", "stats");
+        return Arrays.asList("serverinfo", "server", "stats", "about");
     }
 
     @Override
     public String getSyntax() {
-        return "?info";
+        return "info";
     }
 
     @Override
@@ -70,7 +70,7 @@ public class CommandInfo implements Command {
 
         embed.appendField("\u200B", "\u200B", false);
 
-        embed.appendField("Donate to bot hosting fees: ", "[`paypal.me`](paypal.me/cbackas)", true);
+        embed.appendField("Donate to bot hosting fees: ", "[`Patreon`](https://www.patreon.com/cback)", true);
         embed.appendField("Source: ", "[`GitHub`](https://github.com/cbackas/TheOfficialBot)", true);
 
         Util.sendEmbed(message.getChannel(), embed.withColor(161, 61, 61).build());
