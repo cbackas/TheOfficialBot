@@ -1,8 +1,6 @@
 package cback;
 
 import cback.commands.Command;
-import in.ashwanthkumar.slack.webhook.Slack;
-import in.ashwanthkumar.slack.webhook.SlackMessage;
 import org.apache.http.message.BasicNameValuePair;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.api.internal.DiscordClientImpl;
@@ -129,7 +127,6 @@ public class Util {
                 embed.withFooterText("Action by @" + getTag(user));
 
                 embed.withDescription(text);
-                embed.appendField("\u200B", "\u200B", false);
 
                 embed.withTimestamp(System.currentTimeMillis());
 
@@ -276,7 +273,7 @@ public class Util {
         }
 
         String stackString = stack.toString();
-        if (stackString.length() > 1800) {
+        if (stackString.length() > 1024) {
             stackString = stackString.substring(0, 1800);
         }
 
@@ -303,7 +300,7 @@ public class Util {
         }
 
         String stackString = stack.toString();
-        if (stackString.length() > 1800) {
+        if (stackString.length() > 1024) {
             stackString = stackString.substring(0, 1800);
         }
 
@@ -361,4 +358,24 @@ public class Util {
     public static void simpleEmbed(IChannel channel, String message, Color color) {
         sendEmbed(channel, new EmbedBuilder().withDescription(message).withColor(color).build());
     }
+
+    /**
+     * Returns IChannels
+     */
+    public static IChannel getServerLogChannel() {
+        IChannel channel = client.getChannelByID(Long.parseLong(cm.getConfigValue("SERVERLOG_ID")));
+        if (channel != null) {
+            return channel;
+        }
+        return null;
+    }
+
+    public static IChannel getMessageLogsChannel() {
+        IChannel channel = client.getChannelByID(Long.parseLong(cm.getConfigValue("MESSAGELOGS_ID")));
+        if (channel != null) {
+            return channel;
+        }
+        return null;
+    }
+
 }
