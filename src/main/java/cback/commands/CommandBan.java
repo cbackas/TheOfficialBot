@@ -9,7 +9,6 @@ import sx.blah.discord.util.PermissionUtils;
 
 import java.awt.*;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -28,7 +27,7 @@ public class CommandBan implements Command {
 
     @Override
     public String getSyntax() {
-        return "?ban @user [reason]";
+        return "ban @user [reason]";
     }
 
     @Override
@@ -71,7 +70,7 @@ public class CommandBan implements Command {
                     Util.sendPrivateMessage(mod, "**Error Banning**: Reason required");
                 }
             } else {
-                Util.sendMessage(message.getChannel(), "Invalid arguments. Usage: ``?ban @user reason``");
+                Util.syntaxError(this, message);
             }
         } catch (Exception e) {
         }
