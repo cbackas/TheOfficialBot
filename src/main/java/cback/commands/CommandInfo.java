@@ -50,30 +50,26 @@ public class CommandInfo implements Command {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy HH:mm:ss");
 
         EmbedBuilder embed = Util.getEmbed(message.getAuthor()).withThumbnail(Util.getAvatar(client.getOurUser()));
-        embed.withTitle(guild.getName());
-        embed.appendField("Created: ", guild.getCreationDate().format(formatter), true);
 
-        embed.appendField("\u200B", "\u200B", false);
-
-        embed.appendField("Users: ", Integer.toString(userCount), true);
-        embed.appendField("New Users: ", userChange, true);
-        embed.appendField("Text Channels: ", String.valueOf(client.getChannels(false).size()), true);
-        embed.appendField("Bot Uptime: ", TheOfficialBot.getInstance().getUptime(), true);
-
-        embed.appendField("\u200B", "\u200B", false);
-
-        embed.appendField("Listen:", "[`iTunes`](https://itunes.apple.com/au/podcast/the-official-podcast/id1186089636)" +
+        embed.withTitle(guild.getName())
+                .appendField("Created: ", guild.getCreationDate().format(formatter), true)
+                .appendField("\u200B", "\u200B", false)
+                .appendField("Users: ", Integer.toString(userCount), true)
+                .appendField("New Users: ", userChange, true)
+                .appendField("Text Channels: ", String.valueOf(client.getChannels(false).size()), true)
+                .appendField("Bot Uptime: ", TheOfficialBot.getInstance().getUptime(), true)
+                .appendField("\u200B", "\u200B", false)
+                .appendField("Listen:", "[`iTunes`](https://itunes.apple.com/au/podcast/the-official-podcast/id1186089636)" +
                 "\n[`SoundCloud`](https://soundcloud.com/theofficialpodcast)" +
                 "\n[`Spotify`](https://open.spotify.com/show/6TXzjtMTEopiGjIsCfvv6W)" +
-                "\n[`The Website`](http://www.theofficialpodcast.com/episodes)", true);
-        embed.appendField("Other Links: ", "[`The Official Website`](http://www.theofficialpodcast.com)\n[`Reddit`](https://www.reddit.com/r/TheOfficialPodcast/)", true);
+                "\n[`The Website`](http://www.theofficialpodcast.com/episodes)", true)
+                .appendField("Other Links: ", "[`The Official Website`](http://www.theofficialpodcast.com)\n[`Reddit`](https://www.reddit.com/r/TheOfficialPodcast/)", true)
+                .appendField("\u200B", "\u200B", false)
+                .appendField("Donate to bot hosting fees: ", "[`Patreon`](https://www.patreon.com/cback)", true)
+                .appendField("Source: ", "[`GitHub`](https://github.com/cbackas/TheOfficialBot)", true)
+                .withColor(TheOfficialBot.getBotColor());
 
-        embed.appendField("\u200B", "\u200B", false);
-
-        embed.appendField("Donate to bot hosting fees: ", "[`Patreon`](https://www.patreon.com/cback)", true);
-        embed.appendField("Source: ", "[`GitHub`](https://github.com/cbackas/TheOfficialBot)", true);
-
-        Util.sendEmbed(message.getChannel(), embed.withColor(161, 61, 61).build());
+        Util.sendEmbed(message.getChannel(), embed.build());
         Util.deleteMessage(message);
     }
 
