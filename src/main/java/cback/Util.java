@@ -111,7 +111,9 @@ public class Util {
         try {
             user.getClient().getOrCreatePMChannel(user).sendMessage(message);
         } catch (Exception e) {
-            reportHome(e);
+            if (!e.toString().equals("sx.blah.discord.util.DiscordException: Message was unable to be sent (Discord didn't return a response).")) {
+                reportHome(e);
+            }
         }
     }
 
@@ -273,8 +275,8 @@ public class Util {
         }
 
         String stackString = stack.toString();
-        if (stackString.length() > 1024) {
-            stackString = stackString.substring(0, 1800);
+        if (stackString.length() > 800) {
+            stackString = stackString.substring(0, 800);
         }
 
         bld
@@ -300,8 +302,8 @@ public class Util {
         }
 
         String stackString = stack.toString();
-        if (stackString.length() > 1024) {
-            stackString = stackString.substring(0, 1800);
+        if (stackString.length() > 800) {
+            stackString = stackString.substring(0, 800);
         }
 
         bld
