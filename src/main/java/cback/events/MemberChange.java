@@ -33,7 +33,10 @@ public class MemberChange {
         if (event.getGuild().getStringID().equals(TheOfficialBot.getHomeGuild().getStringID())) {
             IUser user = event.getUser();
             IGuild guild = TheOfficialBot.getHomeGuild();
-            //Mute Check
+
+            /**
+             * Mute check
+             */
             if (bot.getConfigManager().getConfigArray("muted").contains(user.getStringID())) {
                 try {
                     user.addRole(guild.getRoleByID(MUTED_ROLE_ID));
@@ -42,20 +45,27 @@ public class MemberChange {
                 }
             }
 
-            //Join Counter
+            /**
+             * Member counter
+             */
             int joinedUsers = Integer.parseInt(bot.getConfigManager().getConfigValue("joined"));
             bot.getConfigManager().setConfigValue("joined", String.valueOf(joinedUsers + 1));
 
-            //Notifier
+            /**
+             * Admin member-count notifier
+             */
             int totalUsers = guild.getUsers().size();
             if (totalUsers % 1000 == 0) {
                 Util.sendMessage(guild.getChannelByID(ADMIN_CH_ID), guild.getRoleByID(OfficialRoles.ADMIN.id).mention() + " we have hit " + totalUsers + " users hype");
             }
 
-            //Member-log
+            /**
+             * Memberlog
+             */
             EmbedBuilder bld = new EmbedBuilder()
                     .withDesc(Util.getTag(user) + " **joined** the server. " + user.mention());
 
+            //Checks if the new user's account is a new account (< 24 hours old)
             long userCreated = user.getCreationDate().toEpochSecond(ZoneOffset.ofHours(0));
             long currentTime = Util.getCurrentTime();
             if (currentTime - userCreated < 86400) {
@@ -76,16 +86,22 @@ public class MemberChange {
             IUser user = event.getUser();
             IGuild guild = TheOfficialBot.getHomeGuild();
 
-            //Mute Check
+            /**
+             * Mute check
+             */
             if (bot.getConfigManager().getConfigArray("muted").contains(event.getUser().getStringID())) {
                 Util.sendMessage(guild.getChannelByID(STAFF_CH_ID), user + " is muted and left the server. Their mute will be applied again when/if they return.");
             }
 
-            //Leave Counter
+            /**
+             * Member counter
+             */
             int left = Integer.parseInt(bot.getConfigManager().getConfigValue("left"));
             bot.getConfigManager().setConfigValue("left", String.valueOf(left + 1));
 
-            //Member-log
+            /**
+             * Memberlog
+             */
             EmbedBuilder bld = new EmbedBuilder()
                     .withDesc(Util.getTag(user) + " **left** the server. " + user.mention())
                     .withTimestamp(System.currentTimeMillis())
@@ -101,18 +117,24 @@ public class MemberChange {
             IUser user = event.getUser();
             IGuild guild = TheOfficialBot.getHomeGuild();
 
-            //Mute Check
+            /**
+             * Mute check
+             */
             if (bot.getConfigManager().getConfigArray("muted").contains(user.getStringID())) {
                 List<String> mutedUsers = bot.getConfigManager().getConfigArray("muted");
                 mutedUsers.remove(user.getStringID());
                 bot.getConfigManager().setConfigValue("muted", mutedUsers);
             }
 
-            //Leave Counter
+            /**
+             * Member counter
+             */
             int left = Integer.parseInt(bot.getConfigManager().getConfigValue("left"));
             bot.getConfigManager().setConfigValue("left", String.valueOf(left + 1));
 
-            //Member-log
+            /**
+             * Memberlog
+             */
             EmbedBuilder bld = new EmbedBuilder()
                     .withDesc(Util.getTag(user) + " was **banned** from the server. " + user.mention())
                     .withTimestamp(System.currentTimeMillis())
@@ -123,12 +145,14 @@ public class MemberChange {
     }
 
     @EventSubscriber
-    public void memberUnbanned(UserPardonEvent event) {
+    public void memberPardoned(UserPardonEvent event) {
         if (event.getGuild().getStringID().equals(TheOfficialBot.getHomeGuild().getStringID())) {
             IUser user = event.getUser();
             IGuild guild = event.getGuild();
 
-            //Member-log
+            /**
+             * Memberlog
+             */
             EmbedBuilder bld = new EmbedBuilder()
                     .withDesc(Util.getTag(user) + " was **unbanned** from the server. " + user.mention())
                     .withTimestamp(System.currentTimeMillis())
