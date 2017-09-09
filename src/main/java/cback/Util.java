@@ -177,6 +177,9 @@ public class Util {
                 .withAuthorName(getTag(TheOfficialBot.getInstance().getClient().getOurUser()));
     }
 
+    /**
+     * Returns clean little tag to use to talk about users in a very accurate and descriptive manor
+     */
     public static String getTag(IUser user) {
         return user.getName() + '#' + user.getDiscriminator();
     }
