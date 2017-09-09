@@ -12,7 +12,6 @@ import sx.blah.discord.util.MessageComparator;
 import sx.blah.discord.util.MessageHistory;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,7 +29,7 @@ public class CommandPurge implements Command {
 
     @Override
     public String getSyntax() {
-        return "?clear # [user?]";
+        return "clear # [user?]";
     }
 
     @Override
@@ -46,7 +45,6 @@ public class CommandPurge implements Command {
     @Override
     public void execute(IMessage message, String content, String[] args, IUser author, IGuild guild, List<Long> roleIDs, boolean isPrivate, IDiscordClient client, TheOfficialBot bot) {
         if (args.length >= 1) {
-
             String numberArg = args[0];
 
             int maxDeletions = 0;
@@ -57,7 +55,7 @@ public class CommandPurge implements Command {
                     maxDeletions = Integer.parseInt(numberArg);
                     if (maxDeletions <= 0) {
                         Util.deleteMessage(message);
-                        Util.sendMessage(message.getChannel(), "Invalid number \"" + numberArg + "\".");
+                        Util.simpleEmbed(message.getChannel(), "Invalid number \"" + numberArg + "\".");
                         return;
                     }
                 } catch (NumberFormatException e) {
@@ -68,7 +66,7 @@ public class CommandPurge implements Command {
                 userToDelete = Util.getUserFromMentionArg(args[1]);
                 if (userToDelete == null) {
                     Util.deleteMessage(message);
-                    Util.sendMessage(message.getChannel(), "Invalid user \"" + args[1] + "\".");
+                    Util.simpleEmbed(message.getChannel(), "Invalid user \"" + args[1] + "\".");
                     return;
                 }
             } else {
@@ -104,7 +102,7 @@ public class CommandPurge implements Command {
 
         } else {
             Util.deleteMessage(message);
-            Util.sendMessage(message.getChannel(), "Invalid arguments. Usage: ``?prune <#> @user``");
+            Util.syntaxError(this, message);
             return;
         }
 

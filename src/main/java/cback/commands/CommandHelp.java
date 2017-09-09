@@ -26,7 +26,7 @@ public class CommandHelp implements Command {
 
     @Override
     public String getSyntax() {
-        return "?help";
+        return "help";
     }
 
     @Override
@@ -64,13 +64,9 @@ public class CommandHelp implements Command {
 
         }
 
-        embed.withFooterText("Staff commands excluded for regular users");
+        embed.withFooterText("You only see commands you have permission to use");
 
-        try {
-            Util.sendEmbed(message.getAuthor().getOrCreatePMChannel(), embed.withColor(TheOfficialBot.getBotColor()).build());
-        } catch (Exception e) {
-            Util.reportHome(message, e);
-        }
+        Util.sendEmbed(message.getAuthor().getOrCreatePMChannel(), embed.withColor(TheOfficialBot.getBotColor()).build());
 
         Util.deleteMessage(message);
 

@@ -6,12 +6,10 @@ import cback.Util;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IMessage;
-import sx.blah.discord.handle.obj.IRole;
 import sx.blah.discord.handle.obj.IUser;
 
 import java.awt.*;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -29,7 +27,7 @@ public class CommandMuteRemove implements Command {
 
     @Override
     public String getSyntax() {
-        return "?unmute @user";
+        return "unmute @user";
     }
 
     @Override
@@ -52,29 +50,33 @@ public class CommandMuteRemove implements Command {
 
                 String u = matcher.group(1);
                 IUser userInput = guild.getUserByID(Long.parseLong(u));
+                if (userInput != null) {
 
-                if (message.getAuthor().getStringID().equals(u)) {
-                    Util.sendMessage(message.getChannel(), "Not sure how you typed this command... but you can't unmute yourself");
-                } else {
-                    try {
-                        userInput.removeRole(guild.getRoleByID(Long.parseLong("281022564002824192")));
+                    if (message.getAuthor().getStringID().equals(u)) {
+                        Util.simpleEmbed(message.getChannel(), "Not sure how you typed this command... but you can't unmute yourself");
+                    } else {
+                        try {
+                            userInput.removeRole(guild.getRoleByID(Long.parseLong("281022564002824192")));
 
-                        Util.sendMessage(message.getChannel(), userInput.getDisplayName(guild) + " has been unmuted");
+                            Util.simpleEmbed(message.getChannel(), userInput.getDisplayName(guild) + " has been unmuted");
 
-                        List<String> mutedUsers = bot.getConfigManager().getConfigArray("muted");
-                        if (mutedUsers.contains(u)) {
-                            mutedUsers.remove(u);
-                            bot.getConfigManager().setConfigValue("muted", mutedUsers);
+                            List<String> mutedUsers = bot.getConfigManager().getConfigArray("muted");
+                            if (mutedUsers.contains(u)) {
+                                mutedUsers.remove(u);
+                                bot.getConfigManager().setConfigValue("muted", mutedUsers);
+                            }
+
+                            Util.sendLog(message, userInput.getDisplayName(guild) + " has been unmuted.", Color.gray);
+                            Util.deleteMessage(message);
+                        } catch (Exception e) {
+                            Util.simpleEmbed(message.getChannel(), "Error running " + this.getName() + " - error recorded");
+                            Util.reportHome(message, e);
                         }
-
-                        Util.sendLog(message, userInput.getDisplayName(guild) + " has been unmuted.", Color.gray);
-                        Util.deleteMessage(message);
-                    } catch (Exception e) {
                     }
                 }
             }
         } else {
-            Util.sendMessage(message.getChannel(), "Invalid arguments. Usage: ``?unmute @user``");
+            Util.syntaxError(this, message);
         }
     }
 

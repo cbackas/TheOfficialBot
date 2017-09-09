@@ -10,7 +10,6 @@ import sx.blah.discord.handle.obj.IUser;
 import sx.blah.discord.util.EmbedBuilder;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class CommandCensor implements Command {
@@ -26,7 +25,7 @@ public class CommandCensor implements Command {
 
     @Override
     public String getSyntax() {
-        return "?censor add|remove|list [word]";
+        return "censor add|remove|list [word]";
     }
 
     @Override
@@ -78,6 +77,6 @@ public class CommandCensor implements Command {
             bld.appendField(getSyntax(), getDescription(), false);
         }
 
-        Util.sendEmbed(message.getChannel(), bld.withColor(161, 61, 61).build());
+        Util.sendEmbed(message.getChannel(), bld.withColor(TheOfficialBot.getBotColor()).build());
     }
 }

@@ -13,7 +13,6 @@ import sx.blah.discord.util.EmbedBuilder;
 import java.awt.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -31,7 +30,7 @@ public class CommandUserInfo implements Command {
 
     @Override
     public String getSyntax() {
-        return "?userinfo @user";
+        return "userinfo @user";
     }
 
     @Override
@@ -71,6 +70,8 @@ public class CommandUserInfo implements Command {
                         .withColor(Color.gray);
 
                 Util.sendEmbed(message.getChannel(), embed.build());
+            } else {
+                Util.syntaxError(this, message);
             }
     }
 }

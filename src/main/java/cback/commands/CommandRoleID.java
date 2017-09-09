@@ -1,5 +1,6 @@
 package cback.commands;
 
+import cback.OfficialRoles;
 import cback.TheOfficialBot;
 import cback.Util;
 import sx.blah.discord.api.IDiscordClient;
@@ -26,46 +27,42 @@ public class CommandRoleID implements Command {
 
     @Override
     public String getSyntax() {
-        return null;
+        return "roleid [listall|@role]";
     }
 
     @Override
     public String getDescription() {
-        return null;
+        return "Returns the ID for a role that you request. Pretty backend stuff right there.";
     }
 
     @Override
     public List<Long> getPermissions() {
-        return null;
+        return Arrays.asList(OfficialRoles.ADMIN.id);
     }
 
     @Override
     public void execute(IMessage message, String content, String[] args, IUser author, IGuild guild, List<Long> roleIDs, boolean isPrivate, IDiscordClient client, TheOfficialBot bot) {
-        if (message.getAuthor().getStringID().equals("73416411443113984")) {
-            Util.botLog(message);
+        if (args.length == 1) {
+            String roleName = Arrays.stream(args).collect(Collectors.joining(" "));
+            List<IRole> serverRoles = guild.getRoles();
 
-            if (args.length == 1) {
-                String roleName = Arrays.stream(args).collect(Collectors.joining(" "));
-                List<IRole> serverRoles = guild.getRoles();
+            if (roleName.equalsIgnoreCase("listall")) {
+                String roleList = serverRoles.stream().map(role -> role.getName() + " " + role.getStringID()).reduce("", (a, b) -> a + b + "\n");
 
-                if (roleName.equalsIgnoreCase("listall")) {
-                    String roleList = serverRoles.stream().map(role -> role.getName() + " " + role.getStringID()).reduce("",(a, b) -> a + b + "\n");
+                Util.sendBufferedMessage(message.getChannel(), roleList);
+            } else {
+                Optional<IRole> foundRole = serverRoles.stream().filter(role -> role.getName().equalsIgnoreCase(roleName)).findAny();
 
-                    Util.sendBufferedMessage(message.getChannel(), roleList);
+                if (foundRole.isPresent()) {
+                    Util.simpleEmbed(message.getChannel(), "Found id for **" + foundRole.get().getName() + "**: " + foundRole.get().getStringID());
                 } else {
-                    Optional<IRole> foundRole = serverRoles.stream().filter(role -> role.getName().equalsIgnoreCase(roleName)).findAny();
-
-                    if (foundRole.isPresent()) {
-                        Util.sendMessage(message.getChannel(), "Found id for **" + foundRole.get().getName() + "**: " + foundRole.get().getStringID());
-
-                    } else {
-                        Util.sendMessage(message.getChannel(), "Role not found");
-                    }
+                    Util.simpleEmbed(message.getChannel(), "Role not found");
                 }
-
-                Util.deleteMessage(message);
             }
+        } else {
+            Util.syntaxError(this, message);
         }
+        Util.deleteMessage(message);
     }
 
 }

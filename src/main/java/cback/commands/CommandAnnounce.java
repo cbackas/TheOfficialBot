@@ -9,7 +9,6 @@ import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.handle.obj.IUser;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class CommandAnnounce implements Command {
@@ -25,7 +24,7 @@ public class CommandAnnounce implements Command {
 
     @Override
     public String getSyntax() {
-        return "?announce [announcement text]";
+        return "announce [announcement text]";
     }
 
     @Override

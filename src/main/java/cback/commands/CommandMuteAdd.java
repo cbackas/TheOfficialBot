@@ -6,12 +6,10 @@ import cback.Util;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IMessage;
-import sx.blah.discord.handle.obj.IRole;
 import sx.blah.discord.handle.obj.IUser;
 
 import java.awt.*;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -79,35 +77,35 @@ public class CommandMuteAdd implements Command {
                 String u = matcher.group(1);
                 String reason = matcher.group(2);
 
-                if (reason == null) {
-                    reason = "an unspecified reason";
-                }
-
                 IUser userInput = guild.getUserByID(Long.parseLong(u));
-                if (message.getAuthor().getStringID().equals(u)) {
-                    Util.sendMessage(message.getChannel(), "You probably shouldn't mute yourself");
-                } else {
-                    try {
-                        userInput.addRole(guild.getRoleByID(Long.parseLong("281022564002824192")));
-                        Util.sendMessage(message.getChannel(), userInput.getDisplayName(guild) + " has been muted. Check " + guild.getChannelByID(Long.parseLong(TheOfficialBot.LOG_CHANNEL_ID)).mention() + " for more info.");
+                if (userInput != null) {
+                    if (reason == null) {
+                        reason = "an unspecified reason";
+                    }
 
-                        if (!mutedUsers.contains(u)) {
-                            mutedUsers.add(u);
-                            bot.getConfigManager().setConfigValue("muted", mutedUsers);
+                    if (message.getAuthor().getStringID().equals(u)) {
+                        Util.simpleEmbed(message.getChannel(), "You probably shouldn't mute yourself");
+                    } else {
+                        try {
+                            userInput.addRole(guild.getRoleByID(Long.parseLong("281022564002824192")));
+                            Util.simpleEmbed(message.getChannel(), userInput.getDisplayName(guild) + " has been muted. Check " + guild.getChannelByID(Long.parseLong(TheOfficialBot.LOG_CHANNEL_ID)).mention() + " for more info.");
+
+                            if (!mutedUsers.contains(u)) {
+                                mutedUsers.add(u);
+                                bot.getConfigManager().setConfigValue("muted", mutedUsers);
+                            }
+
+                            Util.sendLog(message, "Muted " + userInput.getDisplayName(guild) + "\n**Reason:** " + reason, Color.gray);
+                            Util.deleteMessage(message);
+                        } catch (Exception e) {
+                            Util.simpleEmbed(message.getChannel(), "Error running " + this.getName() + " - error recorded");
+                            Util.reportHome(message, e);
                         }
-
-                        Util.sendLog(message, "Muted " + userInput.getDisplayName(guild) + "\n**Reason:** " + reason, Color.gray);
-                        Util.deleteMessage(message);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-
-                        Util.sendMessage(message.getChannel(), "Internal error - cback has been notified");
-                        Util.reportHome(message, e);
                     }
                 }
             }
         } else {
-            Util.sendMessage(message.getChannel(), "Invalid arguments. Usage: ``?mute @user``");
+            Util.syntaxError(this, message);
         }
     }
 

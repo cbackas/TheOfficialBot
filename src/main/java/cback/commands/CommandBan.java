@@ -42,40 +42,38 @@ public class CommandBan implements Command {
 
     @Override
     public void execute(IMessage message, String content, String[] args, IUser author, IGuild guild, List<Long> roleIDs, boolean isPrivate, IDiscordClient client, TheOfficialBot bot) {
-        String text = message.getContent();
-        IUser mod = message.getAuthor();
-        try {
-            PermissionUtils.hasPermissions(message.getChannel(), message.getAuthor(), EnumSet.of(Permissions.BAN));
-            Pattern pattern = Pattern.compile("^\\?ban <@!?(\\d+)> ?(.+)?");
-            Matcher matcher = pattern.matcher(text);
-            if (matcher.find()) {
-                String userInput = matcher.group(1);
-                String reason = matcher.group(2);
-                if (reason != null) {
+        if (args.length >= 1) {
+            try {
+                PermissionUtils.hasPermissions(message.getChannel(), message.getAuthor(), EnumSet.of(Permissions.BAN));
+                Pattern pattern = Pattern.compile("^\\?ban <@!?(\\d+)> ?(.+)?");
+                Matcher matcher = pattern.matcher(content);
+                if (matcher.find()) {
+                    String userInput = matcher.group(1);
+                    String reason = matcher.group(2);
                     IUser user = guild.getUserByID(Long.parseLong(userInput));
-                    if (user.getStringID().equals(mod.getStringID())) {
-                        Util.sendMessage(message.getChannel(), "You're gonna have to try harder than that.");
-                    } else {
-                        try {
-                            guild.banUser(user, 1);
-                            Util.sendLog(message, "Banned " + user.getDisplayName(guild) + "\n**Reason:** " + reason, Color.red);
-                            Util.sendMessage(message.getChannel(), user.getDisplayName(guild) + " has been banned. Check " + guild.getChannelByID(Long.parseLong(TheOfficialBot.LOG_CHANNEL_ID)).mention() + " for more info.");
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Util.sendMessage(message.getChannel(), "Internal error - cback has been notified");
-                            Util.reportHome(message, e);
+                    if (reason != null && user != null) {
+                        if (user.getStringID().equals(author.getStringID())) {
+                            Util.simpleEmbed(message.getChannel(), "You're gonna have to try harder than that.");
+                        } else {
+                            try {
+                                guild.banUser(user, 1);
+                                Util.sendLog(message, "Banned " + user.getDisplayName(guild) + "\n**Reason:** " + reason, Color.red);
+                                Util.simpleEmbed(message.getChannel(), user.getDisplayName(guild) + " has been banned. Check " + guild.getChannelByID(Long.parseLong(TheOfficialBot.LOG_CHANNEL_ID)).mention() + " for more info.");
+                            } catch (Exception e) {
+                                Util.simpleEmbed(message.getChannel(), "Error running " + this.getName() + " - error recorded");
+                                Util.reportHome(message, e);
+                            }
                         }
+                    } else {
+                        Util.sendPrivateMessage(author, "**Error Banning**: Reason required");
                     }
                 } else {
-                    Util.sendPrivateMessage(mod, "**Error Banning**: Reason required");
+                    Util.syntaxError(this, message);
                 }
-            } else {
-                Util.syntaxError(this, message);
+            } catch (Exception e) {
             }
-        } catch (Exception e) {
+            Util.deleteMessage(message);
         }
-
-        Util.deleteMessage(message);
     }
 
 }

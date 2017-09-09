@@ -9,7 +9,6 @@ import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.handle.obj.IUser;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class CommandLog implements Command {
@@ -25,7 +24,7 @@ public class CommandLog implements Command {
 
     @Override
     public String getSyntax() {
-        return "?addlog [log message]";
+        return "addlog [log message]";
     }
 
     @Override
@@ -43,10 +42,10 @@ public class CommandLog implements Command {
         if (args.length >= 1) {
             String finalText = message.getFormattedContent().split(" ", 2)[1];
             Util.sendLog(message, finalText);
-            Util.sendMessage(message.getChannel(), "Log added. " + guild.getChannelByID(Long.parseLong(TheOfficialBot.LOG_CHANNEL_ID)).mention());
+            Util.simpleEmbed(message.getChannel(), "Log added. " + guild.getChannelByID(Long.parseLong(TheOfficialBot.LOG_CHANNEL_ID)).mention());
             Util.deleteMessage(message);
         } else {
-            Util.sendMessage(message.getChannel(), "Usage: ?addlog <text>");
+            Util.syntaxError(this, message);
         }
     }
 
