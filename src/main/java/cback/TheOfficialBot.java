@@ -38,7 +38,6 @@ public class TheOfficialBot {
     private static ConfigManager configManager;
     private Scheduler scheduler;
 
-    private List<String> botAdmins = new ArrayList<>();
     public static List<Command> registeredCommands = new ArrayList<>();
 
     private static IGuild homeGuild;
@@ -79,10 +78,6 @@ public class TheOfficialBot {
         client.getDispatcher().registerListener(new MessageChange(this));
 
         scheduler = new Scheduler(this);
-
-        botAdmins.add("73416411443113984");
-        botAdmins.add("224625782188670986");
-
     }
 
     private void connect() {
@@ -193,10 +188,6 @@ public class TheOfficialBot {
 
     public static IDiscordClient getClient() {
         return client;
-    }
-
-    public List<String> getBotAdmins() {
-        return botAdmins;
     }
 
     public static IGuild getHomeGuild() {
