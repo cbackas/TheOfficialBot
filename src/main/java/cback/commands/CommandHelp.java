@@ -1,6 +1,6 @@
 package cback.commands;
 
-import cback.TheOfficialBot;
+import cback.OfficialBot;
 import cback.Util;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.obj.IGuild;
@@ -40,12 +40,12 @@ public class CommandHelp implements Command {
     }
 
     @Override
-    public void execute(IMessage message, String content, String[] args, IUser author, IGuild guild, List<Long> roleIDs, boolean isPrivate, IDiscordClient client, TheOfficialBot bot) {
+    public void execute(IMessage message, String content, String[] args, IUser author, IGuild guild, List<Long> roleIDs, boolean isPrivate, IDiscordClient client, OfficialBot bot) {
         EmbedBuilder embed = Util.getEmbed();
         embed.withTitle("Commands:");
 
         List<Long> roles = message.getAuthor().getRolesForGuild(guild).stream().map(role -> role.getLongID()).collect(Collectors.toList());
-        for (Command c : TheOfficialBot.registeredCommands) {
+        for (Command c : OfficialBot.registeredCommands) {
 
             if (c.getDescription() != null) {
 
@@ -57,7 +57,7 @@ public class CommandHelp implements Command {
                 if (c.getPermissions() == null) {
                     embed.appendField(c.getSyntax(), c.getDescription() + aliases, false);
                 } else if (!Collections.disjoint(roles, c.getPermissions())) {
-                    embed.appendField(TheOfficialBot.getPrefix()+c.getSyntax(), c.getDescription() + aliases, false);
+                    embed.appendField(OfficialBot.getPrefix()+c.getSyntax(), c.getDescription() + aliases, false);
                 }
 
             }
@@ -66,7 +66,7 @@ public class CommandHelp implements Command {
 
         embed.withFooterText("You only see commands you have permission to use");
 
-        Util.sendEmbed(message.getAuthor().getOrCreatePMChannel(), embed.withColor(TheOfficialBot.getBotColor()).build());
+        Util.sendEmbed(message.getAuthor().getOrCreatePMChannel(), embed.withColor(OfficialBot.getBotColor()).build());
 
         Util.deleteMessage(message);
 

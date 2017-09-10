@@ -1,7 +1,7 @@
 package cback.events;
 
 import cback.ConfigManager;
-import cback.TheOfficialBot;
+import cback.OfficialBot;
 import cback.Util;
 import sx.blah.discord.api.events.EventSubscriber;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageDeleteEvent;
@@ -13,40 +13,41 @@ import sx.blah.discord.handle.obj.IUser;
 import sx.blah.discord.util.EmbedBuilder;
 
 public class MessageChange {
-    private TheOfficialBot bot;
+    private OfficialBot bot;
 
-    public MessageChange(TheOfficialBot bot) {
+    public MessageChange(OfficialBot bot) {
         this.bot = bot;
     }
 
     @EventSubscriber
     public void messageDeleted(MessageDeleteEvent event) {
-        if (event.getGuild().getStringID().equals(TheOfficialBot.getHomeGuild().getStringID()) && event.getMessage() != null) {
-            if (!bot.getMessageCache().contains(event.getMessageID())) {
-                bot.getMessageCache().remove(event.getMessageID());
-                ConfigManager cm = bot.getConfigManager();
-                IChannel MESSAGE_LOGS = event.getClient().getChannelByID(Long.parseLong(cm.getConfigValue("MESSAGELOGS_ID")));
-                IMessage message = event.getMessage();
-                IUser author = event.getAuthor();
-                IChannel channel = event.getChannel();
+        if (event.getGuild().getStringID().equals(OfficialBot.getHomeGuild().getStringID()) && event.getMessage() != null) {
+            if (!event.getAuthor().isBot() && !bot.getMessageCache().contains(event.getMessageID())) {
+                if (event.getChannel().getLongID() != OfficialBot.STAFF_CH_ID && event.getChannel().getLongID() != OfficialBot.ADMIN_CH_ID && event.getChannel().getLongID() != OfficialBot.DEV_CH_ID) {
+                    bot.getMessageCache().remove(event.getMessageID());
+                    IChannel MESSAGE_LOGS = event.getClient().getChannelByID(OfficialBot.MESSAGELOG_CH_ID);
+                    IMessage message = event.getMessage();
+                    IUser author = event.getAuthor();
+                    IChannel channel = event.getChannel();
 
-                Boolean tripped = true;
-                for (String p : bot.prefixes) {
-                    if (message.getContent().startsWith(p)) {
-                        tripped = false;
+                    Boolean tripped = true;
+                    for (String p : bot.prefixes) {
+                        if (message.getContent().startsWith(p)) {
+                            tripped = false;
+                        }
                     }
-                }
 
-                if (tripped) {
-                    EmbedBuilder bld = new EmbedBuilder().withColor(java.awt.Color.decode("#ED4337"));
-                    bld
-                            .withAuthorName(author.getName() + "#" + author.getDiscriminator())
-                            .withAuthorIcon(Util.getAvatar(author))
-                            .withDesc("**Message sent by **" + author.mention() + "** deleted in **" + channel.mention() + "\n" + message.getContent())
-                            .withFooterText("User ID: " + author.getStringID())
-                            .withTimestamp(System.currentTimeMillis());
+                    if (tripped) {
+                        EmbedBuilder bld = new EmbedBuilder()
+                                .withAuthorName(author.getName() + "#" + author.getDiscriminator())
+                                .withAuthorIcon(Util.getAvatar(author))
+                                .withDesc("**Message sent by **" + author.mention() + "** deleted in **" + channel.mention() + "\n" + message.getContent())
+                                .withFooterText("User ID: " + author.getStringID())
+                                .withTimestamp(System.currentTimeMillis())
+                                .withColor(OfficialBot.getBotColor());
 
-                    Util.sendEmbed(MESSAGE_LOGS, bld.build());
+                        Util.sendEmbed(MESSAGE_LOGS, bld.build());
+                    }
                 }
             }
         }
@@ -54,7 +55,7 @@ public class MessageChange {
 
     @EventSubscriber
     public void messageEdited(MessageUpdateEvent event) {
-        if (event.getGuild().getStringID().equals(TheOfficialBot.getHomeGuild().getStringID()) && event.getMessage() != null) {
+        if (event.getGuild().getStringID().equals(OfficialBot.getHomeGuild().getStringID()) && event.getMessage() != null) {
             if (!event.getAuthor().isBot()) {
                 ConfigManager cm = bot.getConfigManager();
                 IChannel MESSAGE_LOGS = event.getClient().getChannelByID(Long.parseLong(cm.getConfigValue("MESSAGELOGS_ID")));
@@ -81,7 +82,7 @@ public class MessageChange {
 
     @EventSubscriber
     public void nicknameChange(NicknameChangedEvent event) {
-        if (event.getGuild().getStringID().equals(TheOfficialBot.getHomeGuild().getStringID())) {
+        if (event.getGuild().getStringID().equals(OfficialBot.getHomeGuild().getStringID())) {
             ConfigManager cm = bot.getConfigManager();
             IChannel MESSAGE_LOGS = event.getClient().getChannelByID(Long.parseLong(cm.getConfigValue("MESSAGELOGS_ID")));
             IUser user = event.getUser();
@@ -91,7 +92,7 @@ public class MessageChange {
                 oldName = event.getOldNickname().get();
             }
 
-            String newName = event.getUser().getDisplayName(TheOfficialBot.getHomeGuild());
+            String newName = event.getUser().getDisplayName(OfficialBot.getHomeGuild());
             if (event.getNewNickname().isPresent()) {
                 newName = event.getNewNickname().get();
             }

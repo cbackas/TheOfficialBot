@@ -1,6 +1,6 @@
 package cback.commands;
 
-import cback.TheOfficialBot;
+import cback.OfficialBot;
 import cback.Util;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.obj.IGuild;
@@ -36,7 +36,7 @@ public class CommandTrigger implements Command {
     }
 
     @Override
-    public void execute(IMessage message, String content, String[] args, IUser author, IGuild guild, List<Long> roleIDs, boolean isPrivate, IDiscordClient client, TheOfficialBot bot) {
+    public void execute(IMessage message, String content, String[] args, IUser author, IGuild guild, List<Long> roleIDs, boolean isPrivate, IDiscordClient client, OfficialBot bot) {
         if (message.getAuthor().getStringID().equals("73416411443113984")) {
             try {
             } catch (Exception e) {

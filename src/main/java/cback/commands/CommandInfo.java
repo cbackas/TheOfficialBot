@@ -1,6 +1,6 @@
 package cback.commands;
 
-import cback.TheOfficialBot;
+import cback.OfficialBot;
 import cback.Util;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.obj.IGuild;
@@ -39,7 +39,7 @@ public class CommandInfo implements Command {
     }
 
     @Override
-    public void execute(IMessage message, String content, String[] args, IUser author, IGuild guild, List<Long> roleIDs, boolean isPrivate, IDiscordClient client, TheOfficialBot bot) {
+    public void execute(IMessage message, String content, String[] args, IUser author, IGuild guild, List<Long> roleIDs, boolean isPrivate, IDiscordClient client, OfficialBot bot) {
         int userCount = guild.getUsers().size();
         int oldUserCount = Integer.valueOf(bot.getConfigManager().getConfigValue("userCount"));
 
@@ -57,7 +57,7 @@ public class CommandInfo implements Command {
                 .appendField("Users: ", Integer.toString(userCount), true)
                 .appendField("New Users: ", userChange, true)
                 .appendField("Text Channels: ", String.valueOf(client.getChannels(false).size()), true)
-                .appendField("Bot Uptime: ", TheOfficialBot.getInstance().getUptime(), true)
+                .appendField("Bot Uptime: ", OfficialBot.getInstance().getUptime(), true)
                 .appendField("\u200B", "\u200B", false)
                 .appendField("Listen:", "[`iTunes`](https://itunes.apple.com/au/podcast/the-official-podcast/id1186089636)" +
                 "\n[`SoundCloud`](https://soundcloud.com/theofficialpodcast)" +
@@ -66,8 +66,8 @@ public class CommandInfo implements Command {
                 .appendField("Other Links: ", "[`The Official Website`](http://www.theofficialpodcast.com)\n[`Reddit`](https://www.reddit.com/r/TheOfficialPodcast/)", true)
                 .appendField("\u200B", "\u200B", false)
                 .appendField("Donate to bot hosting fees: ", "[`Patreon`](https://www.patreon.com/cback)", true)
-                .appendField("Source: ", "[`GitHub`](https://github.com/cbackas/TheOfficialBot)", true)
-                .withColor(TheOfficialBot.getBotColor());
+                .appendField("Source: ", "[`GitHub`](https://github.com/cbackas/OfficialBot)", true)
+                .withColor(OfficialBot.getBotColor());
 
         Util.sendEmbed(message.getChannel(), embed.build());
         Util.deleteMessage(message);

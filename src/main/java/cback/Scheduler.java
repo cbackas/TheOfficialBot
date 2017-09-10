@@ -25,9 +25,9 @@ public class Scheduler {
      */
     private static final int DELETE_THRESHOLD = 7000; //~2 hours
 
-    private TheOfficialBot bot;
+    private OfficialBot bot;
 
-    public Scheduler(TheOfficialBot bot) {
+    public Scheduler(OfficialBot bot) {
         this.bot = bot;
         onInit();
     }

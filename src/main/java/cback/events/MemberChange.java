@@ -1,7 +1,7 @@
 package cback.events;
 
+import cback.OfficialBot;
 import cback.OfficialRoles;
-import cback.TheOfficialBot;
 import cback.Util;
 import sx.blah.discord.api.events.EventSubscriber;
 import sx.blah.discord.handle.impl.events.guild.member.UserBanEvent;
@@ -17,22 +17,22 @@ import java.time.ZoneOffset;
 import java.util.List;
 
 public class MemberChange {
-    private TheOfficialBot bot;
+    private OfficialBot bot;
 
     private final long MUTED_ROLE_ID = 269638591112544267l;
     private final long MEMBERLOG_CH_ID = 266655441449254914l;
     private final long STAFF_CH_ID = 266651712826114048l;
     private final long ADMIN_CH_ID = 285470408709373954l;
 
-    public MemberChange(TheOfficialBot bot) {
+    public MemberChange(OfficialBot bot) {
         this.bot = bot;
     }
 
     @EventSubscriber
     public void memberJoin(UserJoinEvent event) {
-        if (event.getGuild().getStringID().equals(TheOfficialBot.getHomeGuild().getStringID())) {
+        if (event.getGuild().getStringID().equals(OfficialBot.getHomeGuild().getStringID())) {
             IUser user = event.getUser();
-            IGuild guild = TheOfficialBot.getHomeGuild();
+            IGuild guild = OfficialBot.getHomeGuild();
 
             /**
              * Mute check
@@ -82,9 +82,9 @@ public class MemberChange {
 
     @EventSubscriber
     public void memberLeave(UserLeaveEvent event) {
-        if (event.getGuild().getStringID().equals(TheOfficialBot.getHomeGuild().getStringID())) {
+        if (event.getGuild().getStringID().equals(OfficialBot.getHomeGuild().getStringID())) {
             IUser user = event.getUser();
-            IGuild guild = TheOfficialBot.getHomeGuild();
+            IGuild guild = OfficialBot.getHomeGuild();
 
             /**
              * Mute check
@@ -113,9 +113,9 @@ public class MemberChange {
 
     @EventSubscriber
     public void memberBanned(UserBanEvent event) {
-        if (event.getGuild().getStringID().equals(TheOfficialBot.getHomeGuild().getStringID())) {
+        if (event.getGuild().getStringID().equals(OfficialBot.getHomeGuild().getStringID())) {
             IUser user = event.getUser();
-            IGuild guild = TheOfficialBot.getHomeGuild();
+            IGuild guild = OfficialBot.getHomeGuild();
 
             /**
              * Mute check
@@ -146,7 +146,7 @@ public class MemberChange {
 
     @EventSubscriber
     public void memberPardoned(UserPardonEvent event) {
-        if (event.getGuild().getStringID().equals(TheOfficialBot.getHomeGuild().getStringID())) {
+        if (event.getGuild().getStringID().equals(OfficialBot.getHomeGuild().getStringID())) {
             IUser user = event.getUser();
             IGuild guild = event.getGuild();
 

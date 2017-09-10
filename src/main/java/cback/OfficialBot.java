@@ -29,9 +29,9 @@ import java.util.stream.Collectors;
 
 import static cback.Util.getAvatar;
 
-public class TheOfficialBot {
+public class OfficialBot {
 
-    private static TheOfficialBot instance;
+    private static OfficialBot instance;
     private static IDiscordClient client;
 
     private static ConfigManager configManager;
@@ -39,31 +39,39 @@ public class TheOfficialBot {
 
     public static List<Command> registeredCommands = new ArrayList<>();
 
-    private static IGuild homeGuild;
     private ArrayList<Long> messageCache = new ArrayList<>();
 
     static private String prefix = "?";
     private static final Pattern COMMAND_PATTERN = Pattern.compile("^\\?([^\\s]+) ?(.*)", Pattern.CASE_INSENSITIVE);
     public List<String> prefixes = new ArrayList<>();
 
-    public static final String ANNOUNCEMENT_CHANNEL_ID = "318098998047277057";
-    public static final String GENERAL_CHANNEL_ID = "266649217538195457";
-    public static final String LOG_CHANNEL_ID = "281021113440534528";
+    public static final long HOME_GUILD_ID = 266649217538195457l;
+    public static final long ANNOUNCEMENT_CH_ID = 318098998047277057l;
+    public static final long GENERAL_CH_ID = 266649217538195457l;
+    public static final long SERVERLOG_CH_ID = 281021113440534528l;
+    public static final long MESSAGELOG_CH_ID = 347078737726275605l;
+    public static final long STAFF_CH_ID = 266651712826114048l;
+    public static final long ADMIN_CH_ID = 285470408709373954l;
+    public static final long DEV_CH_ID = 277587347443286016l;
+
+    public static final long ERRORLOG_CH_ID = 346104666796589056l;
+    public static final long BOTLOG_CH_ID = 346483682376286208l;
+    public static final long BOTPM_CH_ID = 346104720903110656l;
 
     private long startTime;
 
     public static void main(String[] args) {
-        new TheOfficialBot();
+        new OfficialBot();
     }
 
-    public TheOfficialBot() {
+    public OfficialBot() {
 
         instance = this;
         registerAllCommands();
 
         //instantiate config manager first as connect() relies on tokens
         configManager = new ConfigManager(this);
-        prefixes.add(TheOfficialBot.getPrefix());
+        prefixes.add(OfficialBot.getPrefix());
         prefixes.add("t!");
         prefixes.add("!");
         prefixes.add("!g");
@@ -155,7 +163,7 @@ public class TheOfficialBot {
                     .withAuthorIcon(getAvatar(message.getAuthor()))
                     .withDesc(message.getContent());
 
-            Util.sendEmbed(client.getChannelByID(346104720903110656l), bld.build());
+            Util.sendEmbed(client.getChannelByID(BOTPM_CH_ID), bld.build());
         } else {
             censorMessages(message);
 
@@ -190,7 +198,7 @@ public class TheOfficialBot {
     }
 
     public static IGuild getHomeGuild() {
-        homeGuild = getClient().getGuildByID(Long.parseLong(configManager.getConfigValue("HOMESERVER_ID")));
+        IGuild homeGuild;homeGuild = getClient().getGuildByID(HOME_GUILD_ID);
         return homeGuild;
     }
 
@@ -235,13 +243,13 @@ public class TheOfficialBot {
         return (hours < 10 ? "0" + hours : hours) + "h " + (minutes < 10 ? "0" + minutes : minutes) + "m " + (seconds < 10 ? "0" + seconds : seconds) + "s";
     }
 
-    public static TheOfficialBot getInstance() {
+    public static OfficialBot getInstance() {
         return instance;
     }
 
     //checks for dirty words
     public void censorMessages(IMessage message) {
-        List<String> bannedWords = TheOfficialBot.getInstance().getConfigManager().getConfigArray("bannedWords");
+        List<String> bannedWords = OfficialBot.getInstance().getConfigManager().getConfigArray("bannedWords");
         String content = message.getFormattedContent().toLowerCase();
         Boolean tripped = false;
         for (String word : bannedWords) {
@@ -262,7 +270,7 @@ public class TheOfficialBot {
                     .withTimestamp(System.currentTimeMillis())
                     .withFooterText("Auto-deleted from #" + message.getChannel().getName());
 
-            Util.sendEmbed(message.getGuild().getChannelByID(Long.parseLong("266651712826114048")), bld.withColor(161, 61, 61).build());
+            Util.sendEmbed(message.getGuild().getChannelByID(STAFF_CH_ID), bld.withColor(161, 61, 61).build());
             Util.sendPrivateMessage(author, "Your message has been automatically removed for a banned word or something");
 
             messageCache.add(message.getLongID());

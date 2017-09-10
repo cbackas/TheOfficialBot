@@ -1,6 +1,6 @@
 package cback.commands;
 
-import cback.TheOfficialBot;
+import cback.OfficialBot;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IMessage;
@@ -19,6 +19,6 @@ public interface Command {
 
     List<Long> getPermissions();
 
-    void execute(IMessage message, String content, String[] args,IUser author, IGuild guild, List<Long> roleIDs, boolean isPrivate, IDiscordClient client, TheOfficialBot bot);
+    void execute(IMessage message, String content, String[] args,IUser author, IGuild guild, List<Long> roleIDs, boolean isPrivate, IDiscordClient client, OfficialBot bot);
 }
 

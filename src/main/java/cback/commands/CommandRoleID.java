@@ -1,7 +1,7 @@
 package cback.commands;
 
 import cback.OfficialRoles;
-import cback.TheOfficialBot;
+import cback.OfficialBot;
 import cback.Util;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.obj.IGuild;
@@ -41,7 +41,7 @@ public class CommandRoleID implements Command {
     }
 
     @Override
-    public void execute(IMessage message, String content, String[] args, IUser author, IGuild guild, List<Long> roleIDs, boolean isPrivate, IDiscordClient client, TheOfficialBot bot) {
+    public void execute(IMessage message, String content, String[] args, IUser author, IGuild guild, List<Long> roleIDs, boolean isPrivate, IDiscordClient client, OfficialBot bot) {
         if (args.length == 1) {
             String roleName = Arrays.stream(args).collect(Collectors.joining(" "));
             List<IRole> serverRoles = guild.getRoles();

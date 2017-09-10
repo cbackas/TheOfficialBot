@@ -1,6 +1,6 @@
 package cback.events;
 
-import cback.TheOfficialBot;
+import cback.OfficialBot;
 import cback.Util;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.api.events.EventSubscriber;
@@ -13,9 +13,9 @@ import java.util.EnumSet;
 import java.util.List;
 
 public class ChannelChange {
-    private TheOfficialBot bot;
+    private OfficialBot bot;
 
-    public ChannelChange(TheOfficialBot bot) {
+    public ChannelChange(OfficialBot bot) {
         this.bot = bot;
     }
 
@@ -44,9 +44,9 @@ public class ChannelChange {
 
     @EventSubscriber //New Channel
     public void newChannel(ChannelCreateEvent event) {
-        if (event.getGuild().getStringID().equals(TheOfficialBot.getHomeGuild().getStringID())) {
+        if (event.getGuild().getStringID().equals(OfficialBot.getHomeGuild().getStringID())) {
             //Set muted role
-            IGuild guild = TheOfficialBot.getHomeGuild();
+            IGuild guild = OfficialBot.getHomeGuild();
             IRole muted = guild.getRoleByID(Long.parseLong("281022564002824192"));
             try {
                 event.getChannel().overrideRolePermissions(muted, EnumSet.noneOf(Permissions.class), EnumSet.of(Permissions.SEND_MESSAGES));

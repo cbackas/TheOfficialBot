@@ -13,7 +13,6 @@ import sx.blah.discord.util.*;
 
 import java.awt.*;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -22,9 +21,8 @@ import java.util.regex.Pattern;
 public class Util {
     private static final Pattern USER_MENTION_PATTERN = Pattern.compile("^<@!?(\\d+)>$");
 
-    static IDiscordClient client = TheOfficialBot.getClient();
-    static ConfigManager cm = TheOfficialBot.getConfigManager();
-    static Color BOT_COLOR = TheOfficialBot.getBotColor();
+    static IDiscordClient client = OfficialBot.getClient();
+    static Color BOT_COLOR = OfficialBot.getBotColor();
 
     public static void sendMessage(IChannel channel, String message) {
         try {
@@ -37,7 +35,7 @@ public class Util {
     public static IMessage sendEmbed(IChannel channel, EmbedObject embedObject) {
         RequestBuffer.RequestFuture<IMessage> future = RequestBuffer.request(() -> {
             try {
-                return new MessageBuilder(TheOfficialBot.getInstance().getClient()).withEmbed(embedObject)
+                return new MessageBuilder(OfficialBot.getInstance().getClient()).withEmbed(embedObject)
                         .withChannel(channel).send();
             } catch (Exception e) {
                 reportHome(e);
@@ -100,8 +98,8 @@ public class Util {
 
     public static void sendAnnouncement(String message) {
         try {
-            Util.sendMessage(TheOfficialBot.getInstance().getClient().getChannelByID(Long.parseLong(TheOfficialBot.GENERAL_CHANNEL_ID)), message);
-            Util.sendMessage(TheOfficialBot.getInstance().getClient().getChannelByID(Long.parseLong(TheOfficialBot.ANNOUNCEMENT_CHANNEL_ID)), message);
+            Util.sendMessage(OfficialBot.getInstance().getClient().getChannelByID(OfficialBot.GENERAL_CH_ID), message);
+            Util.sendMessage(OfficialBot.getInstance().getClient().getChannelByID(OfficialBot.ANNOUNCEMENT_CH_ID), message);
         } catch (Exception e) {
             reportHome(e);
         }
@@ -132,9 +130,9 @@ public class Util {
 
                 embed.withTimestamp(System.currentTimeMillis());
 
-                IDiscordClient client = TheOfficialBot.getInstance().getClient();
+                IDiscordClient client = OfficialBot.getInstance().getClient();
                 return new MessageBuilder(client).withEmbed(embed.withColor(Color.GRAY).build())
-                        .withChannel(client.getChannelByID(Long.parseLong(TheOfficialBot.LOG_CHANNEL_ID))).send();
+                        .withChannel(client.getChannelByID(OfficialBot.SERVERLOG_CH_ID)).send();
             } catch (Exception e) {
                 reportHome(e);
             }
@@ -158,9 +156,9 @@ public class Util {
 
                 embed.withTimestamp(System.currentTimeMillis());
 
-                IDiscordClient client = TheOfficialBot.getInstance().getClient();
+                IDiscordClient client = OfficialBot.getInstance().getClient();
                 return new MessageBuilder(client).withEmbed(embed.withColor(color).build())
-                        .withChannel(client.getChannelByID(Long.parseLong(TheOfficialBot.LOG_CHANNEL_ID))).send();
+                        .withChannel(client.getChannelByID(OfficialBot.SERVERLOG_CH_ID)).send();
             } catch (Exception e) {
                 reportHome(e);
             }
@@ -172,9 +170,9 @@ public class Util {
     //EMBEDBUILDER STUFF
     public static EmbedBuilder getEmbed() {
         return new EmbedBuilder()
-                .withAuthorIcon(getAvatar(TheOfficialBot.getInstance().getClient().getOurUser()))
+                .withAuthorIcon(getAvatar(OfficialBot.getInstance().getClient().getOurUser()))
                 .withAuthorUrl("https://github.com/cback")
-                .withAuthorName(getTag(TheOfficialBot.getInstance().getClient().getOurUser()));
+                .withAuthorName(getTag(OfficialBot.getInstance().getClient().getOurUser()));
     }
 
     /**
@@ -192,19 +190,18 @@ public class Util {
     public static String getAvatar(IUser user) {
         return user.getAvatar() != null ? user.getAvatarURL() : "https://discordapp.com/assets/322c936a8c8be1b803cd94861bdfa868.png";
     }
-    //END EMBED BUILDER STUFF
 
     public static int getCurrentTime() {
         return Math.toIntExact(System.currentTimeMillis() / 1000);
     }
 
     public static String requestUsernameByID(String id) {
-        IDiscordClient client = TheOfficialBot.getInstance().getClient();
+        IDiscordClient client = OfficialBot.getInstance().getClient();
 
         RequestBuffer.RequestFuture<String> userNameResult = RequestBuffer.request(() -> {
             try {
                 byte[] result = ((DiscordClientImpl) client).REQUESTS.GET.makeRequest(DiscordEndpoints.USERS + id,
-                        new BasicNameValuePair("authorization", TheOfficialBot.getInstance().getClient().getToken()));
+                        new BasicNameValuePair("authorization", OfficialBot.getInstance().getClient().getToken()));
                 System.out.println(result);
                 return DiscordUtils.MAPPER.readValue(result, UserObject.class).username;
             } catch (IOException | DiscordException e) {
@@ -220,35 +217,7 @@ public class Util {
     public static IUser getUserFromMentionArg(String arg) {
         Matcher matcher = USER_MENTION_PATTERN.matcher(arg);
         if (matcher.matches()) {
-            return TheOfficialBot.getInstance().getClient().getUserByID(Long.parseLong(matcher.group(1)));
-        }
-        return null;
-    }
-
-    public static List<IUser> getUsersByRole(String roleID) {
-        try {
-            IGuild guild = TheOfficialBot.getInstance().getClient().getGuildByID(Long.parseLong("192441520178200577"));
-            IRole role = guild.getRoleByID(Long.parseLong(roleID));
-
-            if (role != null) {
-                List<IUser> allUsers = guild.getUsers();
-                List<IUser> ourUsers = new ArrayList<>();
-
-
-                for (IUser u : allUsers) {
-                    List<IRole> userRoles = u.getRolesForGuild(guild);
-
-                    if (userRoles.contains(role)) {
-                        ourUsers.add(u);
-                    }
-                }
-
-                return ourUsers;
-
-            }
-
-        } catch (Exception e) {
-            reportHome(e);
+            return OfficialBot.getInstance().getClient().getUserByID(Long.parseLong(matcher.group(1)));
         }
         return null;
     }
@@ -259,7 +228,7 @@ public class Util {
     public static void reportHome(IMessage message, Exception e) {
         e.printStackTrace();
 
-        IChannel errorChannel = client.getChannelByID(Long.parseLong(cm.getConfigValue("ERORRLOG_ID")));
+        IChannel errorChannel = client.getChannelByID(OfficialBot.ERRORLOG_CH_ID);
 
         EmbedBuilder bld = new EmbedBuilder()
                 .withColor(BOT_COLOR)
@@ -291,7 +260,7 @@ public class Util {
     public static void reportHome(Exception e) {
         e.printStackTrace();
 
-        IChannel errorChannel = client.getChannelByID(Long.parseLong(cm.getConfigValue("ERORRLOG_ID")));
+        IChannel errorChannel = client.getChannelByID(OfficialBot.ERRORLOG_CH_ID);
 
         EmbedBuilder bld = new EmbedBuilder()
                 .withColor(BOT_COLOR)
@@ -320,7 +289,7 @@ public class Util {
      */
     public static void botLog(IMessage message) {
         try {
-            IChannel botLogChannel = client.getChannelByID(Long.parseLong(cm.getConfigValue("COMMANDLOG_ID")));
+            IChannel botLogChannel = client.getChannelByID(OfficialBot.BOTLOG_CH_ID);
 
             EmbedBuilder bld = new EmbedBuilder()
                     .withColor(BOT_COLOR)
@@ -345,7 +314,7 @@ public class Util {
                     .withAuthorName(command.getName())
                     .withAuthorIcon(client.getApplicationIconURL())
                     .withDesc(command.getDescription())
-                    .appendField("Syntax:", TheOfficialBot.getPrefix() + command.getSyntax(), false);
+                    .appendField("Syntax:", OfficialBot.getPrefix() + command.getSyntax(), false);
 
             sendEmbed(message.getChannel(), bld.build());
         } catch (Exception e) {
@@ -363,24 +332,4 @@ public class Util {
     public static void simpleEmbed(IChannel channel, String message, Color color) {
         sendEmbed(channel, new EmbedBuilder().withDescription(message).withColor(color).build());
     }
-
-    /**
-     * Returns IChannels
-     */
-    public static IChannel getServerLogChannel() {
-        IChannel channel = client.getChannelByID(Long.parseLong(cm.getConfigValue("SERVERLOG_ID")));
-        if (channel != null) {
-            return channel;
-        }
-        return null;
-    }
-
-    public static IChannel getMessageLogsChannel() {
-        IChannel channel = client.getChannelByID(Long.parseLong(cm.getConfigValue("MESSAGELOGS_ID")));
-        if (channel != null) {
-            return channel;
-        }
-        return null;
-    }
-
 }

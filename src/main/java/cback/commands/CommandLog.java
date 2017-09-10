@@ -1,7 +1,7 @@
 package cback.commands;
 
+import cback.OfficialBot;
 import cback.OfficialRoles;
-import cback.TheOfficialBot;
 import cback.Util;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.obj.IGuild;
@@ -38,11 +38,11 @@ public class CommandLog implements Command {
     }
 
     @Override
-    public void execute(IMessage message, String content, String[] args, IUser author, IGuild guild, List<Long> roleIDs, boolean isPrivate, IDiscordClient client, TheOfficialBot bot) {
+    public void execute(IMessage message, String content, String[] args, IUser author, IGuild guild, List<Long> roleIDs, boolean isPrivate, IDiscordClient client, OfficialBot bot) {
         if (args.length >= 1) {
             String finalText = message.getFormattedContent().split(" ", 2)[1];
             Util.sendLog(message, finalText);
-            Util.simpleEmbed(message.getChannel(), "Log added. " + guild.getChannelByID(Long.parseLong(TheOfficialBot.LOG_CHANNEL_ID)).mention());
+            Util.simpleEmbed(message.getChannel(), "Log added. " + guild.getChannelByID(OfficialBot.SERVERLOG_CH_ID).mention());
             Util.deleteMessage(message);
         } else {
             Util.syntaxError(this, message);

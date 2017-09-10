@@ -1,7 +1,7 @@
 package cback.commands;
 
+import cback.OfficialBot;
 import cback.OfficialRoles;
-import cback.TheOfficialBot;
 import cback.Util;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.obj.IGuild;
@@ -39,7 +39,7 @@ public class CommandCensor implements Command {
     }
 
     @Override
-    public void execute(IMessage message, String content, String[] args, IUser author, IGuild guild, List<Long> roleIDs, boolean isPrivate, IDiscordClient client, TheOfficialBot bot) {
+    public void execute(IMessage message, String content, String[] args, IUser author, IGuild guild, List<Long> roleIDs, boolean isPrivate, IDiscordClient client, OfficialBot bot) {
         EmbedBuilder bld = new EmbedBuilder();
         List<String> bannedWords = bot.getConfigManager().getConfigArray("bannedWords");
 
@@ -77,6 +77,6 @@ public class CommandCensor implements Command {
             bld.appendField(getSyntax(), getDescription(), false);
         }
 
-        Util.sendEmbed(message.getChannel(), bld.withColor(TheOfficialBot.getBotColor()).build());
+        Util.sendEmbed(message.getChannel(), bld.withColor(OfficialBot.getBotColor()).build());
     }
 }

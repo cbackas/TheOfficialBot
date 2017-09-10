@@ -1,7 +1,7 @@
 package cback.commands;
 
+import cback.OfficialBot;
 import cback.OfficialRoles;
-import cback.TheOfficialBot;
 import cback.Util;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.obj.IGuild;
@@ -38,7 +38,7 @@ public class CommandAnnounce implements Command {
     }
 
     @Override
-    public void execute(IMessage message, String content, String[] args, IUser author, IGuild guild, List<Long> roleIDs, boolean isPrivate, IDiscordClient client, TheOfficialBot bot) {
+    public void execute(IMessage message, String content, String[] args, IUser author, IGuild guild, List<Long> roleIDs, boolean isPrivate, IDiscordClient client, OfficialBot bot) {
             String announcement = message.getContent().split(" ", 2)[1];
             Util.sendAnnouncement(announcement);
             Util.deleteMessage(message);

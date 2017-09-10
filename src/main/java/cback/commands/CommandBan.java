@@ -1,7 +1,7 @@
 package cback.commands;
 
+import cback.OfficialBot;
 import cback.OfficialRoles;
-import cback.TheOfficialBot;
 import cback.Util;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.obj.*;
@@ -41,7 +41,7 @@ public class CommandBan implements Command {
     }
 
     @Override
-    public void execute(IMessage message, String content, String[] args, IUser author, IGuild guild, List<Long> roleIDs, boolean isPrivate, IDiscordClient client, TheOfficialBot bot) {
+    public void execute(IMessage message, String content, String[] args, IUser author, IGuild guild, List<Long> roleIDs, boolean isPrivate, IDiscordClient client, OfficialBot bot) {
         if (args.length >= 1) {
             try {
                 PermissionUtils.hasPermissions(message.getChannel(), message.getAuthor(), EnumSet.of(Permissions.BAN));
@@ -58,7 +58,7 @@ public class CommandBan implements Command {
                             try {
                                 guild.banUser(user, 1);
                                 Util.sendLog(message, "Banned " + user.getDisplayName(guild) + "\n**Reason:** " + reason, Color.red);
-                                Util.simpleEmbed(message.getChannel(), user.getDisplayName(guild) + " has been banned. Check " + guild.getChannelByID(Long.parseLong(TheOfficialBot.LOG_CHANNEL_ID)).mention() + " for more info.");
+                                Util.simpleEmbed(message.getChannel(), user.getDisplayName(guild) + " has been banned. Check " + guild.getChannelByID(OfficialBot.SERVERLOG_CH_ID).mention() + " for more info.");
                             } catch (Exception e) {
                                 Util.simpleEmbed(message.getChannel(), "Error running " + this.getName() + " - error recorded");
                                 Util.reportHome(message, e);

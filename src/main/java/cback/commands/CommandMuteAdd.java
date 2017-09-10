@@ -1,7 +1,7 @@
 package cback.commands;
 
 import cback.OfficialRoles;
-import cback.TheOfficialBot;
+import cback.OfficialBot;
 import cback.Util;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.obj.IGuild;
@@ -41,7 +41,7 @@ public class CommandMuteAdd implements Command {
     }
 
     @Override
-    public void execute(IMessage message, String content, String[] args, IUser author, IGuild guild, List<Long> roleIDs, boolean isPrivate, IDiscordClient client, TheOfficialBot bot) {
+    public void execute(IMessage message, String content, String[] args, IUser author, IGuild guild, List<Long> roleIDs, boolean isPrivate, IDiscordClient client, OfficialBot bot) {
         List<String> mutedUsers = bot.getConfigManager().getConfigArray("muted");
 
         if (args[0].equalsIgnoreCase("list")) {
@@ -88,7 +88,7 @@ public class CommandMuteAdd implements Command {
                     } else {
                         try {
                             userInput.addRole(guild.getRoleByID(Long.parseLong("281022564002824192")));
-                            Util.simpleEmbed(message.getChannel(), userInput.getDisplayName(guild) + " has been muted. Check " + guild.getChannelByID(Long.parseLong(TheOfficialBot.LOG_CHANNEL_ID)).mention() + " for more info.");
+                            Util.simpleEmbed(message.getChannel(), userInput.getDisplayName(guild) + " has been muted. Check " + guild.getChannelByID(OfficialBot.SERVERLOG_CH_ID).mention() + " for more info.");
 
                             if (!mutedUsers.contains(u)) {
                                 mutedUsers.add(u);

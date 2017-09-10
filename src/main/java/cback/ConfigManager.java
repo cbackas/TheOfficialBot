@@ -12,7 +12,7 @@ import java.util.*;
 
 public class ConfigManager {
 
-    private TheOfficialBot bot;
+    private OfficialBot bot;
 
     private File configFile;
     private JSONObject configJson;
@@ -27,14 +27,9 @@ public class ConfigManager {
         defaultConfig.put("muted", new ArrayList<String>());
         defaultConfig.put("bannedWords", new ArrayList<String>());
         defaultConfig.put("bot_color", "a13d3d");
-        defaultConfig.put("HOMESERVER_ID", "266649217538195457");
-        defaultConfig.put("COMMANDLOG_ID", "ID"); // Hub channel
-        defaultConfig.put("ERORRLOG_ID", "ID"); // Hub channel
-        defaultConfig.put("SERVERLOG_ID", "ID"); // Home channel
-        defaultConfig.put("MESSAGELOGS_ID", "ID"); // Home channel
     }
 
-    public ConfigManager(TheOfficialBot bot) {
+    public ConfigManager(OfficialBot bot) {
         this.bot = bot;
         initConfig();
     }
@@ -131,7 +126,7 @@ public class ConfigManager {
 
     static {
         try {
-            botPath = new File(TheOfficialBot.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getParentFile();
+            botPath = new File(OfficialBot.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getParentFile();
         } catch (URISyntaxException e) {
             e.printStackTrace();
             Util.reportHome(e);
