@@ -39,7 +39,6 @@ public class CommandTrigger implements Command {
     public void execute(IMessage message, String content, String[] args, IUser author, IGuild guild, List<Long> roleIDs, boolean isPrivate, IDiscordClient client, TheOfficialBot bot) {
         if (message.getAuthor().getStringID().equals("73416411443113984")) {
             try {
-                System.out.println(TheOfficialBot.getHomeGuild().getStringID());
             } catch (Exception e) {
                 Util.reportHome(message, e);
             }

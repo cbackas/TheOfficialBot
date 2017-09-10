@@ -29,7 +29,6 @@ import java.util.stream.Collectors;
 
 import static cback.Util.getAvatar;
 
-@SuppressWarnings("FieldCanBeLocal")
 public class TheOfficialBot {
 
     private static TheOfficialBot instance;
