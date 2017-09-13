@@ -19,13 +19,14 @@ public class MessageChange {
         this.bot = bot;
     }
 
+    private final IChannel MESSAGE_LOGS = bot.getClient().getChannelByID(OfficialBot.MESSAGELOG_CH_ID);
+
     @EventSubscriber
     public void messageDeleted(MessageDeleteEvent event) {
         if (event.getGuild().getStringID().equals(OfficialBot.getHomeGuild().getStringID()) && event.getMessage() != null) {
-            if (!event.getAuthor().isBot() && !bot.getMessageCache().contains(event.getMessageID())) {
+            if (!event.getAuthor().isBot() && !OfficialBot.messageCache.contains(event.getMessageID())) {
                 if (event.getChannel().getLongID() != OfficialBot.STAFF_CH_ID && event.getChannel().getLongID() != OfficialBot.ADMIN_CH_ID && event.getChannel().getLongID() != OfficialBot.DEV_CH_ID) {
-                    bot.getMessageCache().remove(event.getMessageID());
-                    IChannel MESSAGE_LOGS = event.getClient().getChannelByID(OfficialBot.MESSAGELOG_CH_ID);
+                    OfficialBot.messageCache.remove(event.getMessageID());
                     IMessage message = event.getMessage();
                     IUser author = event.getAuthor();
                     IChannel channel = event.getChannel();
@@ -57,8 +58,6 @@ public class MessageChange {
     public void messageEdited(MessageUpdateEvent event) {
         if (event.getGuild().getStringID().equals(OfficialBot.getHomeGuild().getStringID()) && event.getMessage() != null) {
             if (!event.getAuthor().isBot()) {
-                ConfigManager cm = bot.getConfigManager();
-                IChannel MESSAGE_LOGS = event.getClient().getChannelByID(Long.parseLong(cm.getConfigValue("MESSAGELOGS_ID")));
                 IMessage message = event.getMessage();
                 IMessage oldMessage = event.getOldMessage();
                 IMessage newMessage = event.getNewMessage();
@@ -83,8 +82,6 @@ public class MessageChange {
     @EventSubscriber
     public void nicknameChange(NicknameChangedEvent event) {
         if (event.getGuild().getStringID().equals(OfficialBot.getHomeGuild().getStringID())) {
-            ConfigManager cm = bot.getConfigManager();
-            IChannel MESSAGE_LOGS = event.getClient().getChannelByID(Long.parseLong(cm.getConfigValue("MESSAGELOGS_ID")));
             IUser user = event.getUser();
 
             String oldName = event.getUser().getName();
