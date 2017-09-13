@@ -1,6 +1,5 @@
 package cback.events;
 
-import cback.ConfigManager;
 import cback.OfficialBot;
 import cback.Util;
 import sx.blah.discord.api.events.EventSubscriber;
@@ -18,8 +17,6 @@ public class MessageChange {
     public MessageChange(OfficialBot bot) {
         this.bot = bot;
     }
-
-    private final IChannel MESSAGE_LOGS = bot.getClient().getChannelByID(OfficialBot.MESSAGELOG_CH_ID);
 
     @EventSubscriber
     public void messageDeleted(MessageDeleteEvent event) {
@@ -47,6 +44,7 @@ public class MessageChange {
                                 .withTimestamp(System.currentTimeMillis())
                                 .withColor(OfficialBot.getBotColor());
 
+                        IChannel MESSAGE_LOGS = event.getClient().getChannelByID(OfficialBot.MESSAGELOG_CH_ID);
                         Util.sendEmbed(MESSAGE_LOGS, bld.build());
                     }
                 }
@@ -74,6 +72,7 @@ public class MessageChange {
                         .withFooterText("ID: " + message.getStringID())
                         .withTimestamp(System.currentTimeMillis());
 
+                IChannel MESSAGE_LOGS = event.getClient().getChannelByID(OfficialBot.MESSAGELOG_CH_ID);
                 Util.sendEmbed(MESSAGE_LOGS, bld.build());
             }
         }
@@ -104,6 +103,7 @@ public class MessageChange {
                     .withFooterText("ID: " + user.getStringID())
                     .withTimestamp(System.currentTimeMillis());
 
+            IChannel MESSAGE_LOGS = event.getClient().getChannelByID(OfficialBot.MESSAGELOG_CH_ID);
             Util.sendEmbed(MESSAGE_LOGS, bld.build());
         }
     }
