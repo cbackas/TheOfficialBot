@@ -193,6 +193,10 @@ public class OfficialBot {
         return configManager;
     }
 
+    public static OfficialBot getInstance() {
+        return instance;
+    }
+
     public static IDiscordClient getClient() {
         return client;
     }
@@ -237,10 +241,6 @@ public class OfficialBot {
         long minutes = (totalSeconds / 60) % 60;
         long hours = (totalSeconds / 3600);
         return (hours < 10 ? "0" + hours : hours) + "h " + (minutes < 10 ? "0" + minutes : minutes) + "m " + (seconds < 10 ? "0" + seconds : seconds) + "s";
-    }
-
-    public static OfficialBot getInstance() {
-        return instance;
     }
 
     //checks for dirty words

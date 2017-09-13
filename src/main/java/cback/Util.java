@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
 public class Util {
     private static final Pattern USER_MENTION_PATTERN = Pattern.compile("^<@!?(\\d+)>$");
 
-    static IDiscordClient client = OfficialBot.getClient();
+    static IDiscordClient client = OfficialBot.getInstance().getClient();
     static Color BOT_COLOR = OfficialBot.getBotColor();
 
     public static void sendMessage(IChannel channel, String message) {
