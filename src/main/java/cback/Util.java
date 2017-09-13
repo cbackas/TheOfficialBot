@@ -296,7 +296,8 @@ public class Util {
                     .withAuthorName(message.getAuthor().getName() + '#' + message.getAuthor().getDiscriminator())
                     .withAuthorIcon(getAvatar(message.getAuthor()))
                     .withDesc(message.getFormattedContent())
-                    .withFooterText(message.getGuild().getName() + "/#" + message.getChannel().getName());
+                    .withFooterText(message.getGuild().getName() + "/#" + message.getChannel().getName())
+                    .withTimestamp(System.currentTimeMillis());
 
             sendEmbed(botLogChannel, bld.build());
         } catch (Exception e) {
