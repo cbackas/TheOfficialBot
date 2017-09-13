@@ -56,7 +56,7 @@ public class CommandBan implements Command {
                             Util.simpleEmbed(message.getChannel(), "You're gonna have to try harder than that.");
                         } else {
                             try {
-                                guild.banUser(user, 1);
+                                guild.banUser(user, reason, 1);
                                 Util.sendLog(message, "Banned " + user.getDisplayName(guild) + "\n**Reason:** " + reason, Color.red);
                                 Util.simpleEmbed(message.getChannel(), user.getDisplayName(guild) + " has been banned. Check " + guild.getChannelByID(OfficialBot.SERVERLOG_CH_ID).mention() + " for more info.");
                             } catch (Exception e) {
