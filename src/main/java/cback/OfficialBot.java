@@ -45,6 +45,8 @@ public class OfficialBot {
     private static final Pattern COMMAND_PATTERN = Pattern.compile("^\\?([^\\s]+) ?(.*)", Pattern.CASE_INSENSITIVE);
     public List<String> prefixes = new ArrayList<>();
 
+    public static final long CBACK_USR_ID = 73416411443113984l;
+
     public static final long HOME_GUILD_ID = 266649217538195457l;
     public static final long ANNOUNCEMENT_CH_ID = 318098998047277057l;
     public static final long GENERAL_CH_ID = 266649217538195457l;
@@ -129,27 +131,29 @@ public class OfficialBot {
                     .filter(com -> com.getName().equalsIgnoreCase(baseCommand) || (com.getAliases() != null && com.getAliases().contains(baseCommand)))
                     .findAny();
             if (command.isPresent()) {
-                System.out.println("@" + message.getAuthor().getName() + " issued \"" + text + "\" in " +
-                        (isPrivate ? ("@" + message.getAuthor().getName()) : guild.getName()));
-
-                String args = matcher.group(2);
-                String[] argsArr = args.isEmpty() ? new String[0] : args.split(" ");
-
-                List<Long> roleIDs = message.getAuthor().getRolesForGuild(guild).stream().map(role -> role.getLongID()).collect(Collectors.toList());
-
-                IUser author = message.getAuthor();
-                String content = message.getContent();
-
                 Command cCommand = command.get();
 
-                /**
-                 * If user has permission to run the command: Command executes and botlogs
-                 */
-                if (cCommand.getPermissions() == null || !Collections.disjoint(roleIDs, cCommand.getPermissions())) {
-                    Util.botLog(message);
-                    cCommand.execute(message, content, argsArr, author, guild, roleIDs, isPrivate, client, this);
-                } else {
-                    Util.simpleEmbed(message.getChannel(), "You don't have permission to perform this command.");
+                if (cCommand.getDescription() != null || message.getAuthor().getLongID() == CBACK_USR_ID) {
+                    System.out.println("@" + message.getAuthor().getName() + " issued \"" + text + "\" in " +
+                            (isPrivate ? ("@" + message.getAuthor().getName()) : guild.getName()));
+
+                    String args = matcher.group(2);
+                    String[] argsArr = args.isEmpty() ? new String[0] : args.split(" ");
+
+                    List<Long> roleIDs = message.getAuthor().getRolesForGuild(guild).stream().map(role -> role.getLongID()).collect(Collectors.toList());
+
+                    IUser author = message.getAuthor();
+                    String content = message.getContent();
+
+                    /**
+                     * If user has permission to run the command: Command executes and botlogs
+                     */
+                    if (cCommand.getPermissions() == null || !Collections.disjoint(roleIDs, cCommand.getPermissions())) {
+                        Util.botLog(message);
+                        cCommand.execute(message, content, argsArr, author, guild, roleIDs, isPrivate, client, this);
+                    } else {
+                        Util.simpleEmbed(message.getChannel(), "You don't have permission to perform this command.");
+                    }
                 }
             }
             /**
