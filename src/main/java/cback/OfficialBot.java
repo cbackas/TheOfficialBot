@@ -268,9 +268,10 @@ public class OfficialBot {
                         .withAuthorName(Util.getTag(author))
                         .withDesc(message.getFormattedContent())
                         .withTimestamp(System.currentTimeMillis())
-                        .withFooterText("Auto-deleted from #" + message.getChannel().getName());
+                        .withFooterText("Auto-deleted from #" + message.getChannel().getName())
+                        .withColor(Util.BOT_COLOR);
 
-                Util.sendEmbed(message.getGuild().getChannelByID(STAFF_CH_ID), bld.withColor(161, 61, 61).build());
+                Util.sendEmbed(message.getGuild().getChannelByID(STAFF_CH_ID), bld.build());
                 Util.sendPrivateMessage(author, "Your message has been automatically removed for a banned word or something");
 
                 messageCache.add(message.getLongID());
