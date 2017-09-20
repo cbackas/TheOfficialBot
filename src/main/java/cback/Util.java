@@ -37,7 +37,7 @@ public class Util {
             try {
                 return new MessageBuilder(OfficialBot.getInstance().getClient()).withEmbed(embedObject)
                         .withChannel(channel).send();
-            } catch (Exception e) {
+            } catch (MissingPermissionsException | DiscordException e) {
                 reportHome(e);
             }
             return null;
@@ -133,7 +133,7 @@ public class Util {
                 IDiscordClient client = OfficialBot.getInstance().getClient();
                 return new MessageBuilder(client).withEmbed(embed.withColor(Color.GRAY).build())
                         .withChannel(client.getChannelByID(OfficialBot.SERVERLOG_CH_ID)).send();
-            } catch (Exception e) {
+            } catch (MissingPermissionsException | DiscordException e) {
                 reportHome(e);
             }
             return null;
@@ -159,7 +159,7 @@ public class Util {
                 IDiscordClient client = OfficialBot.getInstance().getClient();
                 return new MessageBuilder(client).withEmbed(embed.withColor(color).build())
                         .withChannel(client.getChannelByID(OfficialBot.SERVERLOG_CH_ID)).send();
-            } catch (Exception e) {
+            } catch (MissingPermissionsException | DiscordException e) {
                 reportHome(e);
             }
             return null;
