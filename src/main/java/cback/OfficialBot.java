@@ -248,33 +248,35 @@ public class OfficialBot {
 
     //checks for dirty words
     public void censorMessages(IMessage message) {
-        List<String> bannedWords = OfficialBot.getInstance().getConfigManager().getConfigArray("bannedWords");
-        String content = message.getFormattedContent().toLowerCase();
-        Boolean tripped = false;
-        for (String word : bannedWords) {
-            if (content.matches(".*\\b" + word + "\\b.*") || content.matches(".*\\b" + word + "s\\b.*")) {
-                tripped = true;
-                break;
+        if (message.getGuild().getStringID().equals(getHomeGuild().getStringID())) {
+            List<String> bannedWords = OfficialBot.getInstance().getConfigManager().getConfigArray("bannedWords");
+            String content = message.getFormattedContent().toLowerCase();
+            Boolean tripped = false;
+            for (String word : bannedWords) {
+                if (content.matches(".*\\b" + word + "\\b.*") || content.matches(".*\\b" + word + "s\\b.*")) {
+                    tripped = true;
+                    break;
+                }
             }
-        }
-        if (tripped) {
-            message.getChannel().setTypingStatus(true);
-            IUser author = message.getAuthor();
+            if (tripped) {
+                message.getChannel().setTypingStatus(true);
+                IUser author = message.getAuthor();
 
-            EmbedBuilder bld = new EmbedBuilder();
-            bld
-                    .withAuthorIcon(author.getAvatarURL())
-                    .withAuthorName(Util.getTag(author))
-                    .withDesc(message.getFormattedContent())
-                    .withTimestamp(System.currentTimeMillis())
-                    .withFooterText("Auto-deleted from #" + message.getChannel().getName());
+                EmbedBuilder bld = new EmbedBuilder();
+                bld
+                        .withAuthorIcon(author.getAvatarURL())
+                        .withAuthorName(Util.getTag(author))
+                        .withDesc(message.getFormattedContent())
+                        .withTimestamp(System.currentTimeMillis())
+                        .withFooterText("Auto-deleted from #" + message.getChannel().getName());
 
-            Util.sendEmbed(message.getGuild().getChannelByID(STAFF_CH_ID), bld.withColor(161, 61, 61).build());
-            Util.sendPrivateMessage(author, "Your message has been automatically removed for a banned word or something");
+                Util.sendEmbed(message.getGuild().getChannelByID(STAFF_CH_ID), bld.withColor(161, 61, 61).build());
+                Util.sendPrivateMessage(author, "Your message has been automatically removed for a banned word or something");
 
-            messageCache.add(message.getLongID());
-            message.delete();
-            message.getChannel().setTypingStatus(false);
+                messageCache.add(message.getLongID());
+                message.delete();
+                message.getChannel().setTypingStatus(false);
+            }
         }
     }
 
