@@ -19,15 +19,11 @@ import sx.blah.discord.util.DiscordException;
 import sx.blah.discord.util.EmbedBuilder;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.*;
 import java.util.List;
-import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-
-import static cback.Util.getAvatar;
 
 public class OfficialBot {
 
@@ -164,7 +160,7 @@ public class OfficialBot {
                     .withColor(getBotColor())
                     .withTimestamp(System.currentTimeMillis())
                     .withAuthorName(message.getAuthor().getName() + '#' + message.getAuthor().getDiscriminator())
-                    .withAuthorIcon(getAvatar(message.getAuthor()))
+                    .withAuthorIcon(message.getAuthor().getAvatarURL())
                     .withDesc(message.getContent());
 
             Util.sendEmbed(client.getChannelByID(BOTPM_CH_ID), bld.build());
