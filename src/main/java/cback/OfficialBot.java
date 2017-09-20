@@ -253,7 +253,7 @@ public class OfficialBot {
             String content = message.getFormattedContent().toLowerCase();
             Boolean tripped = false;
             for (String word : bannedWords) {
-                if (content.matches(".*\\b" + word + "\\b.*") || content.matches(".*\\b" + word + "s\\b.*")) {
+                if (content.matches("\\n?.*\\b\\n?" + word + "\\n?\\b.*\\n?.*") || content.matches("\\n?.*\\b\\n?" + word + "s\\n?\\b.*\\n?.*")) {
                     tripped = true;
                     break;
                 }
