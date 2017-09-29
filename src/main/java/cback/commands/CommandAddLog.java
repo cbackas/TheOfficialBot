@@ -11,7 +11,7 @@ import sx.blah.discord.handle.obj.IUser;
 import java.util.Arrays;
 import java.util.List;
 
-public class CommandLog implements Command {
+public class CommandAddLog implements Command {
     @Override
     public String getName() {
         return "addlog";
