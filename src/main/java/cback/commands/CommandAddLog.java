@@ -42,7 +42,11 @@ public class CommandAddLog implements Command {
         if (args.length >= 1) {
             String finalText = message.getFormattedContent().split(" ", 2)[1];
             Util.sendLog(message, finalText);
-            Util.simpleEmbed(message.getChannel(), "Log added. " + guild.getChannelByID(OfficialBot.SERVERLOG_CH_ID).mention());
+
+            if (message.getChannel().getLongID() != OfficialBot.SERVERLOG_CH_ID) {
+                Util.simpleEmbed(message.getChannel(), "Log added. " + guild.getChannelByID(OfficialBot.SERVERLOG_CH_ID).mention());
+            }
+
             Util.deleteMessage(message);
         } else {
             Util.syntaxError(this, message);
