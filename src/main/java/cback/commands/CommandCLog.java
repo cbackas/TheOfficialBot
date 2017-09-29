@@ -55,7 +55,7 @@ public class CommandCLog implements Command {
             Util.sendEmbed(client.getChannelByID(OfficialBot.SERVERCHANGELOG_CH_ID), embed.build());
 
             if (message.getChannel().getLongID() != OfficialBot.SERVERCHANGELOG_CH_ID) {
-                Util.simpleEmbed(message.getChannel(), "Log added. " + guild.getChannelByID(OfficialBot.SERVERLOG_CH_ID).mention());
+                Util.simpleEmbed(message.getChannel(), "ChangeLog added. " + guild.getChannelByID(OfficialBot.SERVERCHANGELOG_CH_ID).mention());
             }
 
             Util.deleteMessage(message);
