@@ -50,6 +50,7 @@ public class CommandCLog implements Command {
                     .withDesc(finalText)
                     .withFooterIcon(author.getAvatarURL())
                     .withFooterText(author.getDisplayName(guild))
+                    .withTimestamp(System.currentTimeMillis())
                     .withColor(Color.GREEN);
 
             Util.sendEmbed(client.getChannelByID(OfficialBot.SERVERCHANGELOG_CH_ID), embed.build());
