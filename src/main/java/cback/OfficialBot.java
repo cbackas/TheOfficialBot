@@ -4,6 +4,7 @@ import cback.commands.Command;
 import cback.events.ChannelChange;
 import cback.events.MemberChange;
 import cback.events.MessageChange;
+import cback.events.ReactionChange;
 import com.vdurmont.emoji.EmojiManager;
 import org.reflections.Reflections;
 import sx.blah.discord.api.ClientBuilder;
@@ -42,8 +43,8 @@ public class OfficialBot {
     public List<String> prefixes = new ArrayList<>();
 
     public static final long CBACK_USR_ID = 73416411443113984l;
-
     public static final long HOME_GUILD_ID = 266649217538195457l;
+
     public static final long ANNOUNCEMENT_CH_ID = 318098998047277057l;
     public static final long GENERAL_CH_ID = 266649217538195457l;
     public static final long SERVERLOG_CH_ID = 281021113440534528l;
@@ -82,6 +83,7 @@ public class OfficialBot {
         client.getDispatcher().registerListener(new ChannelChange(this));
         client.getDispatcher().registerListener(new MemberChange(this));
         client.getDispatcher().registerListener(new MessageChange(this));
+        client.getDispatcher().registerListener(new ReactionChange(this));
 
         scheduler = new Scheduler(this);
     }
