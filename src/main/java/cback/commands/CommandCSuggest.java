@@ -57,8 +57,21 @@ public class CommandCSuggest implements Command {
 
             IMessage sentMessage = Util.sendEmbed(client.getChannelByID(OfficialBot.SERVERCHANGELOG_CH_ID), embed.build());
 
-            RequestBuffer.request(() -> sentMessage.addReaction(EmojiManager.getByUnicode("\uD83D\uDCD7")));
-            RequestBuffer.request(() -> sentMessage.addReaction(EmojiManager.getByUnicode("\uD83D\uDCD5")));
+            RequestBuffer.RequestFuture<Boolean> future1 = RequestBuffer.request(() -> {
+                sentMessage.addReaction(EmojiManager.getByUnicode("\uD83D\uDCD7"));
+                return true;
+            });
+            future1.get();
+            RequestBuffer.RequestFuture<Boolean> future2 = RequestBuffer.request(() -> {
+                sentMessage.addReaction(EmojiManager.getByUnicode("\uD83D\uDD16"));
+                return true;
+            });
+            future2.get();
+            RequestBuffer.RequestFuture<Boolean> future3 = RequestBuffer.request(() -> {
+                sentMessage.addReaction(EmojiManager.getByUnicode("\uD83D\uDCD5"));
+                return true;
+            });
+            future3.get();
 
             if (message.getChannel().getLongID() != OfficialBot.SERVERCHANGELOG_CH_ID) {
                 Util.simpleEmbed(message.getChannel(), "Suggestion added. " + guild.getChannelByID(OfficialBot.SERVERCHANGELOG_CH_ID).mention());
