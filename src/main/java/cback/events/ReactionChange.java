@@ -5,7 +5,6 @@ import cback.OfficialRoles;
 import cback.Util;
 import sx.blah.discord.api.events.EventSubscriber;
 import sx.blah.discord.handle.impl.events.guild.channel.message.reaction.ReactionAddEvent;
-import sx.blah.discord.handle.impl.obj.Embed;
 import sx.blah.discord.handle.obj.*;
 import sx.blah.discord.util.DiscordException;
 import sx.blah.discord.util.EmbedBuilder;
@@ -55,7 +54,7 @@ public class ReactionChange {
         }
     }
 
-    public void removeReaction(IMessage message, IUser user, IReaction reaction) {
+    private void removeReaction(IMessage message, IUser user, IReaction reaction) {
         try {
             RequestBuffer.request(() -> message.removeReaction(user, reaction));
         } catch (DiscordException | MissingPermissionsException e) {
@@ -63,7 +62,7 @@ public class ReactionChange {
         }
     }
 
-    public boolean hasReacted(IMessage message, IUser user, IReaction iReaction) {
+    private boolean hasReacted(IMessage message, IUser user, IReaction iReaction) {
         List<IReaction> reactions = message.getReactions().stream().filter(reaction -> reaction != iReaction).collect(Collectors.toList());
         for (IReaction r : reactions) {
             if (r.getUserReacted(user)) {
@@ -73,12 +72,11 @@ public class ReactionChange {
         return false;
     }
 
-    public EmbedBuilder recreateEmbed(IEmbed embed) {
+    private EmbedBuilder recreateEmbed(IEmbed embed) {
         EmbedBuilder bld = new EmbedBuilder();
-        bld
-                .withDesc(embed.getDescription());
 
         bld
+                .withDesc(embed.getDescription())
                 .withFooterIcon(embed.getFooter().getIconUrl())
                 .withFooterText(embed.getFooter().getText())
                 .withTimestamp(embed.getTimestamp())

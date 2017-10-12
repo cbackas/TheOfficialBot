@@ -44,36 +44,21 @@ public class CommandCSuggest implements Command {
     @Override
     public void execute(IMessage message, String content, String[] args, IUser author, IGuild guild, List<Long> roleIDs, boolean isPrivate, IDiscordClient client, OfficialBot bot) {
         if (args.length >= 1) {
-            String finalText = message.getFormattedContent().split(" ", 2)[1];
+            String ideaText = message.getFormattedContent().split(" ", 2)[1];
 
             EmbedBuilder embed = new EmbedBuilder();
 
             embed
-                    .withDesc(finalText)
+                    .withDesc(ideaText)
                     .withFooterIcon(author.getAvatarURL())
                     .withFooterText(author.getDisplayName(guild))
                     .withTimestamp(System.currentTimeMillis())
                     .withColor(Color.ORANGE);
 
             IMessage sentMessage = Util.sendEmbed(client.getChannelByID(OfficialBot.SERVERCHANGELOG_CH_ID), embed.build());
+            setReactionOptions(sentMessage);
 
-            RequestBuffer.RequestFuture<Boolean> future1 = RequestBuffer.request(() -> {
-                sentMessage.addReaction(EmojiManager.getByUnicode("\uD83D\uDCD7"));
-                return true;
-            });
-            future1.get();
-            RequestBuffer.RequestFuture<Boolean> future2 = RequestBuffer.request(() -> {
-                sentMessage.addReaction(EmojiManager.getByUnicode("\uD83D\uDD16"));
-                return true;
-            });
-            future2.get();
-            RequestBuffer.RequestFuture<Boolean> future3 = RequestBuffer.request(() -> {
-                sentMessage.addReaction(EmojiManager.getByUnicode("\uD83D\uDCD5"));
-                return true;
-            });
-            future3.get();
-
-            if (message.getChannel().getLongID() != OfficialBot.SERVERCHANGELOG_CH_ID) {
+            if (message.getChannel().getLongID() != OfficialBot.SERVERCHANGELOG_CH_ID) { // Print command feedback if the command isn't run in the changelog channel
                 Util.simpleEmbed(message.getChannel(), "Suggestion added. " + guild.getChannelByID(OfficialBot.SERVERCHANGELOG_CH_ID).mention());
             }
 
@@ -81,5 +66,24 @@ public class CommandCSuggest implements Command {
         } else {
             Util.syntaxError(this, message);
         }
+    }
+
+    //adds the 3 reaction voting options to the message
+    private void setReactionOptions(IMessage message) {
+        RequestBuffer.RequestFuture<Boolean> future1 = RequestBuffer.request(() -> {
+            message.addReaction(EmojiManager.getByUnicode("\uD83D\uDCD7"));
+            return true;
+        });
+        future1.get();
+        RequestBuffer.RequestFuture<Boolean> future2 = RequestBuffer.request(() -> {
+            message.addReaction(EmojiManager.getByUnicode("\uD83D\uDD16"));
+            return true;
+        });
+        future2.get();
+        RequestBuffer.RequestFuture<Boolean> future3 = RequestBuffer.request(() -> {
+            message.addReaction(EmojiManager.getByUnicode("\uD83D\uDCD5"));
+            return true;
+        });
+        future3.get();
     }
 }
