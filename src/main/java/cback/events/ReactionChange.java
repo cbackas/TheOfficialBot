@@ -79,7 +79,6 @@ public class ReactionChange {
                 .withDesc(embed.getDescription())
                 .withFooterIcon(embed.getFooter().getIconUrl())
                 .withFooterText(embed.getFooter().getText())
-                .withTimestamp(embed.getTimestamp())
                 .withColor(Color.ORANGE);
 
         return bld;

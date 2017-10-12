@@ -52,7 +52,6 @@ public class CommandCSuggest implements Command {
                     .withDesc(ideaText)
                     .withFooterIcon(author.getAvatarURL())
                     .withFooterText(author.getDisplayName(guild))
-                    .withTimestamp(System.currentTimeMillis())
                     .withColor(Color.ORANGE);
 
             IMessage sentMessage = Util.sendEmbed(client.getChannelByID(OfficialBot.SERVERCHANGELOG_CH_ID), embed.build());
