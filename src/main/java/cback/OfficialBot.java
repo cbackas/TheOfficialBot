@@ -251,7 +251,10 @@ public class OfficialBot {
 
     //checks for dirty words
     public void censorMessages(IMessage message) {
-        if (message.getGuild().getStringID().equals(getHomeGuild().getStringID())) {
+        boolean homeGuild = message.getGuild().getStringID().equals(getHomeGuild().getStringID());
+        boolean staffChannel = message.getChannel().getCategory().getStringID().equals("355911822886567936");
+        boolean staffMember = message.getAuthor().hasRole(message.getClient().getRoleByID(OfficialRoles.STAFF.id));
+        if (homeGuild && !staffChannel && !staffMember) {
             List<String> bannedWords = OfficialBot.getInstance().getConfigManager().getConfigArray("bannedWords");
             String content = message.getFormattedContent().toLowerCase();
             Boolean tripped = false;
