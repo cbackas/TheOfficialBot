@@ -105,6 +105,9 @@ public class Util {
         }
     }
 
+    /**
+     * Private messages
+     */
     public static void sendPrivateMessage(IUser user, String message) {
         try {
             user.getClient().getOrCreatePMChannel(user).sendMessage(message);
@@ -112,6 +115,15 @@ public class Util {
             if (!e.toString().equals("sx.blah.discord.util.DiscordException: Message was unable to be sent (Discord didn't return a response).")) {
                 reportHome(e);
             }
+        }
+    }
+
+    public static void sendPrivateEmbed(IUser user, String message) {
+        try {
+            IChannel pmChannel = user.getClient().getOrCreatePMChannel(user);
+            simpleEmbed(pmChannel, message);
+        } catch (Exception e) {
+            reportHome(e);
         }
     }
 
