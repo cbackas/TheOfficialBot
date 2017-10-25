@@ -261,15 +261,18 @@ public class OfficialBot {
         if (homeGuild && !staffChannel && !staffMember) {
             List<String> bannedWords = OfficialBot.getInstance().getConfigManager().getConfigArray("bannedWords");
             String content = message.getFormattedContent().toLowerCase();
+
+            String word = "";
             Boolean tripped = false;
-            for (String word : bannedWords) {
-                if (content.matches("\\n?.*\\b\\n?" + word + "\\n?\\b.*\\n?.*") || content.matches("\\n?.*\\b\\n?" + word + "s\\n?\\b.*\\n?.*")) {
+            for (String w : bannedWords) {
+                if (content.matches("\\n?.*\\b\\n?" + w + "\\n?\\b.*\\n?.*") || content.matches("\\n?.*\\b\\n?" + w + "s\\n?\\b.*\\n?.*")) {
                     tripped = true;
+                    word = w;
                     break;
                 }
             }
             if (tripped) {
-                message.getChannel().setTypingStatus(true);
+
                 IUser author = message.getAuthor();
 
                 EmbedBuilder bld = new EmbedBuilder();
@@ -278,15 +281,20 @@ public class OfficialBot {
                         .withAuthorName(Util.getTag(author))
                         .withDesc(message.getFormattedContent())
                         .withTimestamp(System.currentTimeMillis())
-                        .withFooterText("Auto-deleted from #" + message.getChannel().getName())
-                        .withColor(Util.BOT_COLOR);
+                        .withFooterText("Auto-deleted from #" + message.getChannel().getName());
 
-                Util.sendEmbed(message.getGuild().getChannelByID(STAFF_CH_ID), bld.build());
-                Util.sendPrivateMessage(author, "Your message has been automatically removed for a banned word or something");
+                Util.sendEmbed(message.getGuild().getChannelByID(MESSAGELOG_CH_ID), bld.withColor(getBotColor()).build());
+
+                StringBuilder sBld = new StringBuilder().append("Your message has been automatically removed for containing a banned word. If this is an error, message a staff member.");
+                if (!word.isEmpty()) {
+                    sBld
+                            .append("\n\n")
+                            .append(word);
+                }
+                Util.sendPrivateEmbed(author, sBld.toString());
 
                 messageCache.add(message.getLongID());
-                message.delete();
-                message.getChannel().setTypingStatus(false);
+                Util.deleteMessage(message);
             }
         }
     }
