@@ -45,12 +45,12 @@ public class CommandUserInfo implements Command {
 
     @Override
     public void execute(IMessage message, String content, String[] args, IUser author, IGuild guild, List<Long> roleIDs, boolean isPrivate, IDiscordClient client, OfficialBot bot) {
-            String text = message.getContent();
-            Pattern pattern = Pattern.compile("^\\?user <@!?(\\d+)>");
-            Matcher matcher = pattern.matcher(text);
+        if (args.length == 1) {
+            Pattern pattern = Pattern.compile("^<@!?(\\d+)>");
+            Matcher matcher = pattern.matcher(args[0]);
             if (matcher.find()) {
                 IUser user = guild.getUserByID(Long.parseLong(matcher.group(1)));
-                String isBot = user.isBot() ? "yes":"no";
+                String isBot = user.isBot() ? "yes" : "no";
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy HH:mm:ss");
                 List<IRole> roles = user.getRolesForGuild(guild);
 
@@ -60,18 +60,19 @@ public class CommandUserInfo implements Command {
                         .withAuthorIcon(user.getAvatarURL())
                         .withAuthorName(Util.getTag(user))
                         .withDesc("\uD83C\uDD94: ``" + user.getStringID() + "``"
-                        + "\n\uD83E\uDD16 **Bot**: ``" + isBot + "``"
-                        + "\n\uD83D\uDCE5 **Joined Server**: ``" + guild.getJoinTimeForUser(user).format(formatter) + "``"
-                        + "\n\uD83C\uDF10 **Joined Discord**: ``" + user.getCreationDate().format(formatter) + "``"
-                        + "\n\u2139 **Status**: ``" + user.getPresence().toString() + "``"
-                        + "\n\uD83D\uDEE1 **Roles**: ``" + roles.size() + " - " + roles.toString() + "``")
+                                + "\n\uD83E\uDD16 **Bot**: ``" + isBot + "``"
+                                + "\n\uD83D\uDCE5 **Joined Server**: ``" + guild.getJoinTimeForUser(user).format(formatter) + "``"
+                                + "\n\uD83C\uDF10 **Joined Discord**: ``" + user.getCreationDate().format(formatter) + "``"
+                                + "\n\u2139 **Status**: ``" + user.getPresence().toString() + "``"
+                                + "\n\uD83D\uDEE1 **Roles**: ``" + roles.size() + " - " + roles.toString() + "``")
                         .withFooterIcon(message.getAuthor().getAvatarURL())
                         .withFooterText("Requested by: " + Util.getTag(message.getAuthor()))
                         .withColor(Color.gray);
 
                 Util.sendEmbed(message.getChannel(), embed.build());
-            } else {
-                Util.syntaxError(this, message);
             }
+        } else {
+            Util.syntaxError(this, message);
+        }
     }
 }
