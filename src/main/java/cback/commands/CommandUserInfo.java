@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class CommandUserInfo implements Command {
     @Override
@@ -52,7 +53,6 @@ public class CommandUserInfo implements Command {
                 IUser user = guild.getUserByID(Long.parseLong(matcher.group(1)));
                 String isBot = user.isBot() ? "yes" : "no";
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy HH:mm:ss");
-                List<IRole> roles = user.getRolesForGuild(guild);
 
                 EmbedBuilder embed = new EmbedBuilder();
 
@@ -64,7 +64,7 @@ public class CommandUserInfo implements Command {
                                 + "\n\uD83D\uDCE5 **Joined Server**: ``" + guild.getJoinTimeForUser(user).format(formatter) + "``"
                                 + "\n\uD83C\uDF10 **Joined Discord**: ``" + user.getCreationDate().format(formatter) + "``"
                                 + "\n\u2139 **Status**: ``" + user.getPresence().toString() + "``"
-                                + "\n\uD83D\uDEE1 **Roles**: ``" + roles.size() + " - " + roles.toString() + "``")
+                                + "\n\uD83D\uDEE1 **Roles**: ``" + roleList(user, guild) + "``")
                         .withFooterIcon(message.getAuthor().getAvatarURL())
                         .withFooterText("Requested by: " + Util.getTag(message.getAuthor()))
                         .withColor(Color.gray);
@@ -74,5 +74,17 @@ public class CommandUserInfo implements Command {
         } else {
             Util.syntaxError(this, message);
         }
+    }
+
+    private String roleList(IUser user, IGuild guild) {
+        List<IRole> roles = user.getRolesForGuild(guild);
+        String output = roles.size() + " - ";
+
+        List<String> roleNames = roles.stream().map(r -> r.getName()).collect(Collectors.toList());
+        String roleList = String.join(", ", roleNames);
+
+        output += roleList;
+
+        return output;
     }
 }
