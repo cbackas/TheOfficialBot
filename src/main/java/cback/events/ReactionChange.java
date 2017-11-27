@@ -83,4 +83,160 @@ public class ReactionChange {
 
         return bld;
     }
+
+    /*@EventSubscriber
+    public void starboardReactionAdd(ReactionAddEvent event) {
+        if (event.getUser().isBot() || event.getChannel().getLongID() == OfficialBot.ANNOUNCEMENT_CH_ID) {
+            return; //ignores bot reactions and reactions in the announcement channel
+        }
+        IChannel starboard = event.getClient().getChannelByID(OfficialBot.STARBOARD_CH_ID);
+
+        IMessage message = event.getMessage();
+        if (message.getChannel().getLongID() != OfficialBot.STARBOARD_CH_ID) { //for all channels that aren't the actual starboard channel
+            String emojiName = event.getReaction().getEmoji().getName();
+            if (emojiName.equals("⭐️")) {
+                ReactionEmoji emoji = event.getReaction().getEmoji();
+                int count = message.getReactionByEmoji(emoji).getUsers().size();
+                if (count >= 3) {
+
+                    IMessage starMessage = null;
+                    for (IMessage m : starboard.getMessageHistory().asArray()) {
+                        if (m.getContent().contains(message.getStringID())) {
+                            starMessage = m;
+                        }
+                    }
+
+                    if (starMessage == null) {
+                        createStarPost(message, count);
+                    } else if (count >= 3 && count < 5) {
+                        updateLvl1(starMessage, count);
+                    } else if (count >= 5 && count < 10) {
+                        updateLvl2(starMessage, count);
+                    } else if (count >= 10 && count < 25) {
+                        updateLvl3(starMessage, count);
+                    } else if (count >= 25) {
+                        updateLvl4(starMessage, count);
+                    }
+                }
+            }
+        } else { //what we do when someone reacts to a post in the starboard channel
+            String emojiName = event.getReaction().getEmoji().getName();
+            if (emojiName.equals("⭐️")) {
+                IMessage starMessage = message;
+                String starMessageContent = starMessage.getContent();
+
+                Pattern pattern = Pattern.compile(":.+: (\\d{1,2}) in.+");
+                Matcher matcher = pattern.matcher(starMessageContent);
+                if (matcher.matches()) {
+                    int count = Integer.parseInt(matcher.group(1));
+
+                    if (count >= 3 && count < 5) {
+                        updateLvl1(starMessage, count);
+                    } else if (count >= 5 && count < 10) {
+                        updateLvl2(starMessage, count);
+                    } else if (count >= 10 && count < 25) {
+                        updateLvl3(starMessage, count);
+                    } else if (count >= 25) {
+                        updateLvl4(starMessage, count);
+                    }
+                }
+            } else {
+                RequestBuffer.request(() -> removeReaction(message, event.getUser(), event.getReaction()));
+            }
+        }
+    }
+
+    @EventSubscriber
+    public void noticeboardReactionRemover(ReactionAddEvent event) {
+        if (event.getMessageID() == 318100010518446080L) {
+            IReaction reaction = event.getReaction();
+            RequestBuffer.request(() -> event.getMessage().removeReaction(event.getUser(), reaction));
+        }
+    }
+
+    private void createStarPost(IMessage m, int count) {
+        EmbedBuilder bld = new EmbedBuilder()
+                .withAuthorIcon(m.getAuthor().getAvatarURL())
+                .withColor(OfficialBot.getBotColor())
+                .withAuthorName(m.getAuthor().getDisplayName(m.getGuild()))
+                .withDescription(m.getFormattedContent())
+                .withTimestamp(m.getTimestamp());
+
+        try {
+            RequestBuffer.request(() ->
+                    m.getClient().getChannelByID(OfficialBot.STARBOARD_CH_ID).sendMessage(
+                            ":star: " + count + " in " + m.getChannel() + " (" + m.getStringID() + ")",
+                            bld.build()));
+        } catch (MissingPermissionsException | DiscordException e) {
+            Util.reportHome(e);
+        }
+    }
+
+    private void updateLvl1(IMessage starPost, int count) {
+        IEmbed embed = starPost.getEmbeds().get(0);
+        EmbedBuilder bld = new EmbedBuilder()
+                .withAuthorIcon(embed.getAuthor().getIconUrl())
+                .withColor(OfficialBot.getBotColor())
+                .withAuthorName(embed.getAuthor().getName())
+                .withDescription(embed.getDescription())
+                .withTimestamp(embed.getTimestamp());
+
+        try {
+            RequestBuffer.request(() ->
+                    starPost.edit(":star: " + count + " in " + starPost.getChannel() + " (" + starPost.getStringID() + ")", bld.build()));
+        } catch (MissingPermissionsException | DiscordException e) {
+            Util.reportHome(e);
+        }
+    }
+
+    private void updateLvl2(IMessage starPost, int count) {
+        IEmbed embed = starPost.getEmbeds().get(0);
+        EmbedBuilder bld = new EmbedBuilder()
+                .withAuthorIcon(embed.getAuthor().getIconUrl())
+                .withColor(OfficialBot.getBotColor())
+                .withAuthorName(embed.getAuthor().getName())
+                .withDescription(embed.getDescription())
+                .withTimestamp(embed.getTimestamp());
+
+        try {
+            RequestBuffer.request(() ->
+                    starPost.edit(":star2: " + count + " in " + starPost.getChannel() + " (" + starPost.getStringID() + ")", bld.build()));
+        } catch (MissingPermissionsException | DiscordException e) {
+            Util.reportHome(e);
+        }
+    }
+
+    private void updateLvl3(IMessage starPost, int count) {
+        IEmbed embed = starPost.getEmbeds().get(0);
+        EmbedBuilder bld = new EmbedBuilder()
+                .withAuthorIcon(embed.getAuthor().getIconUrl())
+                .withColor(OfficialBot.getBotColor())
+                .withAuthorName(embed.getAuthor().getName())
+                .withDescription(embed.getDescription())
+                .withTimestamp(embed.getTimestamp());
+
+        try {
+            RequestBuffer.request(() ->
+                    starPost.edit(":star2: " + count + " in " + starPost.getChannel() + " (" + starPost.getStringID() + ")", bld.build()));
+        } catch (MissingPermissionsException | DiscordException e) {
+            Util.reportHome(e);
+        }
+    }
+
+    private void updateLvl4(IMessage starPost, int count) {
+        IEmbed embed = starPost.getEmbeds().get(0);
+        EmbedBuilder bld = new EmbedBuilder()
+                .withAuthorIcon(embed.getAuthor().getIconUrl())
+                .withColor(OfficialBot.getBotColor())
+                .withAuthorName(embed.getAuthor().getName())
+                .withDescription(embed.getDescription())
+                .withTimestamp(embed.getTimestamp());
+
+        try {
+            RequestBuffer.request(() ->
+                    starPost.edit(":sparkles: " + count + " in " + starPost.getChannel() + " (" + starPost.getStringID() + ")", bld.build()));
+        } catch (MissingPermissionsException | DiscordException e) {
+            Util.reportHome(e);
+        }
+    }*/
 }

@@ -42,21 +42,24 @@ public class OfficialBot {
     private static final Pattern COMMAND_PATTERN = Pattern.compile("^\\?([^\\s]+) ?(.*)", Pattern.CASE_INSENSITIVE);
     public List<String> prefixes = new ArrayList<>();
 
-    public static final long CBACK_USR_ID = 73416411443113984l;
-    public static final long HOME_GUILD_ID = 266649217538195457l;
+    public static final long CBACK_USR_ID = 73416411443113984L;
+    public static final long HOME_GUILD_ID = 266649217538195457L;
 
-    public static final long ANNOUNCEMENT_CH_ID = 318098998047277057l;
-    public static final long GENERAL_CH_ID = 266649217538195457l;
-    public static final long SERVERLOG_CH_ID = 281021113440534528l;
-    public static final long SERVERCHANGELOG_CH_ID = 363138434153578496l;
-    public static final long MESSAGELOG_CH_ID = 347078737726275605l;
-    public static final long STAFF_CH_ID = 266651712826114048l;
-    public static final long ADMIN_CH_ID = 285470408709373954l;
-    public static final long DEV_CH_ID = 277587347443286016l;
+    public static final long INFO_CAT_ID = 355925879853023232L;
 
-    public static final long ERRORLOG_CH_ID = 346104666796589056l;
-    public static final long BOTLOG_CH_ID = 346483682376286208l;
-    public static final long BOTPM_CH_ID = 346104720903110656l;
+    public static final long ANNOUNCEMENT_CH_ID = 318098998047277057L;
+    public static final long GENERAL_CH_ID = 266649217538195457L;
+    public static final long SERVERLOG_CH_ID = 281021113440534528L;
+    public static final long SERVERCHANGELOG_CH_ID = 363138434153578496L;
+    public static final long MESSAGELOG_CH_ID = 347078737726275605L;
+    public static final long STARBOARD_CH_ID = 374978760547762176L;
+    public static final long STAFF_CH_ID = 266651712826114048L;
+    public static final long ADMIN_CH_ID = 285470408709373954L;
+    public static final long DEV_CH_ID = 277587347443286016L;
+
+    public static final long ERRORLOG_CH_ID = 346104666796589056L;
+    public static final long BOTLOG_CH_ID = 346483682376286208L;
+    public static final long BOTPM_CH_ID = 346104720903110656L;
 
     private long startTime;
 
@@ -237,9 +240,7 @@ public class OfficialBot {
                     System.out.println("Existing: " + existingCommand.get().getClass().getName());
                     System.out.println("Attempted: " + commandImpl.getName());
                 }
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
+            } catch (InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
             }
         });
