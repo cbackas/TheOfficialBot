@@ -63,7 +63,7 @@ public class CommandHelp implements Command {
                     }
 
                     if (c.getPermissions() == null) {
-                        embed.appendField(c.getSyntax(), c.getDescription() + aliases, false);
+                        embed.appendField(OfficialBot.getPrefix() + c.getSyntax(), c.getDescription() + aliases, false);
                     } else if (!Collections.disjoint(roles, c.getPermissions())) {
                         embed.appendField(OfficialBot.getPrefix() + c.getSyntax(), c.getDescription() + aliases, false);
                     }
