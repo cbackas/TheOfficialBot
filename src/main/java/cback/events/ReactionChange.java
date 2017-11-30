@@ -119,32 +119,9 @@ public class ReactionChange {
                     }
                 }
             }
-        } else { //what we do when someone reacts to a post in the starboard channel
-            String emojiName = event.getReaction().getEmoji().getName();
-            if (emojiName.equals("⭐️")) {
-                IMessage starMessage = message;
-                String starMessageContent = starMessage.getContent();
-
-                Pattern pattern = Pattern.compile(":.+: (\\d{1,2}) in.+");
-                Matcher matcher = pattern.matcher(starMessageContent);
-                if (matcher.matches()) {
-                    int count = Integer.parseInt(matcher.group(1));
-
-                    if (count >= 3 && count < 5) {
-                        updateLvl1(starMessage, count);
-                    } else if (count >= 5 && count < 10) {
-                        updateLvl2(starMessage, count);
-                    } else if (count >= 10 && count < 25) {
-                        updateLvl3(starMessage, count);
-                    } else if (count >= 25) {
-                        updateLvl4(starMessage, count);
-                    }
-                }
-            } else {
-                RequestBuffer.request(() -> removeReaction(message, event.getUser(), event.getReaction()));
-            }
         }
     }
+
 
     @EventSubscriber
     public void noticeboardReactionRemover(ReactionAddEvent event) {
