@@ -36,7 +36,6 @@ public class OfficialBot {
     public static List<Command> registeredCommands = new ArrayList<>();
 
     public static ArrayList<Long> messageCache = new ArrayList<>();
-    public static List<Long> alreadyCalled = new ArrayList<>();
 
     static private String prefix = "?";
     private static final Pattern COMMAND_PATTERN = Pattern.compile("^\\?([^\\s]+) ?(.*)", Pattern.CASE_INSENSITIVE);
