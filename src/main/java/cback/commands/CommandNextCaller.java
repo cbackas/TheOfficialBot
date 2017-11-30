@@ -46,7 +46,7 @@ public class CommandNextCaller implements Command {
         //bail if the channel search fails
         if (vc == null) return;
 
-        List<Long> hosts = Arrays.asList(112839316685783040L, 196735363060858880L, 137294678721691648L, 185998642136481793L);
+        List<Long> hosts = Arrays.asList(112839316685783040L, 196735363060858880L, 137294678721691648L, 185998642136481793L, OfficialBot.CBACK_USR_ID);
 
         List<IUser> channelUsers = vc.getConnectedUsers();
         List<IUser> callPool = channelUsers.stream()
