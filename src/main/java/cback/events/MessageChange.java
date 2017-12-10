@@ -53,10 +53,10 @@ public class MessageChange {
 
     @EventSubscriber
     public void messageEdited(MessageUpdateEvent event) {
-        if (event instanceof  MessagePinEvent || event instanceof MessageUnpinEvent) {
+        if (event instanceof  MessagePinEvent || event instanceof MessageUnpinEvent || event instanceof MessageEmbedEvent) {
             return;
         }
-        
+
         if (event.getGuild().getStringID().equals(OfficialBot.getHomeGuild().getStringID()) && event.getMessage() != null) {
             if (!event.getAuthor().isBot()) {
                 IMessage message = event.getMessage();
