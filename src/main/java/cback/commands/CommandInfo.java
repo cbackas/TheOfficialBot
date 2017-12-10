@@ -61,11 +61,10 @@ public class CommandInfo implements Command {
                 .appendField("\u200B", "\u200B", false)
                 .appendField("Listen:", "[`iTunes`](https://itunes.apple.com/au/podcast/the-official-podcast/id1186089636)" +
                 "\n[`SoundCloud`](https://soundcloud.com/theofficialpodcast)" +
-                "\n[`Spotify`](https://open.spotify.com/show/6TXzjtMTEopiGjIsCfvv6W)" +
-                "\n[`The Website`](http://www.theofficialpodcast.com/episodes)", true)
+                "\n[`Spotify`](https://open.spotify.com/show/6TXzjtMTEopiGjIsCfvv6W)", true)
                 .appendField("Other Links: ", "[`The Official Website`](http://www.theofficialpodcast.com)\n[`Reddit`](https://www.reddit.com/r/TheOfficialPodcast/)", true)
                 .appendField("\u200B", "\u200B", false)
-                .appendField("Donate to bot hosting fees: ", "[`Patreon`](https://www.patreon.com/cback)", true)
+                .appendField("Donate to bot hosting fees: ", "[`Paypal`](https://www.paypal.me/cbackas)", true)
                 .appendField("Source: ", "[`GitHub`](https://github.com/cbackas/OfficialBot)", true)
                 .withColor(OfficialBot.getBotColor());
 
