@@ -14,6 +14,7 @@ import sx.blah.discord.util.EmbedBuilder;
 
 import java.awt.*;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MemberChange {
@@ -56,7 +57,14 @@ public class MemberChange {
              */
             int totalUsers = guild.getUsers().size();
             if (totalUsers % 1000 == 0) {
-                Util.sendMessage(guild.getChannelByID(ADMIN_CH_ID), guild.getRoleByID(OfficialRoles.ADMIN.id).mention() + " we have hit " + totalUsers + " users hype");
+                List<String> mentions = new ArrayList<>();
+                for (IUser u : guild.getChannelByID(ADMIN_CH_ID).getUsersHere()) {
+                    if (user.hasRole(guild.getRoleByID(OfficialRoles.ADMIN.id))) {
+                        mentions.add(u.mention());
+                    }
+                }
+
+                Util.sendMessage(guild.getChannelByID(ADMIN_CH_ID), String.join(" ", mentions) + " we have hit " + totalUsers + " users hype");
             }
 
             /**
