@@ -11,6 +11,7 @@ import sx.blah.discord.handle.obj.IUser;
 import sx.blah.discord.util.EmbedBuilder;
 
 import java.awt.*;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
@@ -61,8 +62,8 @@ public class CommandUserInfo implements Command {
                         .withAuthorName(Util.getTag(user))
                         .withDesc("\uD83C\uDD94: ``" + user.getStringID() + "``"
                                 + "\n\uD83E\uDD16 **Bot**: ``" + isBot + "``"
-                                + "\n\uD83D\uDCE5 **Joined Server**: ``" + guild.getJoinTimeForUser(user).format(formatter) + "``"
-                                + "\n\uD83C\uDF10 **Joined Discord**: ``" + user.getCreationDate().format(formatter) + "``"
+                                + "\n\uD83D\uDCE5 **Joined Server**: ``" + guild.getJoinTimeForUser(user).atOffset(ZoneOffset.ofHours(0)).format(formatter) + "``"
+                                + "\n\uD83C\uDF10 **Joined Discord**: ``" + user.getCreationDate().atOffset(ZoneOffset.ofHours(0)).format(formatter) + "``"
                                 + "\n\u2139 **Status**: ``" + user.getPresence().toString() + "``"
                                 + "\n\uD83D\uDEE1 **Roles**: ``" + roleList(user, guild) + "``")
                         .withFooterIcon(message.getAuthor().getAvatarURL())

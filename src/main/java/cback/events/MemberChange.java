@@ -71,7 +71,7 @@ public class MemberChange {
                     .withDesc(Util.getTag(user) + " **joined** the server. " + user.mention());
 
             //Checks if the new user's account is a new account (< 24 hours old)
-            long userCreated = user.getCreationDate().toEpochSecond(ZoneOffset.ofHours(0));
+            long userCreated = user.getCreationDate().atOffset(ZoneOffset.ofHours(0)).toEpochSecond();
             long currentTime = Util.getCurrentTime();
             if (currentTime - userCreated < 86400) {
                 bld.withFooterText("**NEW ACCOUNT**");
