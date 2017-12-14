@@ -20,10 +20,7 @@ import java.util.List;
 public class MemberChange {
     private OfficialBot bot;
 
-    private final long MUTED_ROLE_ID = 269638591112544267l;
-    private final long MEMBERLOG_CH_ID = 266655441449254914l;
-    private final long STAFF_CH_ID = 266651712826114048l;
-    private final long ADMIN_CH_ID = 285470408709373954l;
+    private final long MUTED_ROLE_ID = 269638591112544267L;
 
     public MemberChange(OfficialBot bot) {
         this.bot = bot;
@@ -58,13 +55,13 @@ public class MemberChange {
             int totalUsers = guild.getUsers().size();
             if (totalUsers % 1000 == 0) {
                 List<String> mentions = new ArrayList<>();
-                for (IUser u : guild.getChannelByID(ADMIN_CH_ID).getUsersHere()) {
+                for (IUser u : guild.getChannelByID(OfficialBot.ADMIN_CH_ID).getUsersHere()) {
                     if (user.hasRole(guild.getRoleByID(OfficialRoles.ADMIN.id))) {
                         mentions.add(u.mention());
                     }
                 }
 
-                Util.sendMessage(guild.getChannelByID(ADMIN_CH_ID), String.join(" ", mentions) + " we have hit " + totalUsers + " users hype");
+                Util.sendMessage(guild.getChannelByID(OfficialBot.ADMIN_CH_ID), String.join(" ", mentions) + " we have hit " + totalUsers + " users hype");
             }
 
             /**
@@ -84,7 +81,7 @@ public class MemberChange {
                     .withTimestamp(System.currentTimeMillis())
                     .withColor(Color.CYAN);
 
-            Util.sendEmbed(guild.getChannelByID(MEMBERLOG_CH_ID), bld.build());
+            Util.sendEmbed(guild.getChannelByID(OfficialBot.MEMBERLOG_CH_ID), bld.build());
         }
     }
 
@@ -98,7 +95,7 @@ public class MemberChange {
              * Mute check
              */
             if (bot.getConfigManager().getConfigArray("muted").contains(event.getUser().getStringID())) {
-                Util.sendMessage(guild.getChannelByID(STAFF_CH_ID), user + " is muted and left the server. Their mute will be applied again when/if they return.");
+                Util.sendMessage(guild.getChannelByID(OfficialBot.STAFF_CH_ID), user + " is muted and left the server. Their mute will be applied again when/if they return.");
             }
 
             /**
@@ -115,7 +112,7 @@ public class MemberChange {
                     .withTimestamp(System.currentTimeMillis())
                     .withColor(Color.YELLOW);
 
-            Util.sendEmbed(guild.getChannelByID(MEMBERLOG_CH_ID), bld.build());
+            Util.sendEmbed(guild.getChannelByID(OfficialBot.MEMBERLOG_CH_ID), bld.build());
         }
     }
 
@@ -148,7 +145,7 @@ public class MemberChange {
                     .withTimestamp(System.currentTimeMillis())
                     .withColor(Color.RED);
 
-            Util.sendEmbed(guild.getChannelByID(MEMBERLOG_CH_ID), bld.build());
+            Util.sendEmbed(guild.getChannelByID(OfficialBot.MEMBERLOG_CH_ID), bld.build());
         }
     }
 
@@ -166,7 +163,7 @@ public class MemberChange {
                     .withTimestamp(System.currentTimeMillis())
                     .withColor(Color.GREEN);
 
-            Util.sendEmbed(guild.getChannelByID(MEMBERLOG_CH_ID), bld.build());
+            Util.sendEmbed(guild.getChannelByID(OfficialBot.MEMBERLOG_CH_ID), bld.build());
         }
     }
 }

@@ -51,6 +51,7 @@ public class OfficialBot {
     public static final long SERVERLOG_CH_ID = 281021113440534528L;
     public static final long SERVERCHANGELOG_CH_ID = 363138434153578496L;
     public static final long MESSAGELOG_CH_ID = 347078737726275605L;
+    public static final long MEMBERLOG_CH_ID = 266655441449254914L;
     public static final long STARBOARD_CH_ID = 389439534825209868L;
     public static final long STAFF_CH_ID = 266651712826114048L;
     public static final long ADMIN_CH_ID = 285470408709373954L;
