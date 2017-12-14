@@ -119,7 +119,7 @@ public class ReactionChange {
                     if (starMessage == null) {
                         createStarPost(message, count);
                     } else {
-                        updateStarPost(starMessage, count);
+                        updateStarPost(message, starMessage, count);
                     }
                 } else {
                     if (starMessage != null) {
@@ -156,7 +156,7 @@ public class ReactionChange {
                     if (starMessage == null) {
                         createStarPost(message, count);
                     } else {
-                        updateStarPost(starMessage, count);
+                        updateStarPost(message, starMessage, count);
                     }
                 } else {
                     if (starMessage != null) {
@@ -189,7 +189,7 @@ public class ReactionChange {
         }
     }
 
-    private void updateStarPost(IMessage starPost, int count) {
+    private void updateStarPost(IMessage originMessage, IMessage starPost, int count) {
         String starEmoji = ":star:";
         if (count >= level2 && count < level3) {
             starEmoji = ":star2:";
@@ -199,31 +199,23 @@ public class ReactionChange {
             starEmoji = ":sparkles:";
         }
 
-        String messageID = "";
+        String channelID = originMessage.getChannel().getStringID();
+        String messageID = originMessage.getStringID();
 
-        Pattern pattern = Pattern.compile(".+\\((.+)\\)");
-        Matcher matcher = pattern.matcher(starPost.getContent());
-        if (matcher.matches()) {
-            messageID = matcher.group(1);
-        }
-
-
-        IEmbed embed = starPost.getEmbeds().get(0);
         EmbedBuilder bld = new EmbedBuilder()
-                .withAuthorIcon(embed.getAuthor().getIconUrl())
+                .withAuthorIcon(originMessage.getAuthor().getAvatarURL())
                 .withColor(Color.ORANGE)
-                .withAuthorName(embed.getAuthor().getName())
-                .withDescription(embed.getDescription())
-                .withTimestamp(embed.getTimestamp());
+                .withAuthorName(originMessage.getAuthor().getDisplayName(originMessage.getGuild()))
+                .withDescription(originMessage.getFormattedContent())
+                .withTimestamp(originMessage.getTimestamp());
 
-        if (embed.getImage() != null) {
-            bld.withImage(embed.getImage().getUrl());
+        for (IMessage.Attachment a : originMessage.getAttachments()) {
+            bld.withImage(a.getUrl());
         }
 
-        String text = starEmoji + " " + count + " in " + starPost.getChannel() + " (" + messageID + ")";
+        String text = starEmoji + " " + count + " in <#" + channelID + "> (" + messageID + ")";
         try {
-            RequestBuffer.request(() ->
-                    starPost.edit(text, bld.build()));
+            RequestBuffer.request(() -> starPost.edit(text, bld.build()));
         } catch (MissingPermissionsException | DiscordException e) {
             Util.reportHome(e);
         }
