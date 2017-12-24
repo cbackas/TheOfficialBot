@@ -195,7 +195,7 @@ public class OfficialBot {
         client = event.getClient();
 
         //Set status
-        client.changePresence(StatusType.ONLINE, ActivityType.LISTENING, "all of your messages. Type " + prefix + "help");
+        client.changePresence(StatusType.ONLINE, ActivityType.LISTENING, "all of your messages. \n\n Type " + prefix + "help");
 
         startTime = System.currentTimeMillis();
     }
