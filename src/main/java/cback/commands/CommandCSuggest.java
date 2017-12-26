@@ -23,7 +23,7 @@ public class CommandCSuggest implements Command {
 
     @Override
     public List<String> getAliases() {
-        return Arrays.asList("suggest");
+        return null;
     }
 
     @Override
