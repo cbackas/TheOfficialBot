@@ -54,11 +54,11 @@ public class CommandCSuggest implements Command {
                     .withFooterText(author.getDisplayName(guild))
                     .withColor(Color.ORANGE);
 
-            IMessage sentMessage = Util.sendEmbed(client.getChannelByID(OfficialBot.SERVERCHANGELOG_CH_ID), embed.build());
+            IMessage sentMessage = Util.sendEmbed(client.getChannelByID(OfficialBot.STAFFCHANGELOG_CH_ID), embed.build());
             setReactionOptions(sentMessage);
 
-            if (message.getChannel().getLongID() != OfficialBot.SERVERCHANGELOG_CH_ID) { // Print command feedback if the command isn't run in the changelog channel
-                Util.simpleEmbed(message.getChannel(), "Suggestion added. " + guild.getChannelByID(OfficialBot.SERVERCHANGELOG_CH_ID).mention());
+            if (message.getChannel().getLongID() != OfficialBot.STAFFCHANGELOG_CH_ID) { // Print command feedback if the command isn't run in the changelog channel
+                Util.simpleEmbed(message.getChannel(), "Suggestion added. " + guild.getChannelByID(OfficialBot.STAFFCHANGELOG_CH_ID).mention());
             }
 
             Util.deleteMessage(message);
