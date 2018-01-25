@@ -77,7 +77,7 @@ public class MessageChange {
 
                 IChannel MESSAGE_LOGS = event.getClient().getChannelByID(OfficialBot.MESSAGELOG_CH_ID);
                 Util.sendEmbed(MESSAGE_LOGS, bld.build());
-                bot.censorMessages(message);
+                Util.censorMessages(message);
             }
         }
     }

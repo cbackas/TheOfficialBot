@@ -58,14 +58,6 @@ public class Util {
     }
 
     public static void deleteMessage(IMessage message) {
-        try {
-            message.delete();
-        } catch (Exception e) {
-            reportHome(e);
-        }
-    }
-
-    public static void deleteBufferedMessage(IMessage message) {
         RequestBuffer.request(() -> {
             try {
                 message.delete();
@@ -344,5 +336,62 @@ public class Util {
 
     public static void simpleEmbed(IChannel channel, String message, Color color) {
         sendEmbed(channel, new EmbedBuilder().withDescription(message).withColor(color).build());
+    }
+
+    //checks for dirty words
+    public static void censorMessages(IMessage message) {
+        boolean homeGuild = message.getGuild().getStringID().equals(OfficialBot.HOME_GUILD_ID);
+        boolean staffChannel = message.getChannel().getCategory().getStringID().equals(OfficialBot.STAFF_CAT_ID);
+        boolean staffMember = message.getAuthor().hasRole(message.getClient().getRoleByID(OfficialRoles.STAFF.id));
+        if (homeGuild && !staffChannel && !staffMember) {
+            String content = message.getFormattedContent().toLowerCase();
+
+            String word = checkMessage(content);
+
+            if (word != null) {
+
+                IUser author = message.getAuthor();
+
+                EmbedBuilder bld = new EmbedBuilder();
+                bld
+                        .withAuthorIcon(author.getAvatarURL())
+                        .withAuthorName(Util.getTag(author))
+                        .withDesc(message.getFormattedContent())
+                        .withTimestamp(System.currentTimeMillis())
+                        .withFooterText("Auto-deleted from #" + message.getChannel().getName());
+
+                Util.sendEmbed(message.getGuild().getChannelByID(OfficialBot.MESSAGELOG_CH_ID), bld.withColor(OfficialBot.getBotColor()).build());
+
+                StringBuilder sBld = new StringBuilder().append("Your message has been automatically removed for containing a banned word. If this is an error, message a staff member.");
+                if (!word.isEmpty()) {
+                    sBld
+                            .append("\n\n")
+                            .append(word);
+                }
+                Util.sendPrivateEmbed(author, sBld.toString());
+
+                OfficialBot.messageCache.add(message.getLongID());
+                Util.deleteMessage(message);
+            }
+        }
+    }
+
+    public static String checkMessage(String text) {
+        List<String> bannedWords = OfficialBot.getInstance().getConfigManager().getConfigArray("bannedWords");
+
+        String word = "";
+        Boolean tripped = false;
+        for (String w : bannedWords) {
+            if (text.matches("\\n?.*\\b\\n?" + w + "\\n?\\b.*\\n?.*") || text.matches("\\n?.*\\b\\n?" + w + "s\\n?\\b.*\\n?.*")) {
+                tripped = true;
+                word = w;
+                break;
+            }
+        }
+        if (word != "") {
+            return word;
+        } else {
+            return null;
+        }
     }
 }

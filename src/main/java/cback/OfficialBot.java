@@ -36,13 +36,17 @@ public class OfficialBot {
     public static ArrayList<Long> messageCache = new ArrayList<>();
 
     static private String prefix = "?";
-    private static final Pattern COMMAND_PATTERN = Pattern.compile("^\\?([^\\s]+) ?(.*)", Pattern.CASE_INSENSITIVE);
+    private static final Pattern COMMAND_PATTERN = Pattern.compile("(?s)^\\?([^\\s]+) ?(.*)", Pattern.CASE_INSENSITIVE);
     public List<String> prefixes = new ArrayList<>();
 
     public static final long CBACK_USR_ID = 73416411443113984L;
     public static final long HOME_GUILD_ID = 266649217538195457L;
 
+    public static final long STAFF_CAT_ID = 355911822886567936L;
     public static final long INFO_CAT_ID = 355925879853023232L;
+    public static final long GENERAL_CAT_ID = 355926098829377536L;
+    public static final long FUN_CAT_ID = 362610597008900096L;
+    public static final long VOICE_CAT_ID = 355925508007002124L;
 
     public static final long ANNOUNCEMENT_CH_ID = 318098998047277057L;
     public static final long GENERAL_CH_ID = 266649217538195457L;
@@ -173,7 +177,7 @@ public class OfficialBot {
 
             Util.sendEmbed(client.getChannelByID(BOTPM_CH_ID), bld.build());
         } else {
-            censorMessages(message);
+            Util.censorMessages(message);
 
             /**
              * Kaya's reaction request
@@ -213,7 +217,8 @@ public class OfficialBot {
     }
 
     public static IGuild getHomeGuild() {
-        IGuild homeGuild;homeGuild = getClient().getGuildByID(HOME_GUILD_ID);
+        IGuild homeGuild;
+        homeGuild = getClient().getGuildByID(HOME_GUILD_ID);
         return homeGuild;
     }
 
@@ -251,51 +256,4 @@ public class OfficialBot {
         long hours = (totalSeconds / 3600);
         return (hours < 10 ? "0" + hours : hours) + "h " + (minutes < 10 ? "0" + minutes : minutes) + "m " + (seconds < 10 ? "0" + seconds : seconds) + "s";
     }
-
-    //checks for dirty words
-    public void censorMessages(IMessage message) {
-        boolean homeGuild = message.getGuild().getStringID().equals(getHomeGuild().getStringID());
-        boolean staffChannel = message.getChannel().getCategory().getStringID().equals("355911822886567936");
-        boolean staffMember = message.getAuthor().hasRole(message.getClient().getRoleByID(OfficialRoles.STAFF.id));
-        if (homeGuild && !staffChannel && !staffMember) {
-            List<String> bannedWords = OfficialBot.getInstance().getConfigManager().getConfigArray("bannedWords");
-            String content = message.getFormattedContent().toLowerCase();
-
-            String word = "";
-            Boolean tripped = false;
-            for (String w : bannedWords) {
-                if (content.matches("\\n?.*\\b\\n?" + w + "\\n?\\b.*\\n?.*") || content.matches("\\n?.*\\b\\n?" + w + "s\\n?\\b.*\\n?.*")) {
-                    tripped = true;
-                    word = w;
-                    break;
-                }
-            }
-            if (tripped) {
-
-                IUser author = message.getAuthor();
-
-                EmbedBuilder bld = new EmbedBuilder();
-                bld
-                        .withAuthorIcon(author.getAvatarURL())
-                        .withAuthorName(Util.getTag(author))
-                        .withDesc(message.getFormattedContent())
-                        .withTimestamp(System.currentTimeMillis())
-                        .withFooterText("Auto-deleted from #" + message.getChannel().getName());
-
-                Util.sendEmbed(message.getGuild().getChannelByID(MESSAGELOG_CH_ID), bld.withColor(getBotColor()).build());
-
-                StringBuilder sBld = new StringBuilder().append("Your message has been automatically removed for containing a banned word. If this is an error, message a staff member.");
-                if (!word.isEmpty()) {
-                    sBld
-                            .append("\n\n")
-                            .append(word);
-                }
-                Util.sendPrivateEmbed(author, sBld.toString());
-
-                messageCache.add(message.getLongID());
-                Util.deleteMessage(message);
-            }
-        }
-    }
-
 }
