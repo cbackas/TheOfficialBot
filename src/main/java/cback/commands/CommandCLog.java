@@ -53,10 +53,10 @@ public class CommandCLog implements Command {
                     .withTimestamp(System.currentTimeMillis())
                     .withColor(Color.GREEN);
 
-            Util.sendEmbed(client.getChannelByID(OfficialBot.SERVERCHANGELOG_CH_ID), embed.build());
+            Util.sendEmbed(client.getChannelByID(OfficialBot.STAFFCHANGELOG_CH_ID), embed.build());
 
-            if (message.getChannel().getLongID() != OfficialBot.SERVERCHANGELOG_CH_ID) {
-                Util.simpleEmbed(message.getChannel(), "ChangeLog added. " + guild.getChannelByID(OfficialBot.SERVERCHANGELOG_CH_ID).mention());
+            if (message.getChannel().getLongID() != OfficialBot.STAFFCHANGELOG_CH_ID) {
+                Util.simpleEmbed(message.getChannel(), "ChangeLog added. " + guild.getChannelByID(OfficialBot.STAFFCHANGELOG_CH_ID).mention());
             }
 
             Util.deleteMessage(message);

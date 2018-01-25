@@ -15,8 +15,6 @@ import sx.blah.discord.util.RequestBuffer;
 
 import java.awt.*;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class ReactionChange {
@@ -28,7 +26,7 @@ public class ReactionChange {
 
     @EventSubscriber
     public void changeLogReactionAdd(ReactionAddEvent event) {
-        if (event.getUser().isBot() || event.getChannel().getLongID() != OfficialBot.SERVERCHANGELOG_CH_ID) {
+        if (event.getUser().isBot() || event.getChannel().getLongID() != OfficialBot.STAFFCHANGELOG_CH_ID) {
             return; //ignores bot reactions and reactions not related to change logs
         }
         IUser user = event.getUser();
