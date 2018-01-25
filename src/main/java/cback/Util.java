@@ -199,25 +199,6 @@ public class Util {
         return Math.toIntExact(System.currentTimeMillis() / 1000);
     }
 
-    public static String requestUsernameByID(String id) {
-        IDiscordClient client = OfficialBot.getInstance().getClient();
-
-        RequestBuffer.RequestFuture<String> userNameResult = RequestBuffer.request(() -> {
-            try {
-                byte[] result = ((DiscordClientImpl) client).REQUESTS.GET.makeRequest(DiscordEndpoints.USERS + id,
-                        new BasicNameValuePair("authorization", OfficialBot.getInstance().getClient().getToken()));
-                System.out.println(result);
-                return DiscordUtils.MAPPER.readValue(result, UserObject.class).username;
-            } catch (IOException | DiscordException e) {
-                reportHome(e);
-            }
-
-            return "NULL";
-        });
-
-        return userNameResult.get();
-    }
-
     public static IUser getUserFromMentionArg(String arg) {
         Matcher matcher = USER_MENTION_PATTERN.matcher(arg);
         if (matcher.matches()) {

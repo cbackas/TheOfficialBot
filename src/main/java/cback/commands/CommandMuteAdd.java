@@ -52,11 +52,9 @@ public class CommandMuteAdd implements Command {
 
                     IUser userO = guild.getUserByID(Long.parseLong(userID));
 
-                    String user = "NULL";
+                    String user = "<@" + userID + ">";
                     if (userO != null) {
                         user = userO.mention();
-                    } else {
-                        user = Util.requestUsernameByID(userID);
                     }
 
                     mutedList.append("\n").append(user);
@@ -65,13 +63,11 @@ public class CommandMuteAdd implements Command {
                 mutedList.append("\n").append("There are currently no muted users.");
             }
 
-            Util.sendMessage(message.getChannel(), "**Muted Users**: (plain text for users not on server)\n" + mutedList.toString());
+            Util.simpleEmbed(message.getChannel(), "Muted Users: (plain text for users not on server)\n" + mutedList.toString());
 
         } else if (args.length >= 1) {
-            String text = message.getContent();
-
-            Pattern pattern = Pattern.compile("^\\?mute <@!?(\\d+)> ?(.+)?");
-            Matcher matcher = pattern.matcher(text);
+            Pattern pattern = Pattern.compile("^!mute <@!?(\\d+)> ?(.+)?");
+            Matcher matcher = pattern.matcher(content);
 
             if (matcher.find()) {
                 String u = matcher.group(1);
@@ -87,7 +83,7 @@ public class CommandMuteAdd implements Command {
                         Util.simpleEmbed(message.getChannel(), "You probably shouldn't mute yourself");
                     } else {
                         try {
-                            userInput.addRole(guild.getRoleByID(Long.parseLong("281022564002824192")));
+                            userInput.addRole(guild.getRoleByID(231269949635559424l));
                             Util.simpleEmbed(message.getChannel(), userInput.getDisplayName(guild) + " has been muted. Check " + guild.getChannelByID(OfficialBot.SERVERLOG_CH_ID).mention() + " for more info.");
 
                             if (!mutedUsers.contains(u)) {
@@ -96,7 +92,6 @@ public class CommandMuteAdd implements Command {
                             }
 
                             Util.sendLog(message, "Muted " + userInput.getDisplayName(guild) + "\n**Reason:** " + reason, Color.gray);
-                            Util.deleteMessage(message);
                         } catch (Exception e) {
                             Util.simpleEmbed(message.getChannel(), "Error running " + this.getName() + " - error recorded");
                             Util.reportHome(message, e);
@@ -107,6 +102,7 @@ public class CommandMuteAdd implements Command {
         } else {
             Util.syntaxError(this, message);
         }
+        Util.deleteMessage(message);
     }
 
 }
