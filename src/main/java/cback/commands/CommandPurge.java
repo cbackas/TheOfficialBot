@@ -106,7 +106,7 @@ public class CommandPurge implements Command {
             return;
         }
 
-        Util.deleteBufferedMessage(message);
+        Util.deleteMessage(message);
     }
 
 }
