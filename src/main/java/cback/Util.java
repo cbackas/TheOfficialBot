@@ -119,58 +119,6 @@ public class Util {
         }
     }
 
-    public static IMessage sendLog(IMessage message, String text) {
-        RequestBuffer.RequestFuture<IMessage> future = RequestBuffer.request(() -> {
-            try {
-                IUser user = message.getAuthor();
-
-                new EmbedBuilder();
-                EmbedBuilder embed = new EmbedBuilder();
-
-                embed.withFooterIcon(getAvatar(user));
-                embed.withFooterText("Action by @" + getTag(user));
-
-                embed.withDescription(text);
-
-                embed.withTimestamp(System.currentTimeMillis());
-
-                IDiscordClient client = OfficialBot.getInstance().getClient();
-                return new MessageBuilder(client).withEmbed(embed.withColor(Color.GRAY).build())
-                        .withChannel(client.getChannelByID(OfficialBot.SERVERLOG_CH_ID)).send();
-            } catch (MissingPermissionsException | DiscordException e) {
-                reportHome(e);
-            }
-            return null;
-        });
-        return future.get();
-    }
-
-    public static IMessage sendLog(IMessage message, String text, Color color) {
-        RequestBuffer.RequestFuture<IMessage> future = RequestBuffer.request(() -> {
-            try {
-                IUser user = message.getAuthor();
-
-                new EmbedBuilder();
-                EmbedBuilder embed = new EmbedBuilder();
-
-                embed.withFooterIcon(getAvatar(user));
-                embed.withFooterText("Action by @" + getTag(user));
-
-                embed.withDescription(text);
-
-                embed.withTimestamp(System.currentTimeMillis());
-
-                IDiscordClient client = OfficialBot.getInstance().getClient();
-                return new MessageBuilder(client).withEmbed(embed.withColor(color).build())
-                        .withChannel(client.getChannelByID(OfficialBot.SERVERLOG_CH_ID)).send();
-            } catch (MissingPermissionsException | DiscordException e) {
-                reportHome(e);
-            }
-            return null;
-        });
-        return future.get();
-    }
-
     //EMBEDBUILDER STUFF
     public static EmbedBuilder getEmbed() {
         return new EmbedBuilder()

@@ -2,6 +2,7 @@ package cback.commands;
 
 import cback.OfficialRoles;
 import cback.OfficialBot;
+import cback.ServerLog;
 import cback.Util;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.obj.IGuild;
@@ -91,7 +92,7 @@ public class CommandMuteAdd implements Command {
                                 bot.getConfigManager().setConfigValue("muted", mutedUsers);
                             }
 
-                            Util.sendLog(message, "Muted " + userInput.getDisplayName(guild) + "\n**Reason:** " + reason, Color.gray);
+                            new ServerLog(author, "Muted " + userInput.getDisplayName(guild) + "\n**Reason:** " + reason).send();
                         } catch (Exception e) {
                             Util.simpleEmbed(message.getChannel(), "Error running " + this.getName() + " - error recorded");
                             Util.reportHome(message, e);

@@ -2,6 +2,7 @@ package cback.commands;
 
 import cback.OfficialBot;
 import cback.OfficialRoles;
+import cback.ServerLog;
 import cback.Util;
 import org.apache.commons.lang3.StringUtils;
 import sx.blah.discord.api.IDiscordClient;
@@ -86,7 +87,7 @@ public class CommandPurge implements Command {
                         .collect(Collectors.toList());
 
                 Util.bulkDelete(message.getChannel(), toDelete);
-                Util.sendLog(message, userToDelete.getDisplayName(guild) + "'s messages have been pruned in " + message.getChannel().getName() + ".");
+                new ServerLog(author, userToDelete.getDisplayName(guild) + "'s messages have been pruned in " + message.getChannel().getName() + ".").send();
 
             } else { //this is a purge
 
@@ -96,7 +97,7 @@ public class CommandPurge implements Command {
                         .collect(Collectors.toList());
 
                 Util.bulkDelete(message.getChannel(), toDelete);
-                Util.sendLog(message, numberArg + " messages have been purged in " + message.getChannel().getName() + ".");
+                new ServerLog(author, numberArg + " messages have been purged in " + message.getChannel().getName() + ".").send();
 
             }
 

@@ -2,6 +2,7 @@ package cback.commands;
 
 import cback.OfficialBot;
 import cback.OfficialRoles;
+import cback.ServerLog;
 import cback.Util;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.obj.IGuild;
@@ -66,7 +67,7 @@ public class CommandMuteRemove implements Command {
                                 bot.getConfigManager().setConfigValue("muted", mutedUsers);
                             }
 
-                            Util.sendLog(message, userInput.getDisplayName(guild) + " has been unmuted.", Color.gray);
+                            new ServerLog(author, userInput.getDisplayName(guild) + " has been unmuted.").send();
                             Util.deleteMessage(message);
                         } catch (Exception e) {
                             Util.simpleEmbed(message.getChannel(), "Error running " + this.getName() + " - error recorded");
