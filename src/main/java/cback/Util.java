@@ -268,8 +268,8 @@ public class Util {
     }
 
     //checks for dirty words
-    public static void censorMessages(IMessage message) {
-        boolean homeGuild = message.getGuild().getStringID().equals(OfficialBot.HOME_GUILD_ID);
+    public static boolean censorMessages(IMessage message) {
+        boolean homeGuild = message.getGuild().getLongID() == OfficialBot.HOME_GUILD_ID;
         boolean staffChannel = message.getChannel().getCategory().getStringID().equals(OfficialBot.STAFF_CAT_ID);
         boolean staffMember = message.getAuthor().hasRole(message.getClient().getRoleByID(OfficialRoles.STAFF.id));
         if (homeGuild && !staffChannel && !staffMember) {
@@ -278,7 +278,6 @@ public class Util {
             String word = checkMessage(content);
 
             if (word != null) {
-
                 IUser author = message.getAuthor();
 
                 EmbedBuilder bld = new EmbedBuilder();
@@ -292,35 +291,35 @@ public class Util {
                 Util.sendEmbed(message.getGuild().getChannelByID(OfficialBot.MESSAGELOG_CH_ID), bld.withColor(OfficialBot.getBotColor()).build());
 
                 StringBuilder sBld = new StringBuilder().append("Your message has been automatically removed for containing a banned word. If this is an error, message a staff member.");
-                if (!word.isEmpty()) {
-                    sBld
-                            .append("\n\n")
-                            .append(word);
-                }
+
+                sBld
+                        .append("\n\n")
+                        .append(word);
+
                 Util.sendPrivateEmbed(author, sBld.toString());
 
                 OfficialBot.messageCache.add(message.getLongID());
                 Util.deleteMessage(message);
+                return true;
             }
         }
+        return false;
     }
 
     public static String checkMessage(String text) {
         List<String> bannedWords = OfficialBot.getInstance().getConfigManager().getConfigArray("bannedWords");
 
         String word = "";
-        Boolean tripped = false;
         for (String w : bannedWords) {
             if (text.matches("\\n?.*\\b\\n?" + w + "\\n?\\b.*\\n?.*") || text.matches("\\n?.*\\b\\n?" + w + "s\\n?\\b.*\\n?.*")) {
-                tripped = true;
                 word = w;
                 break;
             }
         }
-        if (word != "") {
-            return word;
-        } else {
+        if (word.isEmpty()) {
             return null;
+        } else {
+            return word;
         }
     }
 }
