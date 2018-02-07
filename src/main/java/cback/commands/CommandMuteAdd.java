@@ -111,7 +111,7 @@ public class CommandMuteAdd implements Command {
                     bot.getConfigManager().setConfigValue("muted", mutedUsers);
                 }
 
-                new ServerLog(message.getAuthor(), "Muted " + user.getDisplayName(guild) + "\n**Reason:** " + reason).send();
+                new ServerLog(message.getAuthor(), "Muted " + Util.getTag(user) + " (" + user.getStringID() + ")" + "\n**Reason:** " + reason).send();
             } catch (Exception e) {
                 Util.simpleEmbed(message.getChannel(), "Error running " + this.getName() + " - error recorded");
                 Util.reportHome(message, e);

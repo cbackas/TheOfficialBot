@@ -59,7 +59,7 @@ public class CommandBan implements Command {
                             try {
                                 guild.banUser(user, reason, 1);
 
-                                new ServerLog(author, "Banned " + user.getDisplayName(guild) + "\n**Reason:** " + reason, Color.red).send();
+                                new ServerLog(author, "Banned " + Util.getTag(user) + " (" + user.getStringID() + ")" + "\n**Reason:** " + reason, Color.red).send();
 
                                 Util.simpleEmbed(message.getChannel(), user.getDisplayName(guild) + " has been banned. Check " + guild.getChannelByID(OfficialBot.SERVERLOG_CH_ID).mention() + " for more info.");
                             } catch (Exception e) {
