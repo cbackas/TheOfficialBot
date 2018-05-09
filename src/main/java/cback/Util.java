@@ -1,18 +1,12 @@
 package cback;
 
 import cback.commands.Command;
-import org.apache.http.message.BasicNameValuePair;
 import sx.blah.discord.api.IDiscordClient;
-import sx.blah.discord.api.internal.DiscordClientImpl;
-import sx.blah.discord.api.internal.DiscordEndpoints;
-import sx.blah.discord.api.internal.DiscordUtils;
 import sx.blah.discord.api.internal.json.objects.EmbedObject;
-import sx.blah.discord.api.internal.json.objects.UserObject;
 import sx.blah.discord.handle.obj.*;
 import sx.blah.discord.util.*;
 
 import java.awt.*;
-import java.io.IOException;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

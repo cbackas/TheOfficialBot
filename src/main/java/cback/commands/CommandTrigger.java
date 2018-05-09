@@ -8,6 +8,8 @@ import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.handle.obj.IUser;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CommandTrigger implements Command {
     @Override
@@ -39,6 +41,7 @@ public class CommandTrigger implements Command {
     public void execute(IMessage message, String content, String[] args, IUser author, IGuild guild, List<Long> roleIDs, boolean isPrivate, IDiscordClient client, OfficialBot bot) {
         if (message.getAuthor().getStringID().equals("73416411443113984")) {
             try {
+
             } catch (Exception e) {
                 Util.reportHome(message, e);
             }

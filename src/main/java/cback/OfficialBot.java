@@ -52,11 +52,11 @@ public class OfficialBot {
     public static final long GENERAL_CH_ID = 266649217538195457L;
     public static final long SERVERLOG_CH_ID = 281021113440534528L;
     public static final long STAFFCHANGELOG_CH_ID = 363138434153578496L;
-    public static final long ANONSUGGESTIONS_CH_ID = 406230857481977872L;
     public static final long MESSAGELOG_CH_ID = 347078737726275605L;
     public static final long MEMBERLOG_CH_ID = 266655441449254914L;
     public static final long STARBOARD_CH_ID = 374978760547762176L;
-    public static final long STAFF_CH_ID = 266651712826114048L;
+    public static final long SUGGESTIONS_CH_ID = 371735392875053057L;
+    public static final long STAFF_CH_ID = 415267685748703232L;
     public static final long ADMIN_CH_ID = 285470408709373954L;
     public static final long DEV_CH_ID = 277587347443286016L;
 
