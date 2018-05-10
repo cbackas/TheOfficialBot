@@ -6,7 +6,9 @@ import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.handle.obj.IUser;
+import sx.blah.discord.util.EmbedBuilder;
 
+import java.awt.*;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -49,6 +51,17 @@ public class CommandReply implements Command {
 
             if (reply != null) {
                 Util.sendPrivateMessage(client.getUserByID(Long.parseLong(user)), reply);
+
+                EmbedBuilder bld = new EmbedBuilder()
+                        .withAuthorName("To: " + author.getName())
+                        .withAuthorIcon(author.getAvatarURL())
+                        .withDescription(reply)
+                        .withColor(Color.GREEN)
+                        .withFooterText("message sent")
+                        .withTimestamp(System.currentTimeMillis());
+
+                Util.sendEmbed(client.getChannelByID(OfficialBot.BOTPM_CH_ID), bld.build());
+                Util.deleteMessage(message);
             } else {
                 Util.syntaxError(this, message);
             }
