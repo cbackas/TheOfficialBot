@@ -5,10 +5,7 @@ import cback.OfficialBot;
 import cback.ServerLog;
 import cback.Util;
 import sx.blah.discord.api.IDiscordClient;
-import sx.blah.discord.handle.obj.IChannel;
-import sx.blah.discord.handle.obj.IGuild;
-import sx.blah.discord.handle.obj.IMessage;
-import sx.blah.discord.handle.obj.IUser;
+import sx.blah.discord.handle.obj.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -58,28 +55,33 @@ public class CommandMuteAdd implements Command {
     }
 
     private void muteList(IChannel channel) {
-        List<String> mutedUsers = bot.getConfigManager().getConfigArray("muted");
-        StringBuilder mutedList = new StringBuilder();
-        if (!mutedUsers.isEmpty()) {
-            for (String userID : mutedUsers) {
-                IUser userO = OfficialBot.getClient().getUserByID(Long.parseLong(userID));
+        List<String> mutedList = bot.getConfigManager().getConfigArray("muted");
+        StringBuilder outputList = new StringBuilder();
+        if (!mutedList.isEmpty()) {
+            IRole muted = OfficialBot.getClient().getRoleByID(281022564002824192L);
 
-                String user = "<@" + userID + ">";
-                if (userO != null) {
-                    user = userO.mention();
+            for (String userID : mutedList) {
+                IUser user = OfficialBot.getHomeGuild().getUserByID(Long.parseLong(userID));
+
+                if (user != null) {
+                    if (!user.hasRole(muted)) {
+                        mutedList.remove(userID);
+                        continue;
+                    } else {
+                        outputList.append("\n").append(user.mention());
+                    }
                 }
-
-                mutedList.append("\n").append(user);
             }
         } else {
-            mutedList.append("\n").append("There are currently no muted users.");
+            outputList.append("\n").append("There are currently no muted users.");
         }
 
-        Util.simpleEmbed(channel, "Muted Users: (plain text for users not on server)\n" + mutedList.toString());
+        Util.simpleEmbed(channel, "Muted Users: (users not on the server are hidden)\n" + outputList.toString());
     }
 
     private void muteUser(IMessage message) {
-        IGuild guild = message.getGuild();
+        IGuild guild = OfficialBot.getHomeGuild();
+        IRole muted = guild.getRoleByID(281022564002824192L);
         String stuff = message.getContent().split(" ", 2)[1];
 
         Pattern pattern = Pattern.compile("^<@!?(\\d+)> ?(.+)?");
@@ -103,7 +105,7 @@ public class CommandMuteAdd implements Command {
             try {
                 List<String> mutedUsers = bot.getConfigManager().getConfigArray("muted");
 
-                user.addRole(guild.getRoleByID(Long.parseLong("281022564002824192")));
+                user.addRole(muted);
                 Util.simpleEmbed(message.getChannel(), user.getDisplayName(guild) + " has been muted. Check " + guild.getChannelByID(OfficialBot.SERVERLOG_CH_ID).mention() + " for more info.");
 
                 if (!mutedUsers.contains(user.getStringID())) {
