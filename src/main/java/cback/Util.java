@@ -11,12 +11,14 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static cback.OfficialBot.getBotColor;
+
 
 public class Util {
     private static final Pattern USER_MENTION_PATTERN = Pattern.compile("^<@!?(\\d+)>$");
 
     static IDiscordClient client = OfficialBot.getInstance().getClient();
-    static Color BOT_COLOR = OfficialBot.getBotColor();
+    static Color BOT_COLOR = getBotColor();
 
     public static void sendMessage(IChannel channel, String message) {
         try {
@@ -282,7 +284,7 @@ public class Util {
                         .withTimestamp(System.currentTimeMillis())
                         .withFooterText("Auto-deleted from #" + message.getChannel().getName());
 
-                Util.sendEmbed(message.getGuild().getChannelByID(OfficialBot.MESSAGELOG_CH_ID), bld.withColor(OfficialBot.getBotColor()).build());
+                Util.sendEmbed(message.getGuild().getChannelByID(OfficialBot.MESSAGELOG_CH_ID), bld.withColor(getBotColor()).build());
 
                 StringBuilder sBld = new StringBuilder().append("Your message has been automatically removed for containing a banned word. If this is an error, message a staff member.");
 
@@ -314,6 +316,38 @@ public class Util {
             return null;
         } else {
             return word;
+        }
+    }
+
+    /**
+     * Returns an embed object for a simple botpm
+     */
+    public static EmbedObject buildBotPMEmbed(IMessage message, int type) {
+        try {
+            IUser author = message.getAuthor();
+
+            EmbedBuilder bld = new EmbedBuilder()
+                    .withAuthorName(author.getName() + '#' + author.getDiscriminator())
+                    .withAuthorIcon(author.getAvatarURL())
+                    .withDesc(message.getContent())
+                    .withTimestamp(System.currentTimeMillis());
+
+            for (IMessage.Attachment a : message.getAttachments()) {
+                bld.withImage(a.getUrl());
+            }
+
+            if (type == 1) {
+                bld.withFooterText(author.getStringID())
+                        .withColor(getBotColor());
+            } else if (type == 2) {
+                bld.withFooterText("in #" + message.getChannel().getName())
+                        .withColor(Color.orange);
+            }
+
+            return bld.build();
+        } catch (Exception e) {
+            reportHome(message, e);
+            return null;
         }
     }
 }
