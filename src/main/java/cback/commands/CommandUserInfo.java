@@ -51,8 +51,16 @@ public class CommandUserInfo implements Command {
             Pattern pattern = Pattern.compile("^<@!?(\\d+)>");
             Matcher matcher = pattern.matcher(args[0]);
             if (matcher.find()) {
-                IUser user = guild.getUserByID(Long.parseLong(matcher.group(1)));
-                String isBot = user.isBot() ? "yes" : "no";
+                IUser user = client.getUserByID(Long.parseLong(matcher.group(1)));
+
+                String isBot;
+                try {
+                    isBot = user.isBot() ? "yes" : "no";
+                } catch (Exception e) {
+                    Util.simpleEmbed(message.getChannel(), "Error: The bot doesn't share a server with this user.", Color.red);
+                    return;
+                }
+
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy HH:mm:ss");
 
                 EmbedBuilder embed = new EmbedBuilder();
