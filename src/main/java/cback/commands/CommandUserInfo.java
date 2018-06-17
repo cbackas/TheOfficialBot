@@ -72,7 +72,7 @@ public class CommandUserInfo implements Command {
                                 + "\n\uD83E\uDD16 **Bot**: ``" + isBot + "``"
                                 + "\n\uD83D\uDCE5 **Joined Server**: ``" + guild.getJoinTimeForUser(user).atOffset(ZoneOffset.ofHours(0)).format(formatter) + "``"
                                 + "\n\uD83C\uDF10 **Joined Discord**: ``" + user.getCreationDate().atOffset(ZoneOffset.ofHours(0)).format(formatter) + "``"
-                                + "\n\u2139 **Status**: ``" + user.getPresence().toString() + "``"
+                                + "\n\u2139 **Status**: ``" + user.getPresence().getStatus().name() + "``"
                                 + "\n\uD83D\uDEE1 **Roles**: ``" + roleList(user, guild) + "``")
                         .withFooterIcon(message.getAuthor().getAvatarURL())
                         .withFooterText("Requested by: " + Util.getTag(message.getAuthor()))
