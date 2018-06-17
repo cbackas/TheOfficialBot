@@ -5,7 +5,6 @@ import cback.events.ChannelChange;
 import cback.events.MemberChange;
 import cback.events.MessageChange;
 import cback.events.ReactionChange;
-import com.vdurmont.emoji.EmojiManager;
 import org.reflections.Reflections;
 import sx.blah.discord.api.ClientBuilder;
 import sx.blah.discord.api.IDiscordClient;
@@ -16,7 +15,6 @@ import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedE
 import sx.blah.discord.handle.obj.*;
 import sx.blah.discord.modules.Configuration;
 import sx.blah.discord.util.DiscordException;
-import sx.blah.discord.util.EmbedBuilder;
 
 import java.awt.*;
 import java.util.*;
@@ -36,9 +34,9 @@ public class OfficialBot {
 
     public static ArrayList<Long> messageCache = new ArrayList<>();
 
-    static private String prefix = "?";
-    private static final Pattern COMMAND_PATTERN = Pattern.compile("(?s)^\\?([^\\s]+) ?(.*)", Pattern.CASE_INSENSITIVE);
     public List<String> prefixes = new ArrayList<>();
+    static public String prefix = "?";
+    private static final Pattern COMMAND_PATTERN = Pattern.compile("(?s)^\\?([^\\s]+) ?(.*)", Pattern.CASE_INSENSITIVE);
 
     public static final long CBACK_USR_ID = 73416411443113984L;
     public static final long HOME_GUILD_ID = 266649217538195457L;
@@ -169,6 +167,7 @@ public class OfficialBot {
             EmbedObject embed = Util.buildBotPMEmbed(message, 1);
             Util.sendEmbed(client.getChannelByID(BOTPM_CH_ID), embed);
         } else {
+            //below here are just regular chat messages
             Util.censorMessages(message);
 
             /**
@@ -187,7 +186,7 @@ public class OfficialBot {
         client = event.getClient();
 
         //Set status
-        client.changePresence(StatusType.ONLINE, ActivityType.LISTENING, "all of your messages. \n\n Type " + prefix + "help");
+        client.changePresence(StatusType.ONLINE, ActivityType.WATCHING,"all of your messages. Type " + prefix + "help");
 
         startTime = System.currentTimeMillis();
     }

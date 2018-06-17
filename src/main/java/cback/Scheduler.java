@@ -1,6 +1,8 @@
 package cback;
 
+import sx.blah.discord.handle.obj.ActivityType;
 import sx.blah.discord.handle.obj.IGuild;
+import sx.blah.discord.handle.obj.StatusType;
 
 import java.util.Date;
 import java.util.TimeZone;
@@ -34,6 +36,8 @@ public class Scheduler {
 
             updateUserCount();
             resetUserChange();
+            //Set status
+            bot.getClient().changePresence(StatusType.ONLINE, ActivityType.WATCHING,"all of your messages. Type " + OfficialBot.prefix + "help");
 
         }, midnightWaitTime, DAILY_INTERVAL, TimeUnit.SECONDS);
     }
