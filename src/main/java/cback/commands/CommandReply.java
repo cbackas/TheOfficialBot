@@ -50,10 +50,12 @@ public class CommandReply implements Command {
             String reply = matcher.group(2);
 
             if (reply != null) {
-                Util.sendPrivateMessage(client.getUserByID(Long.parseLong(user)), reply);
+                IUser replyTo = client.getUserByID(Long.parseLong(user));
+
+                Util.sendPrivateMessage(replyTo, reply);
 
                 EmbedBuilder bld = new EmbedBuilder()
-                        .withAuthorName("To: " + author.getName())
+                        .withAuthorName("To: " + replyTo.getName())
                         .withAuthorIcon(author.getAvatarURL())
                         .withDescription(reply)
                         .withColor(Color.GREEN)
