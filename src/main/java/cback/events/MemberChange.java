@@ -30,6 +30,7 @@ public class MemberChange {
     public void memberJoin(UserJoinEvent event) {
         if (event.getGuild().getStringID().equals(OfficialBot.getHomeGuild().getStringID())) {
             IUser user = event.getUser();
+            String userID = user.getStringID();
             IGuild guild = OfficialBot.getHomeGuild();
 
             /**
@@ -54,21 +55,14 @@ public class MemberChange {
              */
             int totalUsers = guild.getUsers().size();
             if (totalUsers % 1000 == 0) {
-                List<String> mentions = new ArrayList<>();
-                for (IUser u : guild.getChannelByID(OfficialBot.ADMIN_CH_ID).getUsersHere()) {
-                    if (user.hasRole(guild.getRoleByID(OfficialRoles.ADMIN.id))) {
-                        mentions.add(u.mention());
-                    }
-                }
-
-                Util.sendMessage(guild.getChannelByID(OfficialBot.ADMIN_CH_ID), String.join(" ", mentions) + " we have hit " + totalUsers + " users hype");
+                Util.sendMessage(guild.getChannelByID(OfficialBot.ADMIN_CH_ID), "We have hit " + totalUsers + " users hype");
             }
 
             /**
              * Memberlog
              */
             EmbedBuilder bld = new EmbedBuilder()
-                    .withDesc(Util.getTag(user) + " **joined** the server. " + user.mention());
+                    .withDesc(Util.getTag(user) + " **joined** the server. <@" + userID + ">");
 
             //Checks if the new user's account is a new account (< 24 hours old)
             long userCreated = user.getCreationDate().atOffset(ZoneOffset.ofHours(0)).toEpochSecond();
@@ -89,12 +83,13 @@ public class MemberChange {
     public void memberLeave(UserLeaveEvent event) {
         if (event.getGuild().getStringID().equals(OfficialBot.getHomeGuild().getStringID())) {
             IUser user = event.getUser();
+            String userID = user.getStringID();
             IGuild guild = OfficialBot.getHomeGuild();
 
             /**
              * Mute check
              */
-            if (bot.getConfigManager().getConfigArray("muted").contains(event.getUser().getStringID())) {
+            if (bot.getConfigManager().getConfigArray("muted").contains(userID)) {
                 Util.sendMessage(guild.getChannelByID(OfficialBot.STAFF_CH_ID), user + " is muted and left the server. Their mute will be applied again when/if they return.");
             }
 
@@ -108,7 +103,7 @@ public class MemberChange {
              * Memberlog
              */
             EmbedBuilder bld = new EmbedBuilder()
-                    .withDesc(Util.getTag(user) + " **left** the server. " + user.mention())
+                    .withDesc(Util.getTag(user) + " **left** the server. <@" + userID + ">")
                     .withTimestamp(System.currentTimeMillis())
                     .withColor(Color.YELLOW);
 
